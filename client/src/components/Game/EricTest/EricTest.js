@@ -18,6 +18,16 @@ const EricTest = () => {
     {x:10, y:5, obstacle:'rock'},
   ])
 
+  const width = 10;
+  const height = 10;
+  let mapGrid = [];
+  for (let y = 1; y <= height; y++) {
+    mapGrid.push([]);
+    for (let x = 1; x <= width; x++) {
+      mapGrid[y - 1].push({ y: y, x: x, obst: 0 });
+    }
+  }
+
   const movePlayer = (boxX, boxY) => {
     SET_PLAYER_POS({x: boxX, y: boxY});
     SET_PLAYER_PATH([])
@@ -36,7 +46,7 @@ const EricTest = () => {
           {y: node.y + 1, x: node.x},
         ]
         unsolvedSpaces.forEach((move) => {
-          if ((move.x > 0 && move.y > 0) && (!OBSTRUCTIONS.find(obj=> obj.x === move.x && obj.y === move.y))) {
+          if ((move.x > 0 && move.y > 0 && move.x <= width && move.y <= height) && (!OBSTRUCTIONS.find(obj=> obj.x === move.x && obj.y === move.y))) {
             if(i === 0) {
               return
             } else {
@@ -55,7 +65,7 @@ const EricTest = () => {
     possiblePaths()
   }, [PLAYER_POS])
 
-    const distance = (boxX, boxY, PLAYER_POS) => {
+  const distance = (boxX, boxY, PLAYER_POS) => {
     const pathArray = []
     const {x, y} = PLAYER_POS;
     const X_DISTANCE = Math.abs(boxX - x);
@@ -72,7 +82,6 @@ const EricTest = () => {
       if (boxY > PLAYER_POS.y) {
         pathArray.push({...PLAYER_POS, y: PLAYER_POS.y + incrementerY})
         incrementerY += 1;
-
       } else if (boxY < PLAYER_POS.y) {
         pathArray.push({...PLAYER_POS, y: PLAYER_POS.y - deincrementerY})
         deincrementerY += 1
@@ -94,7 +103,6 @@ const EricTest = () => {
         if (boxX > PLAYER_POS.x) {
           pathArray.push({y:tempY, x: PLAYER_POS.x + incrementerX})
           incrementerX += 1;
-  
         } else if (boxX < PLAYER_POS.x) {
           pathArray.push({y:tempY, x: PLAYER_POS.x - deincrementerX})
           deincrementerX += 1
@@ -104,16 +112,6 @@ const EricTest = () => {
     SET_PLAYER_PATH(pathArray)
   }
 
-  const width = 10;
-  const height = 10;
-  let mapGrid = [];
-  for (let y = 1; y <= height; y++) {
-    mapGrid.push([]);
-    for (let x = 1; x <= width; x++) {
-      mapGrid[y - 1].push({ y: y, x: x, obst: 0 });
-    }
-  }
-  
   return (
     <Wrapper>
       {mapGrid.map((row, idx) => {

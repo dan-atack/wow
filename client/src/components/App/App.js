@@ -1,13 +1,27 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Game from '../Game';
+import MainMenu from '../MainMenu';
+import SelectCharacter from '../SelectCharacter';
 import styled from 'styled-components';
 
 function App() {
   return (
-    <AppBody className='App'>
-      <h1>World of Wrestling!!</h1>
-      <Game />
-    </AppBody>
+    <Router>
+      <AppBody className='App'>
+        <Switch>
+          <Route exact path='/'>
+            <MainMenu />
+          </Route>
+          <Route path='/select-character'>
+            <SelectCharacter />
+          </Route>
+          <Route path='/game'>
+            <Game />
+          </Route>
+        </Switch>
+      </AppBody>
+    </Router>
   );
 }
 

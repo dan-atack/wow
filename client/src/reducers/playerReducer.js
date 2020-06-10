@@ -6,6 +6,7 @@ const initialState = {
   yPosition: 1,
   // hype might not be needed always, but we'll keep track of it here for now:
   hype: 100,
+  health: 100,
   // You'll select your character type at the game's outset:
   characterType: null,
   karma: 0,

@@ -38,7 +38,7 @@ function CharacterDetails() {
         statBoosts.endurance = 2;
         statBoosts.acro = 1;
         statBoosts.items = 1;
-        return 'SuperStars are the most balanced kind of fighters. Best choice for beginners.';
+        return 'SuperStars are the most balanced and overall best kinds of fighters. .';
     }
   };
   // Handler functions destribute 'points' between various stats & abilities as they are spent:

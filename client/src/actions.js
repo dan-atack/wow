@@ -10,3 +10,13 @@ export const setPlayerCoords = (x, y) => ({
   x,
   y,
 });
+
+export const setScene = (scene) => ({
+  type: 'SET_SCENE',
+  scene,
+});
+
+export const setFrame = (frame) => ({
+  type: 'SET_FRAME',
+  frame,
+});

@@ -182,6 +182,7 @@ const Wrapper = styled.div`
   width: 80vw;
   height: 80vh;
   position: absolute;
+  top: 200px;
 `;
 const Box = styled.div`
   width: 50px;

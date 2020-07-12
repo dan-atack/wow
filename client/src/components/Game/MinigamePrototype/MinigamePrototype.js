@@ -11,8 +11,7 @@ function MinigamePrototype({ words }) {
 }
 
 const Wrapper = styled.div`
-  height: 80vh;
-  width: 80vw;
+  grid-area: ui;
   margin: 4% 9%;
   border: 2px solid black;
 `;

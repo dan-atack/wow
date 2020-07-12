@@ -165,6 +165,7 @@ const Wrapper = styled.div`
   width: auto;
   height: auto;
   position: absolute;
+  top: 200px;
 `;
 const Box = styled.div`
   width: 50px;

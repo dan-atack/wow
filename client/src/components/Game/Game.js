@@ -5,6 +5,7 @@ import CutscenePrototype from './CutscenePrototype';
 import MinigamePrototype from './MinigamePrototype';
 import Customizer from './CustomizerPrototype';
 import { scenes } from '../../chapters/gameScenes';
+import CombatTestEnvironment from './EricTest'
 
 function Game() {
   // The game component will be the body of the game, will show a number of different UIs depending on what is going on in the game.
@@ -25,7 +26,7 @@ function Game() {
       case 'cutscene':
         return <CutscenePrototype />;
       case 'fight':
-        return <FightPrototype />;
+        return <CombatTestEnvironment />;
       case 'minigame':
         return <MinigamePrototype />;
       case 'customizer':

@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { movementTimeout, sleep } from '../../../Helpers/helper'
+
 const CombatTestEnvironment = () => {
   const [PLAYER_POS, SET_PLAYER_POS] = React.useState({x:5, y:1});
   const [PLAYER_MOVES, SET_PLAYER_MOVES]= React.useState([])
@@ -46,7 +48,11 @@ const CombatTestEnvironment = () => {
             if(i === 0) {
               return
             } else {
-              possibleArray.push(move)
+              if(possibleArray.find(obj => (obj.x === move.x && obj.y === move.y)) === undefined) {
+                possibleArray.push(move)
+              } else {
+                return
+              }
             }
           } else {
             return
@@ -57,24 +63,52 @@ const CombatTestEnvironment = () => {
     }
     SET_PLAYER_MOVES(possibleArray);
   }
+  // console.log(PLAYER_MOVES)
+  const playerMove = (x, y) => { // 
+    // const movementData = movementTimeout({x:x, y:y},PLAYER_POS) //total time, xTime, yTime, isTurn, movement x and y
+    const TotalDistance = PLAYER_MOVES.find(sq => sq.x === x && sq.y === y).distance;
+    // console.log(x, y, 'xy')
+    // console.log(actionPoints, 'action points')
+    // console.log(TotalDistance, 'distance')
+    const playerPath = path({x:x, y:y})
+    // setActionPoints(actionPoints - TotalDistance)
+    // SET_PLAYER_POS({x:x, y:y})
+    playerAnimation(playerPath)
+  }
 
-  const playerMove = (x, y) => {
-    const distance = PLAYER_MOVES.find(sq => sq.x === x && sq.y === y).distance;
-    console.log(x, y, 'xy')
-    console.log(actionPoints, 'action points')
-    console.log(distance, 'distance')
-    setActionPoints(actionPoints - distance)
-    SET_PLAYER_POS({x:x, y:y})
+  const playerAnimation = (path) => {
+    path.forEach( async (move) => {
+      await sleep(1);
+      SET_PLAYER_POS({x:move.x, y:move.y})
+    })
+  }
+
+  const path = (target) => { // takes target location and extrapolates a path backwards
+    let endpoint = PLAYER_MOVES.find(obj => obj.x === target.x && obj.y === target.y);
+    console.log(endpoint, 'endpoint')
+    let previousSquare = endpoint
+    const pathArray = [endpoint]
+    for(let i = endpoint.distance - 1; i > 0; i -= 1) {
+      const tempPath = PLAYER_MOVES.find(obj => 
+        (obj.distance === i && obj.x === previousSquare.x - 1 && obj.y === previousSquare.y) ||
+        (obj.distance === i && obj.x === previousSquare.x + 1 && obj.y === previousSquare.y) ||
+        (obj.distance === i && obj.y === previousSquare.y + 1 && obj.y === previousSquare.x) ||
+        (obj.distance === i && obj.y === previousSquare.y - 1 && obj.x === previousSquare.x)
+      )
+      pathArray.push(tempPath);
+      previousSquare = tempPath;
+    }
+    return pathArray.sort((a,b) => {
+      return a.distance - b.distance;
+    })
   }
 
   React.useEffect(()=> {
     if (actionPoints > 0) {
       possiblePaths()
     } else {
-      SET_TURN('enemy')
       setActionPoints(4);
       setEnemyLocation({x: enemyLocation.x, y: enemyLocation.y + 1})
-      SET_TURN('player')
     }
   }, [PLAYER_POS, enemyLocation])
   if(TURN === 'player') {
@@ -86,7 +120,7 @@ const CombatTestEnvironment = () => {
             {row.map((sq) => {
               if(sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
                 return (
-                  <Player/>
+                  <Player />
                 )
               }  else if (OBSTRUCTIONS.find(obs => sq.x === obs.x && sq.y === obs.y)){
                 return (
@@ -193,14 +227,19 @@ const Player = styled.div`
   width: 50px;
   height: 50px;
   background-color: red;
-  outline: 1px solid black;
+  border: 1px solid black;
   opacity: 0.8;
+  transition
 `;
+
+//       animation: ${(props) => blast(props.x, props.y)} 500ms ease-in,
+//         ${fade} 1000ms forwards;
+
 const Path = styled.div`
   width: 50px;
   height: 50px;
   background-color: yellow;
-  outline: 1px solid black;
+  border: 1px solid black;
   opacity: 0.8;
 `;
 

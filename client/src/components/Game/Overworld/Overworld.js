@@ -18,9 +18,9 @@ function Overworld() {
 
   return (
     <Wrapper>
-      <h3>Da World</h3>
+      {/* <h3>Da World</h3> */}
       <EricTest />
-      <Tile src={Arena_01_proto} alt='arena' />
+      {/* <Tile src={Arena_01_proto} alt='arena' /> */}
     </Wrapper>
   );
 }
@@ -29,7 +29,6 @@ const Wrapper = styled.div`
   display: flex;
   padding: 8px;
   margin: 16px;
-  border: 1px solid green;
   border-radius: 8px;
   grid-area: map;
   overflow: hidden;

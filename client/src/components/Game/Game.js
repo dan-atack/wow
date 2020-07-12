@@ -21,6 +21,9 @@ import CharacterDisplay from './CharacterDisplay';
 import PlayerSetup from './PlayerSetup';
 import StatusBars from './StatusBars';
 import CombatUi from './EricTest/CombatUi'
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 function Game() {
   const dispatch = useDispatch();
@@ -55,6 +58,7 @@ function Game() {
   };
   return (
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <GameBody>
       {scenes[`scene_${scene}`] ? (
         renderScene(scenes[`scene_${scene}`])
@@ -87,6 +91,15 @@ const GameBody = styled.div`
   );
 }
 
+=======
+    <div>
+      <Overworld />
+      <CombatUi/>
+    </div> 
+  );
+}
+
+>>>>>>> Stashed changes
 // const GameBody = styled.div`
 //   display: grid;
 //   grid-template-areas:
@@ -99,6 +112,9 @@ const GameBody = styled.div`
 //   grid-template-columns: 1fr 1fr 1fr 1fr;
 //   max-height: 90vh;
 // `;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 export default Game;

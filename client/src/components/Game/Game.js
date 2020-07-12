@@ -3,18 +3,10 @@ import styled from 'styled-components';
 import CutscenePrototype from './CutscenePrototype';
 import MinigamePrototype from './MinigamePrototype';
 import Customizer from './CustomizerPrototype';
-import EricTest from './EricTest';
 import { scenes } from '../../chapters/gameScenes';
-import CombatTestEnvironment from './EricTest'
+import CombatTestEnvironment from './EricTest';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScene } from '../../actions';
-import Overworld from './Overworld';
-import MenuBar from './MenuBar';
-import CharacterDisplay from './CharacterDisplay';
-import PlayerSetup from './PlayerSetup';
-import StatusBars from './StatusBars';
-import CombatUi from './EricTest/CombatUi'
-
 
 function Game() {
   const dispatch = useDispatch();
@@ -67,17 +59,5 @@ const GameBody = styled.div`
     'next';
   grid-template-rows: 11fr 0.8fr;
 `;
-// const GameBody = styled.div`
-//   display: grid;
-//   grid-template-areas:
-//     'mainmenu mainmenu mainmenu mainmenu'
-//     'disp disp bars bars'
-//     'disp disp stat stat'
-//     'map map map map'
-//     'map map map map';
-//   grid-template-rows: 4fr 9fr 9fr 9fr 9fr;
-//   grid-template-columns: 1fr 1fr 1fr 1fr;
-//   max-height: 90vh;
-// `;
 
 export default Game;

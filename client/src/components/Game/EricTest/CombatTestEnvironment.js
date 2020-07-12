@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { movementTimeout, sleep } from '../../../Helpers/helper'
+import { movementTimeout, sleep } from '../../../Helpers/helper';
 
 const CombatTestEnvironment = () => {
   const [PLAYER_POS, SET_PLAYER_POS] = React.useState({ x: 5, y: 1 });
@@ -54,10 +54,14 @@ const CombatTestEnvironment = () => {
             if (i === 0) {
               return;
             } else {
-              if(possibleArray.find(obj => (obj.x === move.x && obj.y === move.y)) === undefined) {
-                possibleArray.push(move)
+              if (
+                possibleArray.find(
+                  (obj) => obj.x === move.x && obj.y === move.y
+                ) === undefined
+              ) {
+                possibleArray.push(move);
               } else {
-                return
+                return;
               }
             }
           } else {
@@ -68,93 +72,117 @@ const CombatTestEnvironment = () => {
       distanceCounter += 1;
     }
     SET_PLAYER_MOVES(possibleArray);
+  };
   // console.log(PLAYER_MOVES)
-  const playerMove = (x, y) => { // 
+  const playerMove = (x, y) => {
+    //
     // const movementData = movementTimeout({x:x, y:y},PLAYER_POS) //total time, xTime, yTime, isTurn, movement x and y
-    const TotalDistance = PLAYER_MOVES.find(sq => sq.x === x && sq.y === y).distance;
+    const TotalDistance = PLAYER_MOVES.find((sq) => sq.x === x && sq.y === y)
+      .distance;
     // console.log(x, y, 'xy')
     // console.log(actionPoints, 'action points')
     // console.log(TotalDistance, 'distance')
-    const playerPath = path({x:x, y:y})
+    const playerPath = path({ x: x, y: y });
     // setActionPoints(actionPoints - TotalDistance)
     // SET_PLAYER_POS({x:x, y:y})
-    playerAnimation(playerPath)
-  }
+    playerAnimation(playerPath);
+  };
 
   const playerAnimation = (path) => {
-    path.forEach( async (move) => {
+    path.forEach(async (move) => {
       await sleep(1);
-      SET_PLAYER_POS({x:move.x, y:move.y})
-    })
-  }
+      SET_PLAYER_POS({ x: move.x, y: move.y });
+    });
+  };
 
-  const path = (target) => { // takes target location and extrapolates a path backwards
-    let endpoint = PLAYER_MOVES.find(obj => obj.x === target.x && obj.y === target.y);
-    console.log(endpoint, 'endpoint')
-    let previousSquare = endpoint
-    const pathArray = [endpoint]
-    for(let i = endpoint.distance - 1; i > 0; i -= 1) {
-      const tempPath = PLAYER_MOVES.find(obj => 
-        (obj.distance === i && obj.x === previousSquare.x - 1 && obj.y === previousSquare.y) ||
-        (obj.distance === i && obj.x === previousSquare.x + 1 && obj.y === previousSquare.y) ||
-        (obj.distance === i && obj.y === previousSquare.y + 1 && obj.y === previousSquare.x) ||
-        (obj.distance === i && obj.y === previousSquare.y - 1 && obj.x === previousSquare.x)
-      )
+  const path = (target) => {
+    // takes target location and extrapolates a path backwards
+    let endpoint = PLAYER_MOVES.find(
+      (obj) => obj.x === target.x && obj.y === target.y
+    );
+    console.log(endpoint, 'endpoint');
+    let previousSquare = endpoint;
+    const pathArray = [endpoint];
+    for (let i = endpoint.distance - 1; i > 0; i -= 1) {
+      const tempPath = PLAYER_MOVES.find(
+        (obj) =>
+          (obj.distance === i &&
+            obj.x === previousSquare.x - 1 &&
+            obj.y === previousSquare.y) ||
+          (obj.distance === i &&
+            obj.x === previousSquare.x + 1 &&
+            obj.y === previousSquare.y) ||
+          (obj.distance === i &&
+            obj.y === previousSquare.y + 1 &&
+            obj.y === previousSquare.x) ||
+          (obj.distance === i &&
+            obj.y === previousSquare.y - 1 &&
+            obj.x === previousSquare.x)
+      );
       pathArray.push(tempPath);
       previousSquare = tempPath;
     }
-    return pathArray.sort((a,b) => {
-      return a.distance - b.distance;
-    })
-  }
+    return (
+      pathArray.sort((a, b) => {
+        return a.distance - b.distance;
+      }),
+      [PLAYER_POS, enemyLocation]
+    );
+  };
 
-    }
-  }, [PLAYER_POS, enemyLocation];
   if (TURN === 'player') {
     return (
       <Wrapper>
-      {mapGrid.map((row, idx) => {
-        return (
-          <div key={idx} style={{display:'flex'}}>
-            {row.map((sq) => {
-              if(sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
-                return (
-                  <Player />
-                )
-              }  else if (OBSTRUCTIONS.find(obs => sq.x === obs.x && sq.y === obs.y)){
-                return (
-                  <Box>{OBSTRUCTIONS.find(obs => sq.x === obs.x && sq.y === obs.y).obstacle}</Box>
-                )
-              } else if (sq.x === enemyLocation.x && sq.y === enemyLocation.y) { 
-                return (
-                  <Enemy>enemy</Enemy>
-                )
-              } else if (PLAYER_MOVES.find(obs => sq.x === obs.x && sq.y === obs.y)) {
-                return (
-                  <PossibleBox 
-                  key={Math.random() * 100000}
-                  onClick = {() => playerMove(sq.x, sq.y)}
-                  >
-                    {sq.x}, {sq.y}
-                  </PossibleBox>
-                )
-              } else {
-                return (
-                  <Box
-                  key={Math.random() * 100000}
-                  style={{ border: '1px solid black' }}
-                  >
-                  {sq.x},
-                  {sq.y}
-                </Box>
-                )}
-              ;
-            })}
-          </div>
-        );
-      })}
-    </Wrapper>
-  );
+        {mapGrid.map((row, idx) => {
+          return (
+            <div key={idx} style={{ display: 'flex' }}>
+              {row.map((sq) => {
+                if (sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
+                  return <Player />;
+                } else if (
+                  OBSTRUCTIONS.find((obs) => sq.x === obs.x && sq.y === obs.y)
+                ) {
+                  return (
+                    <Box>
+                      {
+                        OBSTRUCTIONS.find(
+                          (obs) => sq.x === obs.x && sq.y === obs.y
+                        ).obstacle
+                      }
+                    </Box>
+                  );
+                } else if (
+                  sq.x === enemyLocation.x &&
+                  sq.y === enemyLocation.y
+                ) {
+                  return <Enemy>enemy</Enemy>;
+                } else if (
+                  PLAYER_MOVES.find((obs) => sq.x === obs.x && sq.y === obs.y)
+                ) {
+                  return (
+                    <PossibleBox
+                      key={Math.random() * 100000}
+                      onClick={() => playerMove(sq.x, sq.y)}
+                    >
+                      {sq.x}, {sq.y}
+                    </PossibleBox>
+                  );
+                } else {
+                  return (
+                    <Box
+                      key={Math.random() * 100000}
+                      style={{ border: '1px solid black' }}
+                    >
+                      {sq.x},{sq.y}
+                    </Box>
+                  );
+                }
+              })}
+            </div>
+          );
+        })}
+      </Wrapper>
+    );
   } else {
     return (
       <Wrapper>
@@ -198,7 +226,7 @@ const CombatTestEnvironment = () => {
       </Wrapper>
     );
   }
-;
+};
 
 const Wrapper = styled.div`
   grid-area: ui;
@@ -236,7 +264,7 @@ const Player = styled.div`
   background-color: red;
   border: 1px solid black;
   opacity: 0.8;
-`
+`;
 
 //       animation: ${(props) => blast(props.x, props.y)} 500ms ease-in,
 //         ${fade} 1000ms forwards;

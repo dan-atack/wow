@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPlayerInitStats } from '../../../actions';
 
 // In this preliminary character customization screen, we'll experiment with the idea of having a single currency
 // that can either be spent on improving numerical stats, or buying new moves.
@@ -173,6 +174,17 @@ const Ability = styled.div`
   &:hover {
     box-shadow: 0 0 8px 8px magenta;
   }
+`;
+
+const Increase = styled.button`
+  border: 2px solid whitesmoke;
+  border-radius: 12px;
+  background-color: limegreen;
+`;
+const Decrease = styled.button`
+  border: 2px solid whitesmoke;
+  border-radius: 12px;
+  background-color: red;
 `;
 
 export default CharacterDetails;

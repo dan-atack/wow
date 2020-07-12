@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import FightPrototype from './FightPrototype';
 import CutscenePrototype from './CutscenePrototype';
 import MinigamePrototype from './MinigamePrototype';
 import Customizer from './CustomizerPrototype';
@@ -28,7 +27,6 @@ function Game() {
     // If there is a scene,
     if (scenes[`scene_${scene}`]) {
       // Move to the next scene:
-      console.log('ping');
       dispatch(setScene(scene + 1));
     }
   };

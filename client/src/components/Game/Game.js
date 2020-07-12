@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+<<<<<<< Updated upstream
 import FightPrototype from './FightPrototype';
 import CutscenePrototype from './CutscenePrototype';
 import MinigamePrototype from './MinigamePrototype';
@@ -13,6 +14,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setScene } from '../../actions';
 >>>>>>> f739ad7c5ac61f679253895a702db515786c28c1
 
+=======
+import Overworld from './Overworld';
+import MenuBar from './MenuBar';
+import CharacterDisplay from './CharacterDisplay';
+import PlayerSetup from './PlayerSetup';
+import StatusBars from './StatusBars';
+import CombatUi from './EricTest/CombatUi'
+>>>>>>> Stashed changes
 function Game() {
   const dispatch = useDispatch();
   const scene = useSelector((state) => state.game.scene);
@@ -45,6 +54,7 @@ function Game() {
     }
   };
   return (
+<<<<<<< Updated upstream
     <GameBody>
       {scenes[`scene_${scene}`] ? (
         renderScene(scenes[`scene_${scene}`])
@@ -69,5 +79,26 @@ const GameBody = styled.div`
     'next';
   grid-template-rows: 11fr 0.8fr;
 `;
+=======
+    <div>
+      <Overworld />
+      <CombatUi/>
+    </div> 
+  );
+}
+
+// const GameBody = styled.div`
+//   display: grid;
+//   grid-template-areas:
+//     'mainmenu mainmenu mainmenu mainmenu'
+//     'disp disp bars bars'
+//     'disp disp stat stat'
+//     'map map map map'
+//     'map map map map';
+//   grid-template-rows: 4fr 9fr 9fr 9fr 9fr;
+//   grid-template-columns: 1fr 1fr 1fr 1fr;
+//   max-height: 90vh;
+// `;
+>>>>>>> Stashed changes
 
 export default Game;

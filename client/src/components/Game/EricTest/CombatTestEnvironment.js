@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
+<<<<<<< Updated upstream
 import { movementTimeout, sleep, possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper'
 import { attackRange } from '../../../Helpers/playerCombatHelper'
 
 //components
 import CombatUi from './CombatUi';
+=======
+import { movementTimeout, sleep, possiblePaths, pathfinder } from '../../../Helpers/helper'
+>>>>>>> Stashed changes
 
 const CombatTestEnvironment = () => {
   const [PLAYER_POS, SET_PLAYER_POS] = React.useState({ x: 5, y: 1 });
@@ -46,6 +50,11 @@ const CombatTestEnvironment = () => {
     possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, width, height, OBSTRUCTIONS)
   }
 
+<<<<<<< Updated upstream
+=======
+  possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, width, height, OBSTRUCTIONS)
+
+>>>>>>> Stashed changes
   const playerMove = (x, y) => { // 
     // const movementData = movementTimeout({x:x, y:y},PLAYER_POS) //total time, xTime, yTime, isTurn, movement x and y
     // const TotalDistance = PLAYER_MOVES.find(sq => sq.x === x && sq.y === y).distance;
@@ -55,8 +64,11 @@ const CombatTestEnvironment = () => {
     const playerPath = pathfinder({x:x, y:y}, PLAYER_MOVES)
     // setActionPoints(actionPoints - TotalDistance)
     SET_PLAYER_POS({x:x, y:y})
+<<<<<<< Updated upstream
     SET_PLAYER_MOVES([])
     SET_TURN('playerAction')
+=======
+>>>>>>> Stashed changes
     // playerAnimation(playerPath)
   }
 
@@ -67,6 +79,7 @@ const CombatTestEnvironment = () => {
     });
   };
 
+<<<<<<< Updated upstream
   return (
     <>
       <CombatUi 
@@ -113,26 +126,63 @@ const CombatTestEnvironment = () => {
                       {sq.x}, {sq.y}
                     </PossibleBox>
                   );
+=======
+    return (
+      <Wrapper>
+        {mapGrid.map((row, idx) => {
+          return (
+            <div key={idx} style={{display:'flex'}}>
+              {row.map((sq) => {
+                if(sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
+                  return (
+                    <Player />
+                  )
+                }  else if (OBSTRUCTIONS.find(obs => sq.x === obs.x && sq.y === obs.y)){
+                  return (
+                    <Box>{OBSTRUCTIONS.find(obs => sq.x === obs.x && sq.y === obs.y).obstacle}</Box>
+                  )
+                } else if (sq.x === enemyLocation.x && sq.y === enemyLocation.y) { 
+                  return (
+                    <Enemy>enemy</Enemy>
+                  )
+                } else if (PLAYER_MOVES.find(obs => sq.x === obs.x && sq.y === obs.y)) {
+                  return (
+                    <PossibleBox 
+                    key={Math.random() * 100000}
+                    onClick = {() => playerMove(sq.x, sq.y)}
+                    >
+                      {sq.x}, {sq.y}
+                    </PossibleBox>
+                  )
+>>>>>>> Stashed changes
                 } else {
                   return (
                     <Box
-                      key={Math.random() * 100000}
-                      style={{ border: '1px solid black' }}
+                    key={Math.random() * 100000}
+                    style={{ border: '1px solid black' }}
                     >
-                      {sq.x},{sq.y}
-                    </Box>
-                  );
-                }
+                    {sq.x},
+                    {sq.y}
+                  </Box>
+                  )}
+                ;
               })}
             </div>
           );
         })}
+<<<<<<< Updated upstream
       </Wrapper>
     </>
   );
 }
 
 
+=======
+    </Wrapper>
+  )
+}
+
+>>>>>>> Stashed changes
 
 const Wrapper = styled.div`
   grid-area: ui;

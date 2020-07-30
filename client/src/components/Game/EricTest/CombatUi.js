@@ -4,14 +4,22 @@ import healthbar from '../../../assets/healthbar.png';
 import skillborder from '../../../assets/skillborder.png';
 import menuButton from '../../../assets/menuButton.png';
 
-const CombatUi = () => {
+import { attackRange } from '../../../Helpers/playerCombatHelper';
+
+const CombatUi = ({turn, playerSkills, SET_ATTACK_RADIUS, PLAYER_POS, width, height, OBSTRUCTIONS}) => {
   const [playerHealth, setPlayerHealth] = React.useState(100);
   const [playerHype, setPlayerHype] = React.useState(100);
+
+  const skillClick = async (skill) => { // individual skill being called from map function
+    console.log(OBSTRUCTIONS)
+    const range = await attackRange(skill, PLAYER_POS, width, height, OBSTRUCTIONS);
+    SET_ATTACK_RADIUS(range);
+  }
 
   return(
     <div>
       <HealthHud src={healthbar}/>
-      <SkillHud src={skillborder}/>
+      <SkillHud src={skillborder}/> 
       <Wrapper>
         <Bar type={'health'} fullness={playerHealth}>HEALTH</Bar>
         <Bar type={'hype'} fullness={playerHype}>HYPE</Bar>
@@ -23,17 +31,23 @@ const CombatUi = () => {
         <button onClick={() => setPlayerHype(playerHype + 10)}>increase hype</button>
       </ButtonDiv>
       <SkillsDiv>
-        <Skill>SKILL</Skill>
-        <Skill>SKILL</Skill>
-        <Skill>SKILL</Skill>
-        <Skill>SKILL</Skill>
+        {playerSkills.map(skill => {
+          return <Skill onClick={() => skillClick(skill)}>{skill.name}</Skill>
+        })}
       </SkillsDiv>
+      <TurnDiv>{turn}</TurnDiv>
       <MenuDiv>
         <img src={menuButton} alt='menu button'/> 
       </MenuDiv>
     </div>
   )
 }
+
+const TurnDiv = styled.div`
+  position: absolute;
+  right: 50px;
+  top: 50px;
+`
 
 const MenuDiv = styled.div`
   cursor: pointer;

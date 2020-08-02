@@ -12,8 +12,8 @@ export const setPlayerCoords = (x, y) => ({
   y,
 });
 
-export const setPlayerStrength = (val) => ({
-  type: 'SET_PLAYER_STRENGTH',
+export const setPlayerDamage = (val) => ({
+  type: 'SET_PLAYER_DAMAGE',
   val,
 });
 export const setPlayerEndurance = (val) => ({
@@ -27,6 +27,14 @@ export const setPlayerAcrobatics = (val) => ({
 export const setPlayerItemSkill = (val) => ({
   type: 'SET_PLAYER_ITEM_SKILL',
   val,
+});
+
+export const setPlayerStats = (dmg, end, acr, itm) => ({
+  type: 'SET_PLAYER_STATS',
+  dmg,
+  end,
+  acr,
+  itm,
 });
 
 export const addToPlayerMovesList = (move) => ({

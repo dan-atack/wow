@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import CharacterDetails from './CharacterDetails';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { selectCharacterType } from '../../actions';
 
@@ -15,23 +15,16 @@ function SelectCharacter() {
   return (
     <Wrapper>
       <h1>Choose Your Character Type!</h1>
-      <Option onMouseUp={() => handleSelect('High-Flier')}>
+      <Option onMouseUp={() => handleSelect('highFlier')}>
         <h2>High-Flier</h2>
       </Option>
-      <Option onMouseUp={() => handleSelect('Tank')}>
+      <Option onMouseUp={() => handleSelect('tank')}>
         <h2>Tank</h2>
       </Option>
-      <Option onMouseUp={() => handleSelect('SuperStar')}>
+      <Option onMouseUp={() => handleSelect('superStar')}>
         <h2>SuperStar</h2>
       </Option>
       {selected ? <CharacterDetails /> : <> </>}
-      {selected ? (
-        <Link to='/game'>
-          <button style={{ gridArea: 'select' }}>Confirm Selection?</button>
-        </Link>
-      ) : (
-        <> </>
-      )}
     </Wrapper>
   );
 }

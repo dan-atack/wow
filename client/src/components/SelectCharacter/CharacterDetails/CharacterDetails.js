@@ -1,75 +1,97 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { setPlayerInitStats } from '../../../actions';
+import { setPlayerStats } from '../../../actions';
 
 // In this preliminary character customization screen, we'll experiment with the idea of having a single currency
 // that can either be spent on improving numerical stats, or buying new moves.
-
 function CharacterDetails() {
-  // Grab the character type from redux; use to obtain initial stats and description:
+  const dispatch = useDispatch();
+  // Redux will be used to control the player's character type, as well as the stats and moves list:
   const characterType = useSelector((state) => state.player.characterType);
-  // Players will be granted 15 skill points to spend at the outset of their careers:
+  console.log(characterType);
+  const { playerDmg, playerEnd, playerAcr, playerItm } = useSelector(
+    (state) => state.player
+  );
+  // Players are granted 15 skill points to spend on custom initial stats, and these will use local state to limit allocations:
   const [pts, setPts] = React.useState({ value: 15 });
-  // Local state will be used initially to control the various input components as players choose their character balances:
-  const [damage, setDamage] = React.useState({ value: 0 });
-  const [endurance, setEndurance] = React.useState({ value: 0 });
-  const [acro, setAcro] = React.useState({ value: 0 });
-  const [items, setItems] = React.useState({ value: 0 });
+  const [damageAllocation, setDamageAllocation] = React.useState({ value: 0 });
+  const [enduranceAllocation, setEnduranceAllocation] = React.useState({
+    value: 0,
+  });
+  const [acroAllocation, setAcroAllocation] = React.useState({
+    value: 0,
+  });
+  const [itemsAllocation, setItemsAllocation] = React.useState({ value: 0 });
   // States for Ability Purchase Options:
   const [backBreaker, setBackBreaker] = React.useState(false);
   const [chokeSlam, setChokeSlam] = React.useState(false);
   const [dropkick, setDropkick] = React.useState(false);
   const [pileDriver, setPileDriver] = React.useState(false);
-  // handleArchetype function uses statBoosts variable to adjust initial stats and provide description based on player class:
-  let statBoosts = { damage: 0, endurance: 0, acro: 0, items: 0 };
+
   const handleArchetype = (type) => {
     switch (type) {
       case 'High-Flier':
-        statBoosts.damage = 2;
-        statBoosts.endurance = 1;
-        statBoosts.acro = 3;
         return 'High-Fliers do relatively less damage but have the showiest, most acrobatic moves.';
       case 'Tank':
-        statBoosts.damage = 3;
-        statBoosts.endurance = 3;
         return 'Tanks can take a lot of punishment and do good damage, but lack experience in an AGILE environment.';
       case 'SuperStar':
-        statBoosts.damage = 3;
-        statBoosts.endurance = 2;
-        statBoosts.acro = 1;
-        statBoosts.items = 1;
-        return 'SuperStars are the most balanced and overall best kinds of fighters. .';
+        return 'SuperStars are the most balanced and overall best kinds of fighters...';
     }
   };
-  // Handler functions destribute 'points' between various stats & abilities as they are spent:
+  // Handler functions destribute points between various stats & abilities as they are spent.
+  // The handlePoints function is the bank: all transactions are sent to it for approval:
   const handlePoints = (ev, skill) => {
-    // for all transactions, make available only if there are sufficient points, and disallow negative numbers:
+    // for all transactions, make available only if there are sufficient ALLOCATABLE points, and disallow negative numbers:
     const prev = skill.value;
     const diff = Number(ev.target.value) - prev;
     if ((pts.value > 0 || diff < 0) && ev.target.value >= 0) {
       // if transaction is valid, adjust points total,
       setPts({ value: pts.value - diff });
-      // and return the requested new value:
-      return Number(ev.target.value);
+      // and return the Difference (signed positive or negative) to be combined with the previous value and then DISPATCHED:
+      return diff;
     } else {
       console.log('insufficient points/negative value attempted.');
-      // otherwise return the CURRENT value (don't allow change):
-      return skill.value;
+      // otherwise return zero, since that is the amount of change you're allowed to get:
+      return 0;
     }
   };
   // Controlled input handlers for stat adjustments:
   const handleDamage = (event) => {
-    setDamage({ value: handlePoints(event, damage) });
+    // Set value of damageAllocation state to the value of itself plus the outcome of the handlePoints fucntion (returns -1, 0 or +1):
+    setDamageAllocation({
+      value: damageAllocation.value + handlePoints(event, damageAllocation),
+    });
   };
   const handleEndurance = (event) => {
-    setEndurance({ value: handlePoints(event, endurance) });
+    setEnduranceAllocation({
+      value:
+        enduranceAllocation.value + handlePoints(event, enduranceAllocation),
+    });
   };
   const handleAcro = (event) => {
-    setAcro({ value: handlePoints(event, acro) });
+    setAcroAllocation({
+      value: acroAllocation.value + handlePoints(event, acroAllocation),
+    });
   };
   const handleItems = (event) => {
-    setItems({ value: handlePoints(event, items) });
+    setItemsAllocation({
+      value: itemsAllocation.value + handlePoints(event, itemsAllocation),
+    });
+  };
+  // TODO: Controlled inputs for purchasing moves
+
+  // Submit button handler function: dispatches all allocated point values to the player's Redux state:
+  const handleSubmit = () => {
+    dispatch(
+      setPlayerStats(
+        damageAllocation.value,
+        enduranceAllocation.value,
+        acroAllocation.value,
+        itemsAllocation.value
+      )
+    );
   };
 
   return (
@@ -91,28 +113,36 @@ function CharacterDetails() {
           <h3>Points Allocated:</h3>
         </div>
         <Skill>
-          <span>Damage: {damage.value + statBoosts.damage}</span>
+          <span>Damage: {playerDmg + damageAllocation.value}</span>
           <Adjuster
             type='number'
-            value={damage.value}
+            value={damageAllocation.value}
             onChange={handleDamage}
           />
         </Skill>
         <Skill>
-          Endurance: {endurance.value + statBoosts.endurance}
+          Endurance: {playerEnd + enduranceAllocation.value}
           <Adjuster
             type='number'
-            value={endurance.value}
+            value={enduranceAllocation.value}
             onChange={handleEndurance}
           />
         </Skill>
         <Skill>
-          Acrobatics: {acro.value + statBoosts.acro}
-          <Adjuster type='number' value={acro.value} onChange={handleAcro} />
+          Acrobatics: {playerAcr + acroAllocation.value}
+          <Adjuster
+            type='number'
+            value={acroAllocation.value}
+            onChange={handleAcro}
+          />
         </Skill>
         <Skill>
-          Item Use: {items.value + statBoosts.items}
-          <Adjuster type='number' value={items.value} onChange={handleItems} />
+          Item Use: {playerItm + itemsAllocation.value}
+          <Adjuster
+            type='number'
+            value={itemsAllocation.value}
+            onChange={handleItems}
+          />
         </Skill>
       </SkillBox>
       <SkillBox style={{ gridArea: 'abilities' }}>
@@ -122,6 +152,11 @@ function CharacterDetails() {
         <Ability>Drop Kick</Ability>
         <Ability>Pile Driver</Ability>
       </SkillBox>
+      <Link to='/game'>
+        <button style={{ gridArea: 'select' }} onMouseUp={handleSubmit}>
+          Confirm Selection?
+        </button>
+      </Link>
     </Wrapper>
   );
 }

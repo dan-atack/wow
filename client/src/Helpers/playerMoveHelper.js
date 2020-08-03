@@ -1,3 +1,5 @@
+import data from '../data/mapSeed.json'
+
 const movementFinder = (target, playerPOS) => {
 
   const movementX = playerPOS.x - target.x;
@@ -37,8 +39,9 @@ export const sleep = (duration) => {
 	})
 }
 
-export const possiblePaths = (actionPoints, SET_PLAYER_MOVES, PLAYER_POS, width, height, OBSTRUCTIONS) => { //function to show the web of movements a player can take on their turn
+export const possiblePaths = (actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level) => { //function to show the web of movements a player can take on their turn
   SET_PLAYER_MOVES([]); //sets the populated array of moves to none
+  const seed = data.find(obj => obj.level === level)
   let distanceCounter = 1;  // iterating counter to tell which iteration of the algorithm this possible move was generated on
   let moves = actionPoints; // indexing number for algorithm loop
   const possibleArray = [PLAYER_POS]; //djikstra's to solve spaces starting at PLAYER_POS
@@ -54,9 +57,9 @@ export const possiblePaths = (actionPoints, SET_PLAYER_MOVES, PLAYER_POS, width,
         if (
           move.x > 0 &&
           move.y > 0 &&
-          move.x <= width &&
-          move.y <= height &&
-          !OBSTRUCTIONS.find((obj) => obj.x === move.x && obj.y === move.y)
+          move.x <= seed.width &&
+          move.y <= seed.height &&
+          !seed.obstructions.find((obj) => obj.x === move.x && obj.y === move.y)
         ) {
           if (i === 0) {
             return;

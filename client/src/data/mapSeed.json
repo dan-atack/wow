@@ -1,0 +1,28 @@
+[
+  {
+    "level" : "parking lot",
+    "width" : 10,
+    "height" : 10,
+    "playerStartPosition" : {"x":5, "y":1},
+    "enemyStartPosition" : {"x":5, "y":10},
+    "obstructions" : [
+      { "x": 1, "y": 1, "obstacle": "turn buckle" },
+      { "x": 10, "y": 10, "obstacle": "turn buckle" },
+      { "x": 1, "y": 10, "obstacle": "turn buckle" },
+      { "x": 10, "y": 1, "obstacle": "turn buckle" }
+    ]
+  },  
+  {
+    "level" : "lounge",
+    "width" : 15,
+    "height" : 15,
+    "playerStartPosition" : {"x":5, "y":1},
+    "enemyStartPosition" : {"x":5, "y":10},
+    "obstructions" : [
+      { "x": 1, "y": 1, "obstacle": "turn buckle" },
+      { "x": 10, "y": 10, "obstacle": "turn buckle" },
+      { "x": 1, "y": 10, "obstacle": "turn buckle" },
+      { "x": 10, "y": 1, "obstacle": "turn buckle" }
+    ]
+  }
+]

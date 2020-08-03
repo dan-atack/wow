@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { movementTimeout, sleep, possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper'
 import { attackRange } from '../../../Helpers/playerCombatHelper'
+import data from '../../../data/mapSeed.json'
+import {mapGenerate} from '../../../Helpers/MapGeneratorHelper'
 
 //components
 import CombatUi from './CombatUi';
@@ -18,32 +20,38 @@ const CombatTestEnvironment = () => {
     { x: 1, y: 10, obstacle: 'turn buckle' },
     { x: 10, y: 1, obstacle: 'turn buckle' },
   ]);
-  
-  
   //temporary character state//
   const [actionPoints, setActionPoints] = React.useState(4);
   const [playerHP, setPlayerHP] = React.useState(10);
   const [enemyHP, setEnemyHP] = React.useState(10);
   const [enemyLocation, setEnemyLocation] = React.useState({ x: 5, y: 10 });
+  const [level, setLevel] = React.useState('parking lot');
+  const [mapGrid, setMapGrid] = React.useState([]);
   const playerSkills = [
     {name: 'slap', range: 1, pathing: 'radial'},
     {name: 'slap', range: 1, pathing: 'radial'},
     {name: 'slap', range: 1, pathing: 'radial'},
     {name: 'slap', range: 1, pathing: 'radial'},
   ]
-  const width = 10;
-  const height = 10;
-  let mapGrid = [];
-  for (let y = 1; y <= height; y++) {
-    mapGrid.push([]);
-    for (let x = 1; x <= width; x++) {
-      mapGrid[y - 1].push({ y: y, x: x, obst: 0 });
-    }
-  }
+
+  React.useEffect(() => {
+    const seed = data.find(obj => obj.level === level)
+    setMapGrid(mapGenerate(seed))
+  }, [level])
+
+
+  // const width = 10;
+  // const height = 10;
+  // for (let y = 1; y <= height; y++) {
+  //   mapGrid.push([]);
+  //   for (let x = 1; x <= width; x++) {
+  //     mapGrid[y - 1].push({ y: y, x: x, obst: 0 });
+  //   }
+  // }
   console.log(ATTACK_RADIUS)
   if(TURN === 'idle') {
     SET_TURN('playerMove')
-    possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, width, height, OBSTRUCTIONS)
+    possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level, OBSTRUCTIONS)
   }
 
   const playerMove = (x, y) => { // 
@@ -74,8 +82,6 @@ const CombatTestEnvironment = () => {
         SET_ATTACK_RADIUS={SET_ATTACK_RADIUS} 
         playerSkills={playerSkills}
         PLAYER_POS={PLAYER_POS}
-        width={width}
-        height={height}
         OBSTRUCTIONS={OBSTRUCTIONS}
       />
       <Wrapper>
@@ -142,6 +148,7 @@ const Wrapper = styled.div`
   margin-top: 5%;
   margin-left: 5%;
 `;
+
 const Box = styled.div`
   width: 50px;
   height: 50px;
@@ -149,6 +156,7 @@ const Box = styled.div`
   border: 1px solid black;
   opacity: 0.5;
 `;
+
 const Enemy = styled.div`
   width: 50px;
   height: 50px;
@@ -172,9 +180,6 @@ const Player = styled.div`
   border: 1px solid black;
   opacity: 0.8;
 `;
-
-//       animation: ${(props) => blast(props.x, props.y)} 500ms ease-in,
-//         ${fade} 1000ms forwards;
 
 const Path = styled.div`
   width: 50px;

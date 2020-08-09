@@ -1,9 +1,9 @@
 //what I'm trying to do here is pass the range, effect, position, and damage of each skill in an area
 
-export const attackRange = (skill, PLAYER_POS, width, height, OBSTRUCTIONS) => { // i need attack to return it's range, and then 
+export const attackRange = (skill, PLAYER_POS, width, height, obstructions) => { // i need attack to return it's range, and then 
   let range = skill.range
   if(skill.pathing === 'radial') { //checks skill pathing and calls pathing function
-    return radialRange(range, PLAYER_POS, width, height, OBSTRUCTIONS)
+    return radialRange(range, PLAYER_POS, width, height, obstructions)
   }
 }
 
@@ -11,10 +11,10 @@ export const attackRange = (skill, PLAYER_POS, width, height, OBSTRUCTIONS) => {
 
 //radial rangefinding
 
-const radialRange = (range, PLAYER_POS, width, height, OBSTRUCTIONS) => { //maybe i can get this from a global state variable
+const radialRange = (range, PLAYER_POS, width, height, obstructions) => { //maybe i can get this from a global state variable
   let solvedSpaces = [PLAYER_POS];
   let distanceCounter = 1;
-  console.log(OBSTRUCTIONS)
+  console.log(obstructions)
   for(let i = range; i > 0; i -= 1) {
     solvedSpaces.forEach((node) => {
       const unsolvedSpaces = [
@@ -29,7 +29,7 @@ const radialRange = (range, PLAYER_POS, width, height, OBSTRUCTIONS) => { //mayb
           space.y > 0 &&
           space.x <= width &&
           space.y <= height &&
-          !OBSTRUCTIONS.find((obj) => obj.x === space.x && obj.y === space.y)
+          !obstructions.find((obj) => obj.x === space.x && obj.y === space.y)
         ) {
           if (i === 0) {
             return;

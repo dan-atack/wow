@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { movementTimeout, sleep, possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper'
 import { attackRange } from '../../../Helpers/playerCombatHelper'
 import data from '../../../data/mapSeed.json'
-import {mapGenerate} from '../../../Helpers/MapGeneratorHelper'
+import {mapGenerate, levelVisualGenerator} from '../../../Helpers/MapGeneratorHelper'
 
 //components
 import CombatUi from './CombatUi';
@@ -14,12 +14,7 @@ const CombatTestEnvironment = () => {
   const [PLAYER_MOVES, SET_PLAYER_MOVES] = React.useState([]);
   const [TURN, SET_TURN] = React.useState('idle');
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = React.useState([]);
-  const [OBSTRUCTIONS, SET_OBSTRUCTIONS] = React.useState([
-    { x: 1, y: 1, obstacle: 'turn buckle' },
-    { x: 10, y: 10, obstacle: 'turn buckle' },
-    { x: 1, y: 10, obstacle: 'turn buckle' },
-    { x: 10, y: 1, obstacle: 'turn buckle' },
-  ]);
+
   //temporary character state//
   const [actionPoints, setActionPoints] = React.useState(4);
   const [playerHP, setPlayerHP] = React.useState(10);
@@ -48,10 +43,9 @@ const CombatTestEnvironment = () => {
   //     mapGrid[y - 1].push({ y: y, x: x, obst: 0 });
   //   }
   // }
-  console.log(ATTACK_RADIUS)
   if(TURN === 'idle') {
     SET_TURN('playerMove')
-    possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level, OBSTRUCTIONS)
+    possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level)
   }
 
   const playerMove = (x, y) => { // 
@@ -82,58 +76,10 @@ const CombatTestEnvironment = () => {
         SET_ATTACK_RADIUS={SET_ATTACK_RADIUS} 
         playerSkills={playerSkills}
         PLAYER_POS={PLAYER_POS}
-        OBSTRUCTIONS={OBSTRUCTIONS}
+        level={level}
       />
-      <Wrapper>
-        {mapGrid.map((row, idx) => {
-          return (
-            <div key={Math.random() * 100000} style={{ display: 'flex' }}>
-              {row.map((sq) => {
-                if (sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
-                  return <Player key={Math.random() * 100000} />;
-                } else if (
-                  OBSTRUCTIONS.find((obs) => sq.x === obs.x && sq.y === obs.y)
-                ) {
-                  return (
-                    <Box key={Math.random() * 100000}>
-                      {
-                        OBSTRUCTIONS.find(
-                          (obs) => sq.x === obs.x && sq.y === obs.y
-                        ).obstacle
-                      }
-                    </Box>
-                  );
-                } else if (
-                  sq.x === enemyLocation.x &&
-                  sq.y === enemyLocation.y
-                ) {
-                  return <Enemy key={Math.random() * 100000}>enemy</Enemy>;
-                } else if (
-                  PLAYER_MOVES.find((obs) => sq.x === obs.x && sq.y === obs.y)
-                ) {
-                  return (
-                    <PossibleBox
-                      key={Math.random() * 100000}
-                      onClick={() => playerMove(sq.x, sq.y)}
-                    >
-                      {sq.x}, {sq.y}
-                    </PossibleBox>
-                  );
-                } else {
-                  return (
-                    <Box
-                    key={Math.random() * 100000}
-                    style={{ border: '1px solid black' }}
-                    >
-                    {sq.x},
-                    {sq.y}
-                  </Box>
-                  )}
-                ;
-              })}
-            </div>
-          );
-        })}
+      <Wrapper> 
+        {levelVisualGenerator(level, mapGrid, PLAYER_POS, enemyLocation, PLAYER_MOVES, playerMove)} 
       </Wrapper>
     </>
   );
@@ -147,46 +93,6 @@ const Wrapper = styled.div`
   height: 1000px;
   margin-top: 5%;
   margin-left: 5%;
-`;
-
-const Box = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: grey;
-  border: 1px solid black;
-  opacity: 0.5;
-`;
-
-const Enemy = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: blue;
-  border: 1px solid black;
-  opacity: 0.5;
-`;
-
-const PossibleBox = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: grey;
-  border: 1px solid black;
-  opacity: 0.9;
-`;
-
-const Player = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: red;
-  border: 1px solid black;
-  opacity: 0.8;
-`;
-
-const Path = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: yellow;
-  border: 1px solid black;
-  opacity: 0.8;
 `;
 
 export default CombatTestEnvironment

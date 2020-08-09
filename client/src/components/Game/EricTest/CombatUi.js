@@ -7,15 +7,14 @@ import menuButton from '../../../assets/menuButton.png';
 import { attackRange } from '../../../Helpers/playerCombatHelper';
 import data from '../../../data/mapSeed.json'
 
-const CombatUi = ({turn, playerSkills, SET_ATTACK_RADIUS, PLAYER_POS, level, OBSTRUCTIONS}) => {
+const CombatUi = ({turn, playerSkills, SET_ATTACK_RADIUS, PLAYER_POS, level}) => {
   const [playerHealth, setPlayerHealth] = React.useState(100);
   const [playerHype, setPlayerHype] = React.useState(100);
 
   const seed = data.find(obj => obj.level === level)
 
   const skillClick = async (skill) => { // individual skill being called from map function
-    console.log(OBSTRUCTIONS)
-    const range = await attackRange(skill, PLAYER_POS, seed.width, seed.height, OBSTRUCTIONS);
+    const range = await attackRange(skill, PLAYER_POS, seed.width, seed.height, seed.obstructions);
     SET_ATTACK_RADIUS(range);
   }
 

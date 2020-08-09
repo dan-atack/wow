@@ -79,7 +79,9 @@ const CombatTestEnvironment = () => {
         level={level}
       />
       <Wrapper> 
-        {levelVisualGenerator(level, mapGrid, PLAYER_POS, enemyLocation, PLAYER_MOVES, playerMove)} 
+        {mapGrid.map((row, idx) => {
+          return levelVisualGenerator(row, level, mapGrid, PLAYER_POS, enemyLocation, PLAYER_MOVES, playerMove)
+        })}
       </Wrapper>
     </>
   );

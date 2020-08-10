@@ -52,3 +52,8 @@ export const setFrame = (frame) => ({
   type: 'SET_FRAME',
   frame,
 });
+
+export const setCombatPhase = (combatPhase) => ({
+  type: 'SET_COMBAT_PHASE',
+  combatPhase,
+});

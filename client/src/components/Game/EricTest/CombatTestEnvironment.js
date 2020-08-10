@@ -1,21 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCombatPhase } from '../../../actions';
 
-import { movementTimeout, sleep, possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper'
-import { attackRange } from '../../../Helpers/playerCombatHelper'
-import data from '../../../data/mapSeed.json'
-import {mapGenerate, levelVisualGenerator} from '../../../Helpers/MapGeneratorHelper'
+import {
+  movementTimeout,
+  sleep,
+  possiblePaths,
+  pathfinder,
+} from '../../../Helpers/playerMoveHelper';
+import { attackRange } from '../../../Helpers/playerCombatHelper';
+import data from '../../../data/mapSeed.json';
+import {
+  mapGenerate,
+  levelVisualGenerator,
+} from '../../../Helpers/MapGeneratorHelper';
 
 //components
 import CombatUi from './CombatUi';
 
 const CombatTestEnvironment = () => {
+  const dispatch = useDispatch();
   const [PLAYER_POS, SET_PLAYER_POS] = React.useState({ x: 5, y: 1 });
   const [PLAYER_MOVES, SET_PLAYER_MOVES] = React.useState([]);
-  const [TURN, SET_TURN] = React.useState('idle');
+  // Bring in the global state:
+  const combatPhase = useSelector((state) => state.game.combatPhase);
+  // const [TURN, SET_TURN] = React.useState('idle');
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = React.useState([]);
 
-  //temporary character state//
+  // temporary character state//
   const [actionPoints, setActionPoints] = React.useState(4);
   const [playerHP, setPlayerHP] = React.useState(10);
   const [enemyHP, setEnemyHP] = React.useState(10);
@@ -23,17 +36,16 @@ const CombatTestEnvironment = () => {
   const [level, setLevel] = React.useState('parking lot');
   const [mapGrid, setMapGrid] = React.useState([]);
   const playerSkills = [
-    {name: 'slap', range: 1, pathing: 'radial'},
-    {name: 'slap', range: 1, pathing: 'radial'},
-    {name: 'slap', range: 1, pathing: 'radial'},
-    {name: 'slap', range: 1, pathing: 'radial'},
-  ]
+    { name: 'slap', range: 1, pathing: 'radial' },
+    { name: 'slap', range: 1, pathing: 'radial' },
+    { name: 'slap', range: 1, pathing: 'radial' },
+    { name: 'slap', range: 1, pathing: 'radial' },
+  ];
 
   React.useEffect(() => {
-    const seed = data.find(obj => obj.level === level)
-    setMapGrid(mapGenerate(seed))
-  }, [level])
-
+    const seed = data.find((obj) => obj.level === level);
+    setMapGrid(mapGenerate(seed));
+  }, [level]);
 
   // const width = 10;
   // const height = 10;
@@ -43,24 +55,28 @@ const CombatTestEnvironment = () => {
   //     mapGrid[y - 1].push({ y: y, x: x, obst: 0 });
   //   }
   // }
-  if(TURN === 'idle') {
-    SET_TURN('playerMove')
-    possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level)
+  // Combat initiator line, rewired for Redux state:
+  if (combatPhase === 'NO_COMBAT') {
+    dispatch(setCombatPhase('playerMove'));
+    console.log(combatPhase);
+    possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level);
   }
 
-  const playerMove = (x, y) => { // 
+  const playerMove = (x, y) => {
+    //
     // const movementData = movementTimeout({x:x, y:y},PLAYER_POS) //total time, xTime, yTime, isTurn, movement x and y
     // const TotalDistance = PLAYER_MOVES.find(sq => sq.x === x && sq.y === y).distance;
     // console.log(x, y, 'xy')
     // console.log(actionPoints, 'action points')
     // console.log(TotalDistance, 'distance')
-    const playerPath = pathfinder({x:x, y:y}, PLAYER_MOVES)
+    const playerPath = pathfinder({ x: x, y: y }, PLAYER_MOVES);
     // setActionPoints(actionPoints - TotalDistance)
-    SET_PLAYER_POS({x:x, y:y})
-    SET_PLAYER_MOVES([])
-    SET_TURN('playerAction')
+    SET_PLAYER_POS({ x: x, y: y });
+    SET_PLAYER_MOVES([]);
+    dispatch(setCombatPhase('playerAction'));
+    console.log(combatPhase);
     // playerAnimation(playerPath)
-  }
+  };
 
   const playerAnimation = (path) => {
     path.forEach(async (move) => {
@@ -71,23 +87,30 @@ const CombatTestEnvironment = () => {
 
   return (
     <>
-      <CombatUi 
-        turn={TURN} 
-        SET_ATTACK_RADIUS={SET_ATTACK_RADIUS} 
+      <CombatUi
+        turn={combatPhase}
+        SET_ATTACK_RADIUS={SET_ATTACK_RADIUS}
         playerSkills={playerSkills}
         PLAYER_POS={PLAYER_POS}
         level={level}
       />
-      <Wrapper> 
+      <Wrapper>
         {mapGrid.map((row, idx) => {
-          return levelVisualGenerator(row, level, mapGrid, PLAYER_POS, enemyLocation, PLAYER_MOVES, playerMove)
+          return levelVisualGenerator(
+            row,
+            level,
+            mapGrid,
+            PLAYER_POS,
+            enemyLocation,
+            PLAYER_MOVES,
+            playerMove,
+            ATTACK_RADIUS
+          );
         })}
       </Wrapper>
     </>
   );
-}
-
-
+};
 
 const Wrapper = styled.div`
   grid-area: ui;
@@ -97,4 +120,4 @@ const Wrapper = styled.div`
   margin-left: 5%;
 `;
 
-export default CombatTestEnvironment
+export default CombatTestEnvironment;

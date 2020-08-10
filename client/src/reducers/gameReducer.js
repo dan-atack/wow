@@ -3,6 +3,8 @@
 const initialState = {
   scene: 0,
   frame: 0,
+  // Six possible combat phases: playerMove, playerAction, baddieMove, baddieAction, specialEvent and noCombat:
+  combatPhase: 'noCombat',
 };
 
 export default function (state = initialState, action) {
@@ -19,6 +21,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         frame: action.frame,
+      };
+    }
+    case 'SET_COMBAT_PHASE': {
+      return {
+        ...state,
+        combatPhase: action.combatPhase,
       };
     }
     default: {

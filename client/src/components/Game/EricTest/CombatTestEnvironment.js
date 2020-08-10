@@ -56,7 +56,7 @@ const CombatTestEnvironment = () => {
   //   }
   // }
   // Combat initiator line, rewired for Redux state:
-  if (combatPhase === 'NO_COMBAT') {
+  if (combatPhase === 'noCombat') {
     dispatch(setCombatPhase('playerMove'));
     console.log(combatPhase);
     possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level);

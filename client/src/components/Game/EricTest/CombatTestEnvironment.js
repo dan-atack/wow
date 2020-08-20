@@ -46,21 +46,17 @@ const CombatTestEnvironment = () => {
     const seed = data.find((obj) => obj.level === level);
     setMapGrid(mapGenerate(seed));
   }, [level]);
+  console.log(combatPhase)
 
-  // const width = 10;
-  // const height = 10;
-  // for (let y = 1; y <= height; y++) {
-  //   mapGrid.push([]);
-  //   for (let x = 1; x <= width; x++) {
-  //     mapGrid[y - 1].push({ y: y, x: x, obst: 0 });
-  //   }
-  // }
   // Combat initiator line, rewired for Redux state:
-  if (combatPhase === 'NO_COMBAT') {
-    dispatch(setCombatPhase('playerMove'));
-    console.log(combatPhase);
-    possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level);
-  }
+  React.useEffect(() => {
+    console.log(combatPhase)
+    if (combatPhase === 'noCombat') {
+      dispatch(setCombatPhase('playerMove'));
+      console.log(combatPhase);
+      possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level);
+    }
+  }, [combatPhase])
 
   const playerMove = (x, y) => {
     //

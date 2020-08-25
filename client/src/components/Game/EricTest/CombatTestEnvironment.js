@@ -46,7 +46,7 @@ const CombatTestEnvironment = () => {
     const seed = data.find((obj) => obj.level === level);
     setMapGrid(mapGenerate(seed));
   }, [level]);
-  console.log(combatPhase)
+  console.log(ATTACK_RADIUS)
 
   // Combat initiator line, rewired for Redux state:
   React.useEffect(() => {

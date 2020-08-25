@@ -31,7 +31,7 @@ const generator = (seed) => {
   return mapGrid 
 }
 
-export const levelVisualGenerator = (row, level, mapGrid, PLAYER_POS, enemyLocation, PLAYER_MOVES, playerMove) => { //generates the map based on the player position, enemy location, obstruction and seed
+  export const levelVisualGenerator = (row, level, mapGrid, PLAYER_POS, enemyLocation, PLAYER_MOVES, playerMove, ATTACK_RADIUS) => { //generates the map based on the player position, enemy location, obstruction and seed
   const seed = data.find(obj => obj.level === level);
   return (
     <div key={Math.random() * 100000} style={{ display: 'flex' }}>
@@ -66,7 +66,19 @@ export const levelVisualGenerator = (row, level, mapGrid, PLAYER_POS, enemyLocat
               {sq.x}, {sq.y}
             </PossibleBox>
           );
-        } else {
+        } else if (
+          ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)
+        ) {
+          return (
+            <AttackRadius
+              key={Math.random() * 100000}
+              onClick = {() => console.log('attacked')}
+            >
+              {sq.x}, {sq.y}
+            </AttackRadius>
+          )
+        }
+          else {
           return (
             <Box
             key={Math.random() * 100000}
@@ -89,6 +101,15 @@ const Box = styled.div`
   background-color: grey;
   border: 1px solid black;
   opacity: 0.5;
+`;
+
+const AttackRadius = styled.div`
+  width: 50px;
+  height: 50px;
+  background-color: pink;
+  border: 1px solid black;
+  opacity: 0.5;
+  cursor: pointer;
 `;
 
 const Enemy = styled.div`

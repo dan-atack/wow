@@ -9,11 +9,16 @@ import data from '../../../data/mapSeed.json'
 
 // recoil state management
 import combatState from '../../../state'
-import { useRecoilValue } from 'recoil'
+import globalState from '../../../state'
+import { useRecoilValue, useRecoilState } from 'recoil'
 
-const CombatUi = ({turn, playerSkills, SET_ATTACK_RADIUS, PLAYER_POS, level}) => {
-  const [playerHealth, setPlayerHealth] = React.useState(100);
-  const [playerHype, setPlayerHype] = React.useState(100);
+const CombatUi = ({turn}) => {
+  const [playerHealth, setPlayerHealth] = useRecoilState(combatState.health);
+  const [playerHype, setPlayerHype] = useRecoilState(combatState.hype);
+  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
+  const PLAYER_SKILLS = useRecoilValue(combatState.PLAYER_SKILLS)
+  const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
+  const level = useRecoilValue(globalState.level)
   
   const seed = data.find(obj => obj.level === level)
 
@@ -37,7 +42,7 @@ const CombatUi = ({turn, playerSkills, SET_ATTACK_RADIUS, PLAYER_POS, level}) =>
         <button onClick={() => setPlayerHype(playerHype + 10)}>increase hype</button>
       </ButtonDiv>
       <SkillsDiv>
-        {playerSkills.map(skill => {
+        {PLAYER_SKILLS.map(skill => {
           return <Skill onClick={() => skillClick(skill)}>{skill.name}</Skill>
         })}
       </SkillsDiv>

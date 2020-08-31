@@ -6,6 +6,7 @@ import {
   health,
   hype,
   mapGrid,
+  PLAYER_SKILLS,
 } from './combatState';
 
 import {
@@ -20,5 +21,6 @@ export default {
   ACTION_POINTS,
   PLAYER_POS,
   PLAYER_MOVE_OPTIONS,
+  PLAYER_SKILLS,
   level
 }

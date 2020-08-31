@@ -1,5 +1,15 @@
 import { atom } from 'recoil';
 
+export const PLAYER_SKILLS = atom({
+  key: 'playerSkills',
+  default: [
+    { name: 'slap', range: 1, pathing: 'radial' },
+    { name: 'smack', range: 2, pathing: 'radial' },
+    { name: 'shoot gun', range: 3, pathing: 'radial' },
+    { name: 'slide', range: 4, pathing: 'radial' },
+  ]
+})
+
 export const ACTION_POINTS = atom({
   key: 'actionPoints',
   default: 4,

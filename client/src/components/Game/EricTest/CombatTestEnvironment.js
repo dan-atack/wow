@@ -20,11 +20,11 @@ import data from '../../../data/mapSeed.json';
 
 import {
   mapGenerate,
-  levelVisualGenerator,
 } from '../../../Helpers/MapGeneratorHelper';
 
 //components
 import CombatUi from './CombatUi';
+import LevelVisualGenerator from './LevelVisualGenerator'
 
 const CombatTestEnvironment = () => {
   const dispatch = useDispatch();
@@ -47,12 +47,6 @@ const CombatTestEnvironment = () => {
   const [enemyLocation, setEnemyLocation] = React.useState({ x: 5, y: 10 });
   // const [level, setLevel] = React.useState('parking lot');
   const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
-  const playerSkills = [
-    { name: 'slap', range: 1, pathing: 'radial' },
-    { name: 'slap', range: 1, pathing: 'radial' },
-    { name: 'slap', range: 1, pathing: 'radial' },
-    { name: 'slap', range: 1, pathing: 'radial' },
-  ];
 
   React.useEffect(() => {
     const seed = data.find((obj) => obj.level === level);
@@ -97,22 +91,16 @@ const CombatTestEnvironment = () => {
       <CombatUi
         turn={combatPhase}
         SET_ATTACK_RADIUS={SET_ATTACK_RADIUS}
-        playerSkills={playerSkills}
         PLAYER_POS={PLAYER_POS}
         level={level}
       />
       <Wrapper>
         {mapGrid.map((row, idx) => {
-          return levelVisualGenerator(
-            row,
-            level,
-            mapGrid,
-            PLAYER_POS,
-            enemyLocation,
-            PLAYER_MOVE_OPTIONS,
-            playerMove,
-            ATTACK_RADIUS
-          );
+          return <LevelVisualGenerator
+            row = {row}
+            enemyLocation = {enemyLocation}
+            playerMove = {playerMove}
+          />
         })}
       </Wrapper>
     </>

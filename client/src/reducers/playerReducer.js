@@ -9,12 +9,12 @@ const characters = {
 };
 
 const initialState = {
-  // we can use these coordinates for fighting!
-  xPosition: 1,
-  yPosition: 1,
-  // hype might not be needed always, but we'll keep track of it here for now:
-  hype: 100,
-  health: 100,
+  // // we can use these coordinates for fighting! (since the code reformat this has been moved to the recoil combatState)
+  // xPosition: 1,
+  // yPosition: 1,
+  // // hype might not be needed always, but we'll keep track of it here for now:
+  // hype: 100,
+  // health: 100,
   // You'll select your character type at the game's outset:
   characterType: null,
   playerDmg: 0,

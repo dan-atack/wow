@@ -3,14 +3,21 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCombatPhase } from '../../../actions';
 
+// recoil state management
+import combatState from '../../../state'
+import globalState from '../../../state'
+import { useRecoilValue, useRecoilState } from 'recoil'
+
 import {
   movementTimeout,
   sleep,
   possiblePaths,
   pathfinder,
 } from '../../../Helpers/playerMoveHelper';
+
 import { attackRange } from '../../../Helpers/playerCombatHelper';
 import data from '../../../data/mapSeed.json';
+
 import {
   mapGenerate,
   levelVisualGenerator,
@@ -21,20 +28,25 @@ import CombatUi from './CombatUi';
 
 const CombatTestEnvironment = () => {
   const dispatch = useDispatch();
-  const [PLAYER_POS, SET_PLAYER_POS] = React.useState({ x: 5, y: 1 });
-  const [PLAYER_MOVES, SET_PLAYER_MOVES] = React.useState([]);
+  // const { health, hype, ACTION_POINTS } = useRecoilValue(combatState)
+  const ACTION_POINTS = useRecoilValue(combatState.ACTION_POINTS)
+  const level = useRecoilValue(globalState.level)
+  // const [PLAYER_POS, SET_PLAYER_POS] = React.useState({ x: 5, y: 1 }); 
   // Bring in the global state:
   const combatPhase = useSelector((state) => state.game.combatPhase);
   // const [TURN, SET_TURN] = React.useState('idle');
-  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = React.useState([]);
+  
+  const [PLAYER_MOVE_OPTIONS, SET_MOVE_OPTIONS] = useRecoilState(combatState.PLAYER_MOVE_OPTIONS);
+  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
+  const [PLAYER_POS, SET_PLAYER_POS] = useRecoilState(combatState.PLAYER_POS);
 
   // temporary character state//
-  const [actionPoints, setActionPoints] = React.useState(4);
-  const [playerHP, setPlayerHP] = React.useState(10);
+  // const [actionPoints, setActionPoints] = React.useState(4);
+  // const [playerHP, setPlayerHP] = React.useState(10); playerCombatState
   const [enemyHP, setEnemyHP] = React.useState(10);
   const [enemyLocation, setEnemyLocation] = React.useState({ x: 5, y: 10 });
-  const [level, setLevel] = React.useState('parking lot');
-  const [mapGrid, setMapGrid] = React.useState([]);
+  // const [level, setLevel] = React.useState('parking lot');
+  const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
   const playerSkills = [
     { name: 'slap', range: 1, pathing: 'radial' },
     { name: 'slap', range: 1, pathing: 'radial' },
@@ -46,7 +58,6 @@ const CombatTestEnvironment = () => {
     const seed = data.find((obj) => obj.level === level);
     setMapGrid(mapGenerate(seed));
   }, [level]);
-  console.log(ATTACK_RADIUS)
 
   // Combat initiator line, rewired for Redux state:
   React.useEffect(() => {
@@ -54,7 +65,7 @@ const CombatTestEnvironment = () => {
     if (combatPhase === 'noCombat') {
       dispatch(setCombatPhase('playerMove'));
       console.log(combatPhase);
-      possiblePaths(actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level);
+      possiblePaths(ACTION_POINTS, SET_MOVE_OPTIONS, PLAYER_POS, level);
     }
   }, [combatPhase])
 
@@ -65,10 +76,10 @@ const CombatTestEnvironment = () => {
     // console.log(x, y, 'xy')
     // console.log(actionPoints, 'action points')
     // console.log(TotalDistance, 'distance')
-    const playerPath = pathfinder({ x: x, y: y }, PLAYER_MOVES);
+    const playerPath = pathfinder({ x: x, y: y }, PLAYER_MOVE_OPTIONS);
     // setActionPoints(actionPoints - TotalDistance)
     SET_PLAYER_POS({ x: x, y: y });
-    SET_PLAYER_MOVES([]);
+    SET_MOVE_OPTIONS([]);
     dispatch(setCombatPhase('playerAction'));
     console.log(combatPhase);
     // playerAnimation(playerPath)
@@ -98,7 +109,7 @@ const CombatTestEnvironment = () => {
             mapGrid,
             PLAYER_POS,
             enemyLocation,
-            PLAYER_MOVES,
+            PLAYER_MOVE_OPTIONS,
             playerMove,
             ATTACK_RADIUS
           );

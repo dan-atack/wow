@@ -111,7 +111,7 @@ export default function (state = initialState, action) {
     }
     case 'SET_KARMA': {
       return produce(state, (draftState) => {
-        draftState += action.karmicAdjustment;
+        draftState.karma += action.karmicAdjustment;
       });
     }
     default: {

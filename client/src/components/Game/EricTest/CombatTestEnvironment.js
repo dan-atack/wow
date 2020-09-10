@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCombatPhase } from '../../../actions';
 import { setCombatPhase, setPlayerCoords } from '../../../actions';
 import {
   setupPlayerMovePhase,
@@ -73,28 +72,30 @@ const CombatTestEnvironment = () => {
         dispatch(setCombatPhase('playerMove'));
       case 'playerMove':
         setupPlayerMovePhase(
-          actionPoints,
-          SET_PLAYER_MOVE_OPTIONS,
-          playerCoords,
+          ACTION_POINTS,
+          SET_MOVE_OPTIONS,
+          PLAYER_POS,
           level,
           dispatch,
           setCombatPhase
         );
         break;
       case 'playerAction':
-        playerActionPhase();
+        playerActionPhase(dispatch, setCombatPhase);
         break;
       case 'baddieMove':
-        baddieMoveLogic(enemyLocation, playerCoords);
+        baddieMoveLogic(dispatch, setCombatPhase, enemyLocation, PLAYER_POS);
+        dispatch(setCombatPhase('baddieAction'));
         break;
       case 'baddieAction':
-        baddieActionLogic(enemyLocation, playerCoords);
+        baddieActionLogic(dispatch, setCombatPhase, enemyLocation, PLAYER_POS);
+        dispatch(setCombatPhase('specialEvent'));
         break;
       case 'specialEvent':
-        specialEventLogic(level);
+        specialEventLogic(dispatch, setCombatPhase, level);
         break;
     }
-  }, [combatPhase, playerCoords]);
+  }, [combatPhase, PLAYER_POS]);
   // End of Super Switch Statement
 
   // Combat initiator line, rewired for Redux state:

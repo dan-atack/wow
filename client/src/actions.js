@@ -57,3 +57,10 @@ export const setCombatPhase = (combatPhase) => ({
   type: 'SET_COMBAT_PHASE',
   combatPhase,
 });
+
+// Karmic balance actions:
+
+export const setKarma = (karmicAdjustment) => ({
+  type: 'SET_KARMA',
+  karmicAdjustment,
+});

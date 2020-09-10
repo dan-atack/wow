@@ -2,11 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCombatPhase } from '../../../actions';
+import { setCombatPhase, setPlayerCoords } from '../../../actions';
+import {
+  setupPlayerMovePhase,
+  playerMove,
+} from '../../../Helpers/playerMovePhase';
+// Dan's redux-advancing imports start:
+import { playerActionPhase } from '../../../Helpers/playerActionPhase';
+import { baddieMoveLogic } from '../../../Helpers/baddieMoveLogic';
+import { baddieActionLogic } from '../../../Helpers/baddieActionLogic';
+import { specialEventLogic } from '../../../Helpers/specialEventLogic';
+// Dan's redux-advancing imports end
 
 // recoil state management
-import combatState from '../../../state'
-import globalState from '../../../state'
-import { useRecoilValue, useRecoilState } from 'recoil'
+import combatState from '../../../state';
+import globalState from '../../../state';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 import {
   movementTimeout,
@@ -18,26 +29,28 @@ import {
 import { attackRange } from '../../../Helpers/playerCombatHelper';
 import data from '../../../data/mapSeed.json';
 
-import {
-  mapGenerate,
-} from '../../../Helpers/MapGeneratorHelper';
+import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 
 //components
 import CombatUi from './CombatUi';
-import LevelVisualGenerator from './LevelVisualGenerator'
+import LevelVisualGenerator from './LevelVisualGenerator';
 
 const CombatTestEnvironment = () => {
   const dispatch = useDispatch();
   // const { health, hype, ACTION_POINTS } = useRecoilValue(combatState)
-  const ACTION_POINTS = useRecoilValue(combatState.ACTION_POINTS)
-  const level = useRecoilValue(globalState.level)
-  // const [PLAYER_POS, SET_PLAYER_POS] = React.useState({ x: 5, y: 1 }); 
+  const ACTION_POINTS = useRecoilValue(combatState.ACTION_POINTS);
+  const level = useRecoilValue(globalState.level);
+  // const [PLAYER_POS, SET_PLAYER_POS] = React.useState({ x: 5, y: 1 });
   // Bring in the global state:
   const combatPhase = useSelector((state) => state.game.combatPhase);
   // const [TURN, SET_TURN] = React.useState('idle');
-  
-  const [PLAYER_MOVE_OPTIONS, SET_MOVE_OPTIONS] = useRecoilState(combatState.PLAYER_MOVE_OPTIONS);
-  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
+
+  const [PLAYER_MOVE_OPTIONS, SET_MOVE_OPTIONS] = useRecoilState(
+    combatState.PLAYER_MOVE_OPTIONS
+  );
+  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(
+    combatState.ATTACK_RADIUS
+  );
   const [PLAYER_POS, SET_PLAYER_POS] = useRecoilState(combatState.PLAYER_POS);
 
   // temporary character state//
@@ -48,20 +61,51 @@ const CombatTestEnvironment = () => {
   // const [level, setLevel] = React.useState('parking lot');
   const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
 
+  // Super Switch Case Start //
+  // One Effect to Call Them All:
   React.useEffect(() => {
-    const seed = data.find((obj) => obj.level === level);
-    setMapGrid(mapGenerate(seed));
-  }, [level]);
+    switch (combatPhase) {
+      case 'noCombat':
+        // On initial round of combat, generate map from seed:
+        const seed = data.find((obj) => obj.level === level);
+        setMapGrid(mapGenerate(seed));
+        // Then dispatch player movement phase:
+        dispatch(setCombatPhase('playerMove'));
+      case 'playerMove':
+        setupPlayerMovePhase(
+          actionPoints,
+          SET_PLAYER_MOVE_OPTIONS,
+          playerCoords,
+          level,
+          dispatch,
+          setCombatPhase
+        );
+        break;
+      case 'playerAction':
+        playerActionPhase();
+        break;
+      case 'baddieMove':
+        baddieMoveLogic(enemyLocation, playerCoords);
+        break;
+      case 'baddieAction':
+        baddieActionLogic(enemyLocation, playerCoords);
+        break;
+      case 'specialEvent':
+        specialEventLogic(level);
+        break;
+    }
+  }, [combatPhase, playerCoords]);
+  // End of Super Switch Statement
 
   // Combat initiator line, rewired for Redux state:
   React.useEffect(() => {
-    console.log(combatPhase)
+    console.log(combatPhase);
     if (combatPhase === 'noCombat') {
       dispatch(setCombatPhase('playerMove'));
       console.log(combatPhase);
       possiblePaths(ACTION_POINTS, SET_MOVE_OPTIONS, PLAYER_POS, level);
     }
-  }, [combatPhase])
+  }, [combatPhase]);
 
   const playerMove = (x, y) => {
     //
@@ -96,11 +140,13 @@ const CombatTestEnvironment = () => {
       />
       <Wrapper>
         {mapGrid.map((row, idx) => {
-          return <LevelVisualGenerator
-            row = {row}
-            enemyLocation = {enemyLocation}
-            playerMove = {playerMove}
-          />
+          return (
+            <LevelVisualGenerator
+              row={row}
+              enemyLocation={enemyLocation}
+              playerMove={playerMove}
+            />
+          );
         })}
       </Wrapper>
     </>

@@ -6,12 +6,25 @@ import combatState from '../../../state'
 import globalState from '../../../state'
 import { useRecoilState, useRecoilValue } from 'recoil';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { setCombatPhase } from '../../../actions';
+
+
 const LevelVisualGenerator = ({row, enemyLocation, playerMove}) => { //generates the map based on the player position, enemy location, obstruction and seed
   const level = useRecoilValue(globalState.level);
   const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
   const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS)
-  const ATTACK_RADIUS = useRecoilValue(combatState.ATTACK_RADIUS)
+  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS)
   const seed = data.find(obj => obj.level === level);
+
+  const dispatch = useDispatch()
+
+  const playerAction = () => {
+    console.log('empty attack')
+    dispatch(setCombatPhase('baddieMove'))
+    SET_ATTACK_RADIUS([])
+  }
+
   return (
     <div key={Math.random() * 100000} style={{ display: 'flex' }}>
       {row.map((sq) => {
@@ -51,7 +64,7 @@ const LevelVisualGenerator = ({row, enemyLocation, playerMove}) => { //generates
           return (
             <AttackRadius
               key={Math.random() * 100000}
-              onClick = {() => console.log('attacked')}
+              onClick = {() => playerAction()}
             >
               {sq.x}, {sq.y}
             </AttackRadius>

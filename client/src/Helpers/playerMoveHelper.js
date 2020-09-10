@@ -85,11 +85,12 @@ export const pathfinder = (target, PLAYER_MOVES) => { // takes target location a
   console.log(endpoint, 'endpoint')
   let previousSquare = endpoint
   const pathArray = [endpoint]
+  console.log(PLAYER_MOVES, 'player moves')
   for(let i = endpoint.distance - 1; i > 0; i -= 1) {
     const tempPath = PLAYER_MOVES.find(obj => 
       (obj.distance === i && obj.x === previousSquare.x - 1 && obj.y === previousSquare.y) ||
       (obj.distance === i && obj.x === previousSquare.x + 1 && obj.y === previousSquare.y) ||
-      (obj.distance === i && obj.y === previousSquare.y + 1 && obj.y === previousSquare.x) ||
+      (obj.distance === i && obj.y === previousSquare.y + 1 && obj.x === previousSquare.x) ||
       (obj.distance === i && obj.y === previousSquare.y - 1 && obj.x === previousSquare.x)
     )
     pathArray.push(tempPath);

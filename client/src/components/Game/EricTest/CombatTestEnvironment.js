@@ -85,11 +85,9 @@ const CombatTestEnvironment = () => {
         break;
       case 'baddieMove':
         baddieMoveLogic(dispatch, setCombatPhase, enemyLocation, PLAYER_POS);
-        dispatch(setCombatPhase('baddieAction'));
         break;
       case 'baddieAction':
         baddieActionLogic(dispatch, setCombatPhase, enemyLocation, PLAYER_POS);
-        dispatch(setCombatPhase('specialEvent'));
         break;
       case 'specialEvent':
         specialEventLogic(dispatch, setCombatPhase, level);

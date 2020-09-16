@@ -13,5 +13,5 @@ export const baddieMoveLogic = ( dispatch, setCombatPhase, baddiePosition, playe
 
   // console.log('open the pod bay doors HAL. (baddie movement turn commences');
   // // Baddie moves... eventually.
-  // dispatch(setCombatPhase('baddieAction'));
+  dispatch(setCombatPhase('baddieAction'));
 };

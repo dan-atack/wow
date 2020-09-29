@@ -1,0 +1,24 @@
+[
+  {
+    "name" : "chess_knight",
+    "level": "parking lot",
+    "health" : 100,
+    "actionPoints" : 3,
+    "skills" : [
+      {"name" : "Crisis of Faith", "damage" : 20, "effect" : "none", "shape" : "cross", "threshold" : 0},
+      {"name" : "Stigmata", "damage" : 50, "effect" : "none", "shape" : "cross", "threshold" : 30},
+      {"name" : "Holy Man", "damage" : 80, "effect" : "none", "shape" : "cross", "threshold" : 60},
+      {"name" : "Revelations", "damage" : 99, "effect" : "none", "shape" : "cross", "threshold" : 80}
+    ],
+    "movement" : [
+      {"x": -1, "y": -3, "orientation" : ["west", "south", "southwest"]},
+      {"x": -1, "y": 3, "orientation" : ["west", "north", "northwest"]},
+      {"x": 1, "y": -3, "orientation" : ["east", "south", "southeast"]},
+      {"x": 1, "y": 3, "orientation" : ["east", "north", "northeast"]},
+      {"x": -3, "y": -1, "orientation" : ["west", "south", "southwest"]},
+      {"x": -3, "y": 1, "orientation" : ["west", "north", "northwest"]},
+      {"x": 3, "y": -1, "orientation" : ["east", "south", "southeast"]},
+      {"x": 3, "y": 1, "orientation" : ["east", "north", "northeast"]}
+    ]
+  }
+]

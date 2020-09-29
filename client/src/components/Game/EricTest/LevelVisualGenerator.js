@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCombatPhase } from '../../../actions';
 
 
-const LevelVisualGenerator = ({row, enemyLocation, playerMove}) => { //generates the map based on the player position, enemy location, obstruction and seed
+const LevelVisualGenerator = ({row, baddiePosition, playerMove}) => { //generates the map based on the player position, enemy location, obstruction and seed
   const level = useRecoilValue(globalState.level);
   const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
   const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS)
@@ -43,8 +43,8 @@ const LevelVisualGenerator = ({row, enemyLocation, playerMove}) => { //generates
             </Box>
           );
         } else if (
-          sq.x === enemyLocation.x &&
-          sq.y === enemyLocation.y
+          sq.x === baddiePosition.x &&
+          sq.y === baddiePosition.y
         ) {
           return <Enemy key={Math.random() * 100000}>enemy</Enemy>;
         } else if (

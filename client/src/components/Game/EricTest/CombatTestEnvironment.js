@@ -27,6 +27,7 @@ import {
 
 import { attackRange } from '../../../Helpers/playerCombatHelper';
 import data from '../../../data/mapSeed.json';
+import baddieData from '../../../data/baddie.json';
 
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 
@@ -56,9 +57,13 @@ const CombatTestEnvironment = () => {
   // const [actionPoints, setActionPoints] = React.useState(4);
   // const [playerHP, setPlayerHP] = React.useState(10); playerCombatState
   const [enemyHP, setEnemyHP] = React.useState(10);
-  const [enemyLocation, setEnemyLocation] = React.useState({ x: 5, y: 10 });
+  const [baddiePosition, setBaddiePosition] = React.useState({ x: 5, y: 10 });
   // const [level, setLevel] = React.useState('parking lot');
   const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
+  const baddie = baddieData.find((obj) => obj.level === level);
+  const seed = data.find((obj) => obj.level === level);
+
+    console.log(baddiePosition)
 
   // Super Switch Case Start //
   // One Effect to Call Them All:
@@ -66,7 +71,6 @@ const CombatTestEnvironment = () => {
     switch (combatPhase) {
       case 'noCombat':
         // On initial round of combat, generate map from seed:
-        const seed = data.find((obj) => obj.level === level);
         setMapGrid(mapGenerate(seed));
         // Then dispatch player movement phase:
         dispatch(setCombatPhase('playerMove'));
@@ -84,10 +88,10 @@ const CombatTestEnvironment = () => {
         playerActionPhase(dispatch, setCombatPhase);
         break;
       case 'baddieMove':
-        baddieMoveLogic(dispatch, setCombatPhase, enemyLocation, PLAYER_POS);
+        baddieMoveLogic(dispatch, setCombatPhase, baddiePosition, setBaddiePosition, PLAYER_POS, baddie, seed, data);
         break;
       case 'baddieAction':
-        baddieActionLogic(dispatch, setCombatPhase, enemyLocation, PLAYER_POS);
+        baddieActionLogic(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddieData);
         break;
       case 'specialEvent':
         specialEventLogic(dispatch, setCombatPhase, level);
@@ -142,7 +146,7 @@ const CombatTestEnvironment = () => {
           return (
             <LevelVisualGenerator
               row={row}
-              enemyLocation={enemyLocation}
+              baddiePosition={baddiePosition}
               playerMove={playerMove}
             />
           );

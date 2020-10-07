@@ -64,3 +64,8 @@ export const setKarma = (karmicAdjustment) => ({
   type: 'SET_KARMA',
   karmicAdjustment,
 });
+
+export const setShowmanship = (showmanshipAdjustment) => ({
+  type: 'SET_SHOWMANSHIP',
+  showmanshipAdjustment,
+});

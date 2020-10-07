@@ -1,0 +1,26 @@
+[
+  {
+    "serial_id": 0,
+    "axis": "karmic",
+    "value": 1,
+    "text": "I fight for honour!"
+  },
+  {
+    "serial_id": 1,
+    "axis": "showmanship",
+    "value": 1,
+    "text": "Who's wready to wrestle?!"
+  },
+  {
+    "serial_id": 2,
+    "axis": "karmic",
+    "value": -1,
+    "text": "I fight for money!"
+  },
+  {
+    "serial_id": 3,
+    "axis": "showmanship",
+    "value": -1,
+    "text": "Let us rumble."
+  }
+]

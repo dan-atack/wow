@@ -14,7 +14,6 @@ export const attackRange = (skill, PLAYER_POS, width, height, obstructions) => {
 const radialRange = (range, PLAYER_POS, width, height, obstructions) => { //maybe i can get this from a global state variable
   let solvedSpaces = [PLAYER_POS];
   let distanceCounter = 1;
-  console.log(obstructions)
   for(let i = range; i > 0; i -= 1) {
     solvedSpaces.forEach((node) => {
       const unsolvedSpaces = [

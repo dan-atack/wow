@@ -3,9 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const mapGenerate = (seed) => {
-  console.log(seed)
+  // console.log(seed)
   const mapGrid = generator(seed)
-  console.log(mapGrid)
+  // console.log(mapGrid)
   const payLoad = {
     map: mapGrid,
     playerPos: seed.playerStartPosition,

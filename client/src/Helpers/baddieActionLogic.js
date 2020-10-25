@@ -8,10 +8,10 @@ export const baddieActionLogic = (
   baddiePosition,
   playerPosition
 ) => {
-  console.log("I'm sorry Dave, I'm afraid I can't attack you right now.");
-  console.log(
-    `Baddie coords: (${baddiePosition.x}, ${baddiePosition.y}) - Player coords: (${playerPosition.x}, ${playerPosition.y})`
-  );
+  // console.log("I'm sorry Dave, I'm afraid I can't attack you right now.");
+  // console.log(
+  //   `Baddie coords: (${baddiePosition.x}, ${baddiePosition.y}) - Player coords: (${playerPosition.x}, ${playerPosition.y})`
+  // );
   // Baddie acts... eventually.
   dispatch(setCombatPhase('specialEvent'));
 };

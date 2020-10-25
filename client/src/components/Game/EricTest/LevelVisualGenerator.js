@@ -20,7 +20,6 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove}) => { //generate
   const dispatch = useDispatch()
 
   const playerAction = () => {
-    console.log('empty attack')
     dispatch(setCombatPhase('baddieMove'))
     SET_ATTACK_RADIUS([])
   }

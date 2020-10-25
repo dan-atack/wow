@@ -25,7 +25,7 @@ const timeOutCalculator = (movement) => {
 
 export const movementTimeout = (target, playerPOS) => { //player pos will likely be taken from a reducer
   const movement = movementFinder(target, playerPOS) // returns the movement instructions with the target location and the player position
-  console.log(movement)
+  // console.log(movement)
   const turnTime = timeOutCalculator(movement) // takes the movement instructions and returns the amount of time to time out for the animation
 
   return turnTime // returns the turn time :D
@@ -82,10 +82,10 @@ export const possiblePaths = (actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level)
 
 export const pathfinder = (target, PLAYER_MOVES) => { // takes target location and extrapolates a path backwards
   let endpoint = PLAYER_MOVES.find(obj => obj.x === target.x && obj.y === target.y);
-  console.log(endpoint, 'endpoint')
+  // console.log(endpoint, 'endpoint')
   let previousSquare = endpoint
   const pathArray = [endpoint]
-  console.log(PLAYER_MOVES, 'player moves')
+  // console.log(PLAYER_MOVES, 'player moves')
   for(let i = endpoint.distance - 1; i > 0; i -= 1) {
     const tempPath = PLAYER_MOVES.find(obj => 
       (obj.distance === i && obj.x === previousSquare.x - 1 && obj.y === previousSquare.y) ||

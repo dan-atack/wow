@@ -6,16 +6,22 @@ import menuButton from '../../../assets/menuButton.png';
 
 import { attackRange } from '../../../Helpers/playerCombatHelper';
 import data from '../../../data/mapSeed.json'
+import { useDispatch, useSelector } from 'react-redux';
 
 // recoil state management
 import combatState from '../../../state'
 import globalState from '../../../state'
 import { useRecoilValue, useRecoilState } from 'recoil'
+import { setCombatPhase } from '../../../actions';
+
 
 const CombatUi = ({turn}) => {
   const [playerHealth, setPlayerHealth] = useRecoilState(combatState.health);
   const [playerHype, setPlayerHype] = useRecoilState(combatState.hype);
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
+  const [PLAYER_MOVE_OPTIONS, SET_MOVE_OPTIONS] = useRecoilState(
+    combatState.PLAYER_MOVE_OPTIONS
+  );
   const PLAYER_SKILLS = useRecoilValue(combatState.PLAYER_SKILLS)
   const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
   const level = useRecoilValue(globalState.level)
@@ -23,10 +29,15 @@ const CombatUi = ({turn}) => {
   const seed = data.find(obj => obj.level === level)
 
   const skillClick = async (skill) => { // individual skill being called from map function
+    dispatch(setCombatPhase('playerAction'))
+    SET_MOVE_OPTIONS([])
     const range = await attackRange(skill, PLAYER_POS, seed.width, seed.height, seed.obstructions);
     SET_ATTACK_RADIUS(range);
   }
 
+  const dispatch = useDispatch();
+
+  
   return(
     <div>
       <HealthHud src={healthbar}/>
@@ -40,11 +51,14 @@ const CombatUi = ({turn}) => {
         <button onClick={() => setPlayerHype(playerHype - 10)}>lower hype</button>
         <button onClick={() => setPlayerHealth(playerHealth + 10)}>increase health</button>
         <button onClick={() => setPlayerHype(playerHype + 10)}>increase hype</button>
+
+
       </ButtonDiv>
       <SkillsDiv>
         {PLAYER_SKILLS.map(skill => {
           return <Skill onClick={() => skillClick(skill)}>{skill.name}</Skill>
         })}
+        { turn === 'playerAction' && <Skill onClick={() => dispatch(setCombatPhase('playerMove'))}>undo</Skill>}
       </SkillsDiv>
       <TurnDiv>{turn}</TurnDiv>
       <MenuDiv>

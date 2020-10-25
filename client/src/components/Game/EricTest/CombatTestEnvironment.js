@@ -63,8 +63,6 @@ const CombatTestEnvironment = () => {
   const baddie = baddieData.find((obj) => obj.level === level);
   const seed = data.find((obj) => obj.level === level);
 
-    console.log(baddiePosition)
-
   // Super Switch Case Start //
   // One Effect to Call Them All:
   React.useEffect(() => {
@@ -102,10 +100,9 @@ const CombatTestEnvironment = () => {
 
   // Combat initiator line, rewired for Redux state:
   React.useEffect(() => {
-    console.log(combatPhase);
+    // console.log(combatPhase);
     if (combatPhase === 'noCombat') {
       dispatch(setCombatPhase('playerMove'));
-      console.log(combatPhase);
       possiblePaths(ACTION_POINTS, SET_MOVE_OPTIONS, PLAYER_POS, level);
     }
   }, [combatPhase]);
@@ -122,7 +119,6 @@ const CombatTestEnvironment = () => {
     SET_PLAYER_POS({ x: x, y: y });
     SET_MOVE_OPTIONS([]);
     dispatch(setCombatPhase('playerAction'));
-    console.log(combatPhase);
     // playerAnimation(playerPath)
   };
 
@@ -137,9 +133,6 @@ const CombatTestEnvironment = () => {
     <>
       <CombatUi
         turn={combatPhase}
-        SET_ATTACK_RADIUS={SET_ATTACK_RADIUS}
-        PLAYER_POS={PLAYER_POS}
-        level={level}
       />
       <Wrapper>
         {mapGrid.map((row, idx) => {

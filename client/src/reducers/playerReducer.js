@@ -1,6 +1,6 @@
 // State for the Player lives here:
 import produce from 'immer';
-import { HighFlier, Tank, Superstar, SuperStar } from './characterDictionary';
+import { HighFlier, Tank, SuperStar } from './characterDictionary';
 
 const characters = {
   highFlier: HighFlier,
@@ -9,12 +9,6 @@ const characters = {
 };
 
 const initialState = {
-  // // we can use these coordinates for fighting! (since the code reformat this has been moved to the recoil combatState)
-  // xPosition: 1,
-  // yPosition: 1,
-  // // hype might not be needed always, but we'll keep track of it here for now:
-  // hype: 100,
-  // health: 100,
   // You'll select your character type at the game's outset:
   characterType: null,
   playerDmg: 0,
@@ -25,6 +19,7 @@ const initialState = {
   // Player status will change from 'confirmed' to 'unconfirmed' (and then back again) whenever a new set of choices has to be made:
   playerStatus: 'unconfirmed',
   karma: 0,
+  showmanship: 0,
   karmicAlignmentLocked: false,
 };
 
@@ -112,6 +107,11 @@ export default function (state = initialState, action) {
     case 'SET_KARMA': {
       return produce(state, (draftState) => {
         draftState.karma += action.karmicAdjustment;
+      });
+    }
+    case 'SET_SHOWMANSHIP': {
+      return produce(state, (draftState) => {
+        draftState.showmanship += action.showmanshipAdjustment;
       });
     }
     default: {

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 0,
+    "axes": ["karmic"],
+    "value": 5,
+    "text": "I fight for honour!"
+  },
+  {
+    "id": 1,
+    "axes": ["showmanship"],
+    "value": 5,
+    "text": "Who's wready to wrestle?!"
+  },
+  {
+    "id": 2,
+    "axes": ["karmic"],
+    "value": -5,
+    "text": "I fight for money!"
+  },
+  {
+    "id": 3,
+    "axes": ["showmanship"],
+    "value": -5,
+    "text": "Let us rumble."
+  },
+  {
+    "id": 4,
+    "axes": ["showmanship"],
+    "value": 5,
+    "text": "You already know my opponent..."
+  },
+  {
+    "id": 5,
+    "axes": ["showmanship"],
+    "value": -5,
+    "text": "I don't know a lot about wrestling."
+  },
+  {
+    "id": 6,
+    "axes": ["karmic"],
+    "value": 5,
+    "text": "You know, I was born to a poor family"
+  },
+  {
+    "id": 7,
+    "axes": ["karmic"],
+    "value": -5,
+    "text": "As you know I am a wealthy {playerGender}!"
+  },
+  {
+    "id": 8,
+    "axes": ["showmanship"],
+    "value": 5,
+    "text": "But today I'm here before y'all"
+  },
+  {
+    "id": 9,
+    "axes": ["showmanship"],
+    "value": -10,
+    "text": "Trying to make these dialogue options make sense"
+  },
+  {
+    "id": 10,
+    "axes": ["karmic"],
+    "value": -10,
+    "text": "But you ANTS that I see out there tonight..."
+  },
+  {
+    "id": 11,
+    "axes": ["karmic"],
+    "value": 10,
+    "text": "My opponent... did not have respect!"
+  },
+  {
+    "id": 12,
+    "axes": ["showmanship"],
+    "value": -10,
+    "text": "I'm here to educate you about a couple of things..."
+  },
+  {
+    "id": 13,
+    "axes": ["showmanship"],
+    "value": -10,
+    "text": "I just don't understand it..."
+  },
+  {
+    "id": 14,
+    "axes": ["showmanship", "karmic"],
+    "value": 10,
+    "text": "I am gonna restore honour to this institution"
+  },
+  {
+    "id": 15,
+    "axes": ["karmic"],
+    "value": -15,
+    "text": "You are what's WRONG with America!"
+  },
+  {
+    "id": 16,
+    "axes": ["showmanship"],
+    "value": -5,
+    "text": "I know a lotta folks don't like to hear that."
+  },
+  {
+    "id": 17,
+    "axes": ["showmanship"],
+    "value": 10,
+    "text": "That's what I'm TALKIN' about!"
+  },
+  {
+    "id": 18,
+    "axes": ["showmanship", "karmic"],
+    "value": 10,
+    "text": "God bless you and God bless the American textile workers!"
+  },
+  {
+    "id": 19,
+    "axes": ["karmic"],
+    "value": -15,
+    "text": "And you #$%*es NEED ME!!!"
+  },
+  {
+    "id": 20,
+    "axes": ["showmanship"],
+    "value": -10,
+    "text": "VERY LACONIC."
+  },
+  {
+    "id": 21,
+    "axes": ["showmanship"],
+    "value": 10,
+    "text": "VERY SHOWY"
+  },
+  {
+    "id": 22,
+    "axes": ["showmanship", "karmic"],
+    "value": 10,
+    "text": "VERY GOOD AND SHOWY"
+  },
+  {
+    "id": 23,
+    "axes": ["karmic"],
+    "value": -10,
+    "text": "VERY BAD"
+  }
+]

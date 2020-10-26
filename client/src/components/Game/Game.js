@@ -41,7 +41,7 @@ function Game() {
       ) : (
         <> </>
       )}
-      <button style={{ position: 'absolute', bottom: 32  }} onClick={handleAdvance}>
+      <button style={{ marginTop: 16 }} onClick={handleAdvance}>
         Next
       </button>
     </GameBody>
@@ -52,11 +52,12 @@ const GameBody = styled.div`
   border: 3px solid limegreen;
   border-radius: 16px;
   padding: 16px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   height: 90vh;
-  align-items: center;
+  grid-template-areas:
+    'ui'
+    'next';
+  grid-template-rows: 11fr 0.8fr;
 `;
 
 export default Game;

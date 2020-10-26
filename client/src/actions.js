@@ -58,7 +58,17 @@ export const setCombatPhase = (combatPhase) => ({
   combatPhase,
 });
 
-// Karmic balance actions:
+// Minigame actions:
+
+export const setMinigameRound = (round, needUpdate) => ({
+  type: 'SET_MINIGAME_ROUND',
+  round,
+  needUpdate,   // boolean: true if it comes from a button, false if it's from the minigame component itself.
+});
+
+export const setMinigameRoundFromButton = () => ({
+  type: 'BUTTON_ADVANCE_MINIGAME',
+})
 
 export const setKarma = (karmicAdjustment) => ({
   type: 'SET_KARMA',

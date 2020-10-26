@@ -1,34 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { setKarma, setShowmanship } from '../../../../actions';
+import { setKarma, setShowmanship, setMinigameRound } from '../../../../actions';
+import { useSelector } from 'react-redux';
 
 // buttons in the minigame will be fed a data object containing info such as text for the button, and the buttons' karma value.
 function MinigameButton({ buttonData }) {
-  const { id, axis, value, text } = buttonData;
+  const currentRound = useSelector((state) => state.game.minigameRound);
+  const { id, axes, value, text } = buttonData;
   const dispatch = useDispatch();
   const handleClick = () => {
-    if (axis === 'karmic') {
+    if (axes.includes('karmic')) {
       dispatch(setKarma(value));
-    } else if (axis === 'showmanship') {
+    }
+    if (axes.includes('showmanship')) {
       dispatch(setShowmanship(value));
     }
+    // When this function runs it increments the minigame round, and sets the 'update minigame' flag to true:
+    dispatch(setMinigameRound(currentRound + 1, true));
   };
   return (
     <Clicker onMouseUp={() => handleClick()}>
-      {id}
       {text}
     </Clicker>
   );
 }
 
 const Clicker = styled.button`
-  height: 128px;
-  width: 192px;
+  height: 100%;
+  width: 100%;
   background-color: black;
   color: whitesmoke;
   font-size: 1em;
-  border: 3px solid whitesmoke;
+  border: 3px solid rgb(197, 185, 151);
   border-radius: 18px;
 `;
 

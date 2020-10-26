@@ -1,8 +1,13 @@
 // Game Reducer will be used to keep track of which scene/frame you're on in the overall script:
 
 const initialState = {
+  // For cutscenes:
   scene: 0,
   frame: 0,
+  // Which minigame round is it?
+  minigameRound: 0,
+  // This momentarily lights up true when a button is pressed, to tell the minigame component to refresh the button options:
+  newMinigameRound: false,
   // Six possible combat phases: playerMove, playerAction, baddieMove, baddieAction, specialEvent and noCombat:
   combatPhase: 'noCombat',
 };
@@ -22,6 +27,13 @@ export default function (state = initialState, action) {
         ...state,
         frame: action.frame,
       };
+    }
+    case 'SET_MINIGAME_ROUND': {
+      return {
+        ...state,
+        minigameRound: action.round,
+        newMinigameRound: action.needUpdate,
+      }
     }
     case 'SET_COMBAT_PHASE': {
       return {

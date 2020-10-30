@@ -25,6 +25,7 @@ const Wrapper = styled.div`
     height: 84px;
     margin-top: 2%;
     padding: 5%;
+    padding-top: 10%;
     grid-area: ${(props) => props.gridArea};
     background-color: #3f704d;
 `

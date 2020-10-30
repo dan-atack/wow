@@ -11,13 +11,13 @@ function Karmameter({ karma, showmanship, minigameRound, ticker, ROUND_DURATION 
   return (
     <Wrapper>
       <Casing>
-        <CompassPoint style={{ right: '40%', top: '-15%', color: 'limegreen' }}>GOOD</CompassPoint>
-        <CompassPoint style={{ right: '40%', top: '100%', color: 'red' }}>EVIL</CompassPoint>
-        <CompassPoint style={{ right: '-10%', top: '50%', color: 'orange' }}>SHOWBOATING</CompassPoint>
-        <CompassPoint style={{ right: '90%', top: '50%', color: 'darkblue' }}>UNDERSTATED</CompassPoint>
+        <CompassPoint style={{ right: '40%', top: '-14%', color: 'limegreen' }}>GOOD{karma > 0 ? `: ${karma}` : ''}</CompassPoint>
+        <CompassPoint style={{ right: '40%', top: '100%', color: 'red' }}>EVIL{karma < 0 ? `: ${karma}` : ''}</CompassPoint>
+        <CompassPoint style={{ right: '90%', top: '50%', color: 'orange' }}>BOMBASTIC{showmanship > 0 ? `: ${showmanship}` : ''}</CompassPoint>
+        <CompassPoint style={{ right: '-32%', top: '50%', color: 'darkblue' }}>LACONIC{showmanship < 0 ? `: ${showmanship}` : ''}</CompassPoint>
         <Blip vertical={karma} horizontal={showmanship}></Blip>
       </Casing>
-      <TickerBox value={minigameRound} gridArea={'roundr'} text={'Options Chosen:'}></TickerBox>
+      <TickerBox value={minigameRound} gridArea={'roundr'} text={'Current Round:'}></TickerBox>
       <TickerBox value={(ROUND_DURATION-(ticker/15)).toFixed(2)} gridArea={'timerr'} text={'Time Remaining:'}></TickerBox>
     </Wrapper>
   );

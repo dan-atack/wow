@@ -22,6 +22,8 @@ function MinigamePrototype() {
   const newRound = useSelector((state) => state.game.newMinigameRound);
   // Rounds last 3 seconds by default:
   const ROUND_DURATION = 3;
+  // Define max rounds to avoid an error when you run out of dialogue options:
+  const MAX_ROUNDS = 5;
   // Trigger a re-render every 0.2 seconds:
   const now = useTime(200);
   // Tick off time:
@@ -39,7 +41,6 @@ function MinigamePrototype() {
   // UseEffect is like the engine; advancing the ticker and updating the buttons each round:
   React.useEffect(() => {
     setTicker(ticker + 1);
-    console.log('checking for new round')
     if (newRound || (ticker > (ROUND_DURATION * 15) && minigameRound < 4)) {
       advanceRound();
     }

@@ -16,8 +16,8 @@ function MinigameButton({ buttonData }) {
     if (axes.includes('showmanship')) {
       dispatch(setShowmanship(value));
     }
-    // When this function runs it increments the minigame round, and sets the 'update minigame' flag to true:
-    dispatch(setMinigameRound(currentRound + 1, true));
+    // When this function runs it doesn't increment the current round; it just sets the 'update minigame' flag to true:
+    dispatch(setMinigameRound(currentRound, true));
   };
   return (
     <Clicker onMouseUp={() => handleClick()}>

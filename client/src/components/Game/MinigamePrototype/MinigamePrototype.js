@@ -41,7 +41,8 @@ function MinigamePrototype() {
   // UseEffect is like the engine; advancing the ticker and updating the buttons each round:
   React.useEffect(() => {
     setTicker(ticker + 1);
-    if (newRound || (ticker > (ROUND_DURATION * 15) && minigameRound < 4)) {
+    if (newRound || ticker > (ROUND_DURATION * 15)) {
+      // Add logic to limit to the max round here
       advanceRound();
     }
   }, [now]);

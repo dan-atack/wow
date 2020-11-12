@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCombatPhase } from '../../../actions';
 
 
-const LevelVisualGenerator = ({row, baddiePosition, playerMove}) => { //generates the map based on the player position, enemy location, obstruction and seed
+//generates the map based on the player position, enemy location, obstruction and seed
+const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RADIUS}) => { 
   const level = useRecoilValue(globalState.level);
   const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
   const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS)
@@ -20,7 +21,7 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove}) => { //generate
   const dispatch = useDispatch()
 
   const playerAction = () => {
-    dispatch(setCombatPhase('baddieMove'))
+    dispatch(setCombatPhase('specialEvent'))
     SET_ATTACK_RADIUS([])
   }
 
@@ -68,6 +69,18 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove}) => { //generate
               {sq.x}, {sq.y}
             </AttackRadius>
           )
+        } else if (ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
+          if(ENEMY_ATTACK_RADIUS.find((obs) => PLAYER_POS.x === obs.x && PLAYER_POS.y === obs.y)) {
+            console.log('HIT PLAYER')
+          } else {
+            return (
+              <EnemyAttackRadius
+                key={Math.random() * 100000}
+              >
+                {sq.x}, {sq.y}
+              </EnemyAttackRadius>
+              )
+          }
         }
           else {
           return (
@@ -101,6 +114,14 @@ const AttackRadius = styled.div`
   border: 1px solid black;
   opacity: 0.5;
   cursor: pointer;
+`;
+
+const EnemyAttackRadius = styled.div`
+  width: 50px;
+  height: 50px;
+  background-color: pink;
+  border: 1px solid black;
+  opacity: 0.5;
 `;
 
 const Enemy = styled.div`

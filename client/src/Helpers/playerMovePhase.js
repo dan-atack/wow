@@ -8,6 +8,8 @@ export const setupPlayerMovePhase = (
   level
 ) => {
   possiblePaths(movePoints, movePointsHandler, playerCoords, level);
+
+  console.log('setting players actions')
 };
 
 export const playerMove = (
@@ -21,5 +23,5 @@ export const playerMove = (
   // setActionPoints(actionPoints - TotalDistance)
   dispatch(setPlayerCoords(x, y));
   SET_PLAYER_MOVE_OPTIONS([]);
-  dispatch(setCombatPhase('playerAction'));
+  dispatch(setCombatPhase('baddieAction'));
 };

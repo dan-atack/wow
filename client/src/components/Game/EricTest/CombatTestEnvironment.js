@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCombatPhase, setPlayerCoords } from '../../../actions';
@@ -9,7 +9,7 @@ import {
 // Dan's redux-advancing imports start:
 import { playerActionPhase } from '../../../Helpers/playerActionPhase';
 import { baddieMoveLogic } from '../../../Helpers/baddieMoveLogic';
-import { baddieActionLogic } from '../../../Helpers/baddieActionLogic';
+import { baddieDecision, baddieAction } from '../../../Helpers/baddieActionLogic'; 
 import { specialEventLogic } from '../../../Helpers/specialEventLogic';
 // Dan's redux-advancing imports end
 
@@ -52,6 +52,8 @@ const CombatTestEnvironment = () => {
     combatState.ATTACK_RADIUS
   );
   const [PLAYER_POS, SET_PLAYER_POS] = useRecoilState(combatState.PLAYER_POS);
+  const [enemyDecision, setEnemyDecision] = useState({})
+  const [ENEMY_ATTACK_RADIUS, SET_ENEMY_ATTACK_RADIUS] = useState([])
 
   // temporary character state//
   // const [actionPoints, setActionPoints] = React.useState(4);
@@ -71,7 +73,10 @@ const CombatTestEnvironment = () => {
         // On initial round of combat, generate map from seed:
         setMapGrid(mapGenerate(seed));
         // Then dispatch player movement phase:
-        dispatch(setCombatPhase('playerMove'));
+        dispatch(setCombatPhase('baddieDecision'));
+      case 'baddieDecision':
+        baddieDecision(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, setEnemyDecision);
+        break;
       case 'playerMove':
         setupPlayerMovePhase(
           ACTION_POINTS,
@@ -82,17 +87,16 @@ const CombatTestEnvironment = () => {
           setCombatPhase
         );
         break;
+      case 'baddieAction':
+        baddieAction(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, enemyDecision, SET_ENEMY_ATTACK_RADIUS)
       case 'playerAction':
         playerActionPhase(dispatch, setCombatPhase);
         break;
-      case 'baddieMove':
-        baddieMoveLogic(dispatch, setCombatPhase, baddiePosition, setBaddiePosition, PLAYER_POS, baddie, seed, data);
-        break;
-      case 'baddieAction':
-        baddieActionLogic(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddieData);
-        break;
       case 'specialEvent':
         specialEventLogic(dispatch, setCombatPhase, level);
+        break;
+      case 'baddieMove':
+        baddieMoveLogic(dispatch, setCombatPhase, baddiePosition, setBaddiePosition, PLAYER_POS, baddie, seed,);
         break;
     }
   }, [combatPhase, PLAYER_POS]);
@@ -118,7 +122,7 @@ const CombatTestEnvironment = () => {
     // setActionPoints(actionPoints - TotalDistance)
     SET_PLAYER_POS({ x: x, y: y });
     SET_MOVE_OPTIONS([]);
-    dispatch(setCombatPhase('playerAction'));
+    dispatch(setCombatPhase('baddieAction'));
     // playerAnimation(playerPath)
   };
 
@@ -141,6 +145,7 @@ const CombatTestEnvironment = () => {
               row={row}
               baddiePosition={baddiePosition}
               playerMove={playerMove}
+              ENEMY_ATTACK_RADIUS={ENEMY_ATTACK_RADIUS}
             />
           );
         })}

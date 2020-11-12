@@ -1,33 +1,42 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// Args: move = the data object for the move, combo = integer for which of the 3 possible key combos, numPrevMoves = integer.
 function ReflexCheck({ move, combo, numPrevMoves }) {
     // Reduce time depending on number of moves previously executed:
     const timeToPerform = move.time - (numPrevMoves * 0.1);
     // Prepare to render each Key cue individually:
-    const [keyCompletes, setKeyCompletes] = React.useState({
-        Key0: false,
-        Key1: false,
-        Key2: false,
-        Key3: false,
-    })
+    const [currentKey, setCurrentKey] = React.useState(0)
     // One Effect to handle all the keys:
     React.useEffect(() => {
         const handleKeydown = ev => {
-          switch (ev.code) {
-            case `Key${move.combos[combo][0]}`:
-                setKeyCompletes({...keyCompletes, Key0: true});
-                break;
-            case `Key${move.combos[combo][1]}`:
-                setKeyCompletes({...keyCompletes, Key1: true});
-                break;
-            case `Key${move.combos[combo][2]}`:
-                setKeyCompletes({...keyCompletes, Key2: true});
-                break;
-            case `Key${move.combos[combo][3]}`:
-                setKeyCompletes({...keyCompletes, Key3: true});
-                break;
-          }
+            // Check each key in the combo against the keydown event:
+            move.combos[combo].forEach((key, idx) => {
+                if (ev.code === `Key${key}`) {
+                    // If the index of the event key is the current key, advance the sequence:
+                    if (idx === currentKey) {
+                        setCurrentKey(currentKey + 1);
+                    }
+                }
+            })
+        //   switch (ev.code) {
+        //     case `Key${move.combos[combo][0]}`:
+        //         setKeyCompletes({...keyCompletes, key0: true});
+        //         break;
+        //     case `Key${move.combos[combo][1]}`:
+        //         if (keyCompletes.key0) {
+        //             setKeyCompletes({...keyCompletes, key1: true});
+        //         } else {
+        //             setKeyCompletes({...keyCompletes, warning: true})
+        //         }
+        //         break;
+        //     case `Key${move.combos[combo][2]}`:
+        //         setKeyCompletes({...keyCompletes, key2: true});
+        //         break;
+        //     case `Key${move.combos[combo][3]}`:
+        //         setKeyCompletes({...keyCompletes, key3: true});
+        //         break;
+        //   }
         };
     
         window.addEventListener('keydown', handleKeydown);
@@ -43,7 +52,7 @@ function ReflexCheck({ move, combo, numPrevMoves }) {
             <h4>KEYS:</h4>
             {move.combos[combo].map((key, idx) => {
                 return(
-                    <KeyPad key={Math.random() * 10000000} done={keyCompletes[`Key${idx}`]}>{key}</KeyPad>
+                    <KeyPad key={Math.random() * 10000000} done={idx < currentKey}>{key}</KeyPad>
                 )
             })}
         </Wrapper>

@@ -137,6 +137,7 @@ const CombatTestEnvironment = () => {
     <>
       <CombatUi
         turn={combatPhase}
+        SET_ENEMY_ATTACK_RADIUS={SET_ENEMY_ATTACK_RADIUS}
       />
       <Wrapper>
         {mapGrid.map((row, idx) => {

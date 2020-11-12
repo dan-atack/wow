@@ -72,6 +72,13 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
         } else if (ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
           if(ENEMY_ATTACK_RADIUS.find((obs) => PLAYER_POS.x === obs.x && PLAYER_POS.y === obs.y)) {
             console.log('HIT PLAYER')
+            return (
+              <EnemyAttackRadius
+                key={Math.random() * 100000}
+              >
+                {sq.x}, {sq.y}
+              </EnemyAttackRadius>
+            )
           } else {
             return (
               <EnemyAttackRadius

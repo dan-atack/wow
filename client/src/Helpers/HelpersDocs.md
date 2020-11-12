@@ -66,6 +66,3 @@ if the enemy has 3 action points and starts at x: 5 y: 10
 * - Move Finder - *
 
 After the 
-
-// figure out a way to revert back to the movement turn from the players action phase and have a persistant amount of action points between them.
-

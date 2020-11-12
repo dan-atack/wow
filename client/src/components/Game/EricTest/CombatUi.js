@@ -15,7 +15,7 @@ import { useRecoilValue, useRecoilState } from 'recoil'
 import { setCombatPhase } from '../../../actions';
 
 
-const CombatUi = ({turn}) => {
+const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
   const [playerHealth, setPlayerHealth] = useRecoilState(combatState.health);
   const [playerHype, setPlayerHype] = useRecoilState(combatState.hype);
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
@@ -30,6 +30,7 @@ const CombatUi = ({turn}) => {
 
   const skillClick = async (skill) => { // individual skill being called from map function
     dispatch(setCombatPhase('playerAction'))
+    SET_ENEMY_ATTACK_RADIUS([])
     SET_MOVE_OPTIONS([])
     const range = await attackRange(skill, PLAYER_POS, seed.width, seed.height, seed.obstructions);
     SET_ATTACK_RADIUS(range);

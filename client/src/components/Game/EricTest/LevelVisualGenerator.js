@@ -9,6 +9,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCombatPhase } from '../../../actions';
 
+import Pow from '../../Sprinkle/Pow';
+
 
 //generates the map based on the player position, enemy location, obstruction and seed
 const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RADIUS}) => { 
@@ -76,6 +78,7 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
               <EnemyAttackRadius
                 key={Math.random() * 100000}
               >
+                <Pow/>
                 {sq.x}, {sq.y}
               </EnemyAttackRadius>
             )

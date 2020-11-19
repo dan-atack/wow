@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 // Temporary squatters using this component as a test environment:
 import ReflexCheck from '../ReflexCheck';
-import moveCombos from '../../../data/moveCombos.json';
+import moveCombos from '../../../data/playerMoves.json';
 
 function Customizer({ words }) {
   const randMove = Math.floor(Math.random() * 3);

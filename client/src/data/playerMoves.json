@@ -1,7 +1,12 @@
 [
     {
-        "move": "takedown",
+        "name": "takedown",
         "id": 1,
+        "baseDmg": 5,
+        "maxHype": 20,
+        "special": "none",
+        "challengeType": "combo",
+        "shape": "radial",
         "time": 1.25,
         "combos": [
             [
@@ -16,8 +21,13 @@
         ]
     },
     {
-        "move": "lunge",
+        "name": "lunge",
         "id": 2,
+        "baseDmg": 5,
+        "maxHype": 20,
+        "special": "none",
+        "challengeType": "combo",
+        "shape": "radial",
         "time": 1,
         "combos": [
             [
@@ -32,8 +42,13 @@
         ]
     },
     {
-        "move": "throw",
+        "name": "throw",
         "id": 3,
+        "baseDmg": 5,
+        "maxHype": 20,
+        "special": "none",
+        "challengeType": "combo",
+        "shape": "rectilinear",
         "time": 1.25,
         "combos": [
             [

@@ -7,7 +7,7 @@
         "special": "none",
         "challengeType": "combo",
         "shape": "radial",
-        "time": 1.25,
+        "time": 4000,
         "combos": [
             [
                 "A", "W", "D", "S"
@@ -28,7 +28,7 @@
         "special": "none",
         "challengeType": "combo",
         "shape": "radial",
-        "time": 1,
+        "time": 3000,
         "combos": [
             [
                 "A", "S", "D", "F"
@@ -49,7 +49,7 @@
         "special": "none",
         "challengeType": "combo",
         "shape": "rectilinear",
-        "time": 1.25,
+        "time": 4000,
         "combos": [
             [
                 "A", "Q", "W", "E"

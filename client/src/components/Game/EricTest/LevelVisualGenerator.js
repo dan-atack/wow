@@ -30,9 +30,7 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
   return (
     <div key={Math.random() * 100000} style={{ display: 'flex' }}>
       {row.map((sq) => {
-        if (sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
-          return <Player key={Math.random() * 100000} />;
-        } else if (
+        if (
           seed.obstructions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
           return (
@@ -50,16 +48,25 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
         ) {
           return <Enemy key={Math.random() * 100000}>enemy</Enemy>;
         } else if (
-          PLAYER_MOVE_OPTIONS.find((obs) => sq.x === obs.x && sq.y === obs.y)
-        ) {
-          return (
-            <PossibleBox
-              key={Math.random() * 100000}
-              onClick={() => playerMove(sq.x, sq.y)}
-            >
-              {sq.x}, {sq.y}
-            </PossibleBox>
-          );
+          ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
+            if(sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
+              return (
+                <Player key={Math.random() * 10000000}>
+                  {sq.x}, {sq.y}
+                  <Pow/>
+                </Player>
+              )
+            } else {
+              return (
+                <EnemyAttackRadius key={Math.random() * 100000000}>
+                  {sq.x}, {sq.y}
+                </EnemyAttackRadius>
+              )
+            }
+        } else if (
+          sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y
+          ) {
+          return <Player key={Math.random() * 100000} />;
         } else if (
           ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
@@ -71,28 +78,18 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
               {sq.x}, {sq.y}
             </AttackRadius>
           )
-        } else if (ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
-          if(ENEMY_ATTACK_RADIUS.find((obs) => PLAYER_POS.x === obs.x && PLAYER_POS.y === obs.y)) {
-            console.log('HIT PLAYER')
-            return (
-              <EnemyAttackRadius
-                key={Math.random() * 100000}
-              >
-                <Pow/>
-                {sq.x}, {sq.y}
-              </EnemyAttackRadius>
-            )
-          } else {
-            return (
-              <EnemyAttackRadius
-                key={Math.random() * 100000}
-              >
-                {sq.x}, {sq.y}
-              </EnemyAttackRadius>
-              )
-          }
-        }
-          else {
+        } else if (
+          PLAYER_MOVE_OPTIONS.find((obs) => sq.x === obs.x && sq.y === obs.y)
+        ) {
+          return (
+            <PossibleBox
+              key={Math.random() * 100000}
+              onClick={() => playerMove(sq.x, sq.y)}
+            >
+              {sq.x}, {sq.y}
+            </PossibleBox>
+          );
+        } else {
           return (
             <Box
             key={Math.random() * 100000}
@@ -167,3 +164,4 @@ const Path = styled.div`
 `;
 
 export default LevelVisualGenerator;
+

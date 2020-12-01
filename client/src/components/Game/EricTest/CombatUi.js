@@ -40,7 +40,7 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
 
   
   return(
-    <div>
+    <div >
       <HealthHud src={healthbar}/>
       <SkillHud src={skillborder}/> 
       <Wrapper>

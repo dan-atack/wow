@@ -7,6 +7,7 @@
         "special": "none",
         "challengeType": "combo",
         "shape": "radial",
+        "range": 1,
         "time": 4000,
         "combos": [
             [
@@ -28,6 +29,7 @@
         "special": "none",
         "challengeType": "combo",
         "shape": "radial",
+        "range": 2,
         "time": 3000,
         "combos": [
             [
@@ -48,7 +50,8 @@
         "maxHype": 20,
         "special": "none",
         "challengeType": "combo",
-        "shape": "rectilinear",
+        "shape": "radial",
+        "range": 3,
         "time": 4000,
         "combos": [
             [

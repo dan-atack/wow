@@ -2,7 +2,7 @@
 
 export const attackRange = (skill, PLAYER_POS, width, height, obstructions) => { // i need attack to return it's range, and then   
   let range = skill.range
-  if(skill.pathing === 'radial') { //checks skill pathing and calls pathing function
+  if(skill.shape === 'radial') { //checks skill pathing and calls pathing function
     return radialRange(range, PLAYER_POS, width, height, obstructions)
   }
 }

@@ -8,7 +8,7 @@
         "challengeType": "combo",
         "shape": "radial",
         "range": 1,
-        "time": 4000,
+        "time": 5000,
         "combos": [
             [
                 "A", "W", "D", "S"
@@ -30,7 +30,7 @@
         "challengeType": "combo",
         "shape": "radial",
         "range": 2,
-        "time": 3000,
+        "time": 4000,
         "combos": [
             [
                 "A", "S", "D", "F"
@@ -52,7 +52,7 @@
         "challengeType": "combo",
         "shape": "radial",
         "range": 3,
-        "time": 4000,
+        "time": 5000,
         "combos": [
             [
                 "A", "Q", "W", "E"

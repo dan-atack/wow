@@ -7,12 +7,14 @@ import menuButton from '../../../assets/menuButton.png';
 import { attackRange } from '../../../Helpers/playerCombatHelper';
 import data from '../../../data/mapSeed.json'
 import { useDispatch, useSelector } from 'react-redux';
-
 // recoil state management
 import combatState from '../../../state'
 import globalState from '../../../state'
 import { useRecoilValue, useRecoilState } from 'recoil'
 import { setCombatPhase } from '../../../actions';
+// Components:
+import ReflexCheck from '../ReflexCheck';
+import playerMoves from '../../../data/playerMoves.json';
 
 
 const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
@@ -25,6 +27,13 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
   const PLAYER_SKILLS = useRecoilValue(combatState.PLAYER_SKILLS)
   const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
   const level = useRecoilValue(globalState.level)
+  // Conditionally render reflex check based on this value:
+  const doReflexCheck = useSelector((state) => state.game.reflexCheck);
+  const randomMove = Math.floor(Math.random() * playerMoves.length);
+  // For the initial test, we will take a random move, rather than the one specified by the button you pressed...
+  const randomCombo = Math.floor(Math.random() * 3);
+  const fakePreviousMoves = 0;// to simulate time-reduction for a move that is at the end of a chain of moves
+  const testMove = playerMoves[randomMove];
   
   const seed = data.find(obj => obj.level === level)
 
@@ -40,7 +49,14 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
 
   
   return(
-    <div >
+    <div className="Combat-UI">
+      {doReflexCheck ? 
+      <ReflexCheck
+        move={testMove}
+        combo={randomCombo}
+        numPrevMoves={fakePreviousMoves}
+        style={{ position: 'absolute', top: '0px', right: '50px' }}
+      /> : <></>}
       <HealthHud src={healthbar}/>
       <SkillHud src={skillborder}/> 
       <Wrapper>

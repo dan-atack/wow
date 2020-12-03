@@ -58,6 +58,14 @@ export const setCombatPhase = (combatPhase) => ({
   combatPhase,
 });
 
+export const startReflexCheck = () => ({
+  type: 'START_REFLEX_CHECK',
+});
+
+export const stopReflexCheck = () => ({
+  type: 'STOP_REFLEX_CHECK',
+});
+
 // Minigame actions:
 
 export const setMinigameRound = (round, needUpdate) => ({
@@ -68,7 +76,7 @@ export const setMinigameRound = (round, needUpdate) => ({
 
 export const setMinigameRoundFromButton = () => ({
   type: 'BUTTON_ADVANCE_MINIGAME',
-})
+});
 
 export const setKarma = (karmicAdjustment) => ({
   type: 'SET_KARMA',

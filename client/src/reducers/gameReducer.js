@@ -10,6 +10,8 @@ const initialState = {
   newMinigameRound: false,
   // Six possible combat phases: playerMove, playerAction, baddieMove, baddieAction, specialEvent and noCombat:
   combatPhase: 'noCombat',
+  // Whether or not there is a reflex check (independent of which phase it is, but in state because... just because!)
+  reflexCheck: false,
 };
 
 export default function (state = initialState, action) {
@@ -33,12 +35,24 @@ export default function (state = initialState, action) {
         ...state,
         minigameRound: action.round,
         newMinigameRound: action.needUpdate,
-      }
+      };
     }
     case 'SET_COMBAT_PHASE': {
       return {
         ...state,
         combatPhase: action.combatPhase,
+      };
+    }
+    case 'START_REFLEX_CHECK': {
+      return {
+        ...state,
+        reflexCheck: true,
+      };
+    }
+    case 'STOP_REFLEX_CHECK': {
+      return {
+        ...state,
+        reflexCheck: false,
       };
     }
     default: {

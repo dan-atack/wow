@@ -64,5 +64,27 @@
                 "M", "J", "K", "L"
             ]
         ]
+    },
+    {
+        "name": "limit break",
+        "id": 4,
+        "baseDmg": 100,
+        "maxHype": 50,
+        "special": "none",
+        "challengeType": "combo",
+        "shape": "radial",
+        "range": 1,
+        "time": 7000,
+        "combos": [
+            [
+                "B", "D", "S", "M", "O"
+            ],
+            [
+                "P", "F", "O", "X", "S"
+            ],
+            [
+                "L", "E", "K", "S", "Y"
+            ]
+        ]
     }
 ]

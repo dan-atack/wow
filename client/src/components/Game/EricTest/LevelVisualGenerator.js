@@ -6,7 +6,7 @@ import combatState from '../../../state'
 import globalState from '../../../state'
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { startReflexCheck } from '../../../actions';
 
 import Pow from '../../Sprinkle/Pow';

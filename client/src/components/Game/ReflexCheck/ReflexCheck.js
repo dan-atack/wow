@@ -4,7 +4,6 @@ import { useTime } from '../../../hooks/useTime';
 import { useDispatch } from 'react-redux';
 import { setCombatPhase, stopReflexCheck } from '../../../actions';
 
-
 // Args: move = the data object for the move, combo = integer for which of the 3 possible key combos, numPrevMoves = integer.
 function ReflexCheck({ move, combo, numPrevMoves }) {
     const dispatch = useDispatch();

@@ -58,6 +58,11 @@ export const setCombatPhase = (combatPhase) => ({
   combatPhase,
 });
 
+export const setReflexCheck = (reflexCheckId) => ({
+  type: 'SET_REFLEX_CHECK',
+  reflexCheckId,
+})
+
 export const startReflexCheck = () => ({
   type: 'START_REFLEX_CHECK',
 });

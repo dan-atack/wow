@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import combatState from '../../../state'
 import globalState from '../../../state'
 import { useRecoilValue, useRecoilState } from 'recoil'
-import { setCombatPhase } from '../../../actions';
+import { setCombatPhase, setReflexCheck } from '../../../actions';
 // Components:
 import ReflexCheck from '../ReflexCheck';
 import playerMoves from '../../../data/playerMoves.json';
@@ -27,8 +27,9 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
   const PLAYER_SKILLS = useRecoilValue(combatState.PLAYER_SKILLS)
   const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
   const level = useRecoilValue(globalState.level)
-  // Conditionally render reflex check based on this value:
-  const doReflexCheck = useSelector((state) => state.game.reflexCheck);
+  // Conditionally render reflex check based on this value (and falsilly don't render on a zero!):
+  const reflexCheckId = useSelector((state) => state.game.reflexCheck);
+  const doReflexCheck = useSelector((state) => state.game.doReflexCheck);
   const randomMove = Math.floor(Math.random() * playerMoves.length);
   // For the initial test, we will take a random move, rather than the one specified by the button you pressed...
   const randomCombo = Math.floor(Math.random() * 3);
@@ -38,7 +39,8 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
   const seed = data.find(obj => obj.level === level)
 
   const skillClick = async (skill) => { // individual skill being called from map function
-    dispatch(setCombatPhase('playerAction'))
+    dispatch(setCombatPhase('playerAction'));
+    dispatch(setReflexCheck(skill.id))
     SET_ENEMY_ATTACK_RADIUS([])
     SET_MOVE_OPTIONS([])
     const range = await attackRange(skill, PLAYER_POS, seed.width, seed.height, seed.obstructions);
@@ -47,12 +49,11 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
 
   const dispatch = useDispatch();
 
-  
   return(
     <div className="Combat-UI">
       {doReflexCheck ? 
       <ReflexCheck
-        move={testMove}
+        move={playerMoves.find((move) => move.id === reflexCheckId)}
         combo={randomCombo}
         numPrevMoves={fakePreviousMoves}
         style={{ position: 'absolute', top: '0px', right: '50px' }}

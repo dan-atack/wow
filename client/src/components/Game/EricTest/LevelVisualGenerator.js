@@ -18,8 +18,9 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
   const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
   const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS)
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS)
-  const seed = data.find(obj => obj.level === level);
+  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack)
 
+  const seed = data.find(obj => obj.level === level);
   const dispatch = useDispatch()
 
   const playerAction = () => {
@@ -49,6 +50,7 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
           return <Enemy key={Math.random() * 100000}>enemy</Enemy>;
         } else if (
           ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
+            //make a useeffect that checks for player and enemy intersection instead of this damned pow component in CTE
             if(sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
               return (
                 <Player key={Math.random() * 10000000}>

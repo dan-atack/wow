@@ -1,11 +1,29 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled, { keyframes } from 'styled-components';
+
+import {useRecoilState} from 'recoil';
+import combatState from '../../state/';
 
 import powImg from '../../assets/pow.png';
 
 const Pow = () => {
   const xPos = (Math.random() * 50) + 10;
   const yPos = (Math.random() * 50) + 10;
+
+  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack);
+  const [health, setHealth] = useRecoilState(combatState.health);
+
+  
+  useEffect(() => {
+    // console.log(enemyDecision);
+    // console.log(health," health before")
+    setHealth(health - enemyDecision.decision.damage);
+    // console.log(health," health after");
+    // if (health - enemyDecision.decision.damage <= 0) {
+    //   setHealth(0);
+    //   console.log('game over')
+    // }
+  }, []) 
 
   return (
     <StyledPow src={powImg} xPos={xPos} yPos={yPos}/>
@@ -17,19 +35,20 @@ const disappear = keyframes`
     opacity: 1;
     display: block;
     margin-left: 200px;
-    margin-top: 200px;
+    top: ${props => props.xPos + '200px'};
   };
   70% {
     opacity: 1;
     display: block;
     margin-left: 40px;
-    margin-top: 40px;
+    top: ${props => props.xPos + '40px'};
+
   };
   100% {
     opacity: 0;
     display: none;
     margin-left: 0px;
-    margin-top: 0px;
+    top: ${props => props.xpos};
   };
 `
 

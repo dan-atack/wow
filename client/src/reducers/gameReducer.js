@@ -10,6 +10,10 @@ const initialState = {
   newMinigameRound: false,
   // Six possible combat phases: playerMove, playerAction, baddieMove, baddieAction, specialEvent and noCombat:
   combatPhase: 'noCombat',
+  // Reflex check will be either zero, OR the ID number of one of the playerMoves:
+  reflexCheck: 0,
+  // Separate the ID of the reflex check from the cue to start it:
+  doReflexCheck: false,
 };
 
 export default function (state = initialState, action) {
@@ -33,12 +37,31 @@ export default function (state = initialState, action) {
         ...state,
         minigameRound: action.round,
         newMinigameRound: action.needUpdate,
-      }
+      };
     }
     case 'SET_COMBAT_PHASE': {
       return {
         ...state,
         combatPhase: action.combatPhase,
+      };
+    }
+    case 'SET_REFLEX_CHECK': {
+      return {
+        ...state,
+        reflexCheck: action.reflexCheckId,
+      };
+    }
+    case 'START_REFLEX_CHECK': {
+      return {
+        ...state,
+        doReflexCheck: true,
+      }
+    }
+    case 'STOP_REFLEX_CHECK': {
+      return {
+        ...state,
+        reflexCheck: 0,
+        doReflexCheck: false,
       };
     }
     default: {

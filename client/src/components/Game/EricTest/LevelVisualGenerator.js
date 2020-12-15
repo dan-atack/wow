@@ -6,8 +6,8 @@ import combatState from '../../../state'
 import globalState from '../../../state'
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setCombatPhase } from '../../../actions';
+import { useDispatch } from 'react-redux';
+import { startReflexCheck } from '../../../actions';
 
 import Pow from '../../Sprinkle/Pow';
 
@@ -24,8 +24,8 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
   const dispatch = useDispatch()
 
   const playerAction = () => {
-    dispatch(setCombatPhase('specialEvent'))
-    SET_ATTACK_RADIUS([])
+    dispatch(startReflexCheck());    // When the player selects their action, begin a reflex check but don't advance combat round.
+    SET_ATTACK_RADIUS([]);
   }
 
   return (

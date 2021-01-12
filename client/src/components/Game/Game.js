@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import CutscenePrototype from './CutscenePrototype';
 import MinigamePrototype from './MinigamePrototype';
 import Customizer from './CustomizerPrototype';
-import { scenes } from '../../chapters/gameScenes';
+import { scenes } from '../../data/scenes.json';
 import CombatTestEnvironment from './EricTest';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScene } from '../../actions';

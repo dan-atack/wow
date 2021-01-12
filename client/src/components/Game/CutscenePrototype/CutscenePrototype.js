@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Character from './Character';
 import Dialogue from './Dialogue';
 import { useTime } from '../../../hooks/useTime';
-import { cutsceneFrames } from '../../../chapters/gameScenes';
+import { frames } from '../../../data/frames.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFrame } from '../../../actions';
 import Gate from '../../../assets/gate.png';
@@ -12,8 +12,8 @@ function CutscenePrototype({ scene }) {
   const backgrounds = { gate: Gate };
   const dispatch = useDispatch();
   const currentFrame = useSelector((state) => state.game.frame);
-  const frameData = cutsceneFrames[scene]
-    ? cutsceneFrames[scene][`frame_${currentFrame}`] || {
+  const frameData = frames[scene]
+    ? frames[scene][`frame_${currentFrame}`] || {
         character: null,
         background: null,
         text: 'end of cutscene',

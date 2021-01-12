@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCombatPhase, setPlayerCoords } from '../../../actions';
+import { setCombatPhase,} from '../../../actions';
 import {
   setupPlayerMovePhase,
   playerMove,
@@ -19,13 +19,10 @@ import globalState from '../../../state';
 import { useRecoilValue, useRecoilState } from 'recoil';
 
 import {
-  movementTimeout,
-  sleep,
   possiblePaths,
   pathfinder,
 } from '../../../Helpers/playerMoveHelper';
 
-import { attackRange } from '../../../Helpers/playerCombatHelper';
 import data from '../../../data/mapSeed.json';
 import baddieData from '../../../data/baddie.json';
 
@@ -34,9 +31,8 @@ import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 //components
 import CombatUi from './CombatUi';
 import LevelVisualGenerator from './LevelVisualGenerator';
-import { health } from '../../../state/combatState';
 
-const CombatTestEnvironment = () => {
+const CombatEnvironment = () => {
   const dispatch = useDispatch();
   const ACTION_POINTS = useRecoilValue(combatState.ACTION_POINTS);
   const level = useRecoilValue(globalState.level);
@@ -69,6 +65,7 @@ const CombatTestEnvironment = () => {
         setMapGrid(mapGenerate(seed));
         // Then dispatch player movement phase:
         dispatch(setCombatPhase('baddieDecision'));
+        break;
       case 'baddieDecision':
         baddieDecision(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, setEnemyDecision, enemyDecision);
         break;
@@ -83,7 +80,8 @@ const CombatTestEnvironment = () => {
         );
         break;
       case 'baddieAction':
-        baddieAction(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, enemyDecision.decision, SET_ENEMY_ATTACK_RADIUS)
+        baddieAction(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, enemyDecision.decision, SET_ENEMY_ATTACK_RADIUS);
+        break;
       case 'playerAction':
         playerActionPhase(dispatch, setCombatPhase);
         break;
@@ -106,11 +104,11 @@ const CombatTestEnvironment = () => {
     }
   }, [combatPhase]);
 
-  // React.useEffect(() => {
-  //   if (health === 0 ){
-  //     console.log('Game Over')
-  //   }
-  // }, [health])
+  React.useEffect(() => {
+    if (health === 0 ){
+      console.log('Game Over')
+    }
+  }, [health])
 
   const playerMove = (x, y) => {
     //
@@ -157,4 +155,4 @@ const Wrapper = styled.div`
   margin-left: 5%;
 `;
 
-export default CombatTestEnvironment;
+export default CombatEnvironment;

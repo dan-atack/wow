@@ -50,7 +50,7 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
           return <Enemy key={Math.random() * 100000}>enemy</Enemy>;
         } else if (
           ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
-            //make a useeffect that checks for player and enemy intersection instead of this damned pow component in CTE
+            //make a useeffect that checks for player and enemy intersection instead of this damned pow component in CombatEnvironment
             if(sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
               return (
                 <Player key={Math.random() * 10000000}>

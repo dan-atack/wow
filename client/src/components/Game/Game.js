@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import CutscenePrototype from './CutscenePrototype';
-import MinigamePrototype from './MinigamePrototype';
+import Cutscene from './Cutscene';
+import Minigame from './Minigame';
 import Customizer from './CustomizerPrototype';
 import { scenes } from '../../chapters/gameScenes';
-import CombatTestEnvironment from './EricTest';
+import CombatEnvironment from './CombatEnvironment';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScene } from '../../actions';
 
@@ -25,11 +25,11 @@ function Game() {
   const renderScene = (scene) => {
     switch (scene.type) {
       case 'cutscene':
-        return <CutscenePrototype scene={scene.name} />;
+        return <Cutscene scene={scene.name} />;
       case 'fight':
-        return <CombatTestEnvironment />;
+        return <CombatEnvironment />;
       case 'minigame':
-        return <MinigamePrototype />;
+        return <Minigame />;
       case 'customizer':
         return <Customizer />;
     }

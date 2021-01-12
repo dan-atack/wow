@@ -10,21 +10,6 @@ const Pow = () => {
   const xPos = (Math.random() * 50) + 10;
   const yPos = (Math.random() * 50) + 10;
 
-  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack);
-  const [health, setHealth] = useRecoilState(combatState.health);
-
-  
-  useEffect(() => {
-    // console.log(enemyDecision);
-    // console.log(health," health before")
-    setHealth(health - enemyDecision.decision.damage);
-    // console.log(health," health after");
-    // if (health - enemyDecision.decision.damage <= 0) {
-    //   setHealth(0);
-    //   console.log('game over')
-    // }
-  }, []) 
-
   return (
     <StyledPow src={powImg} xPos={xPos} yPos={yPos}/>
   )

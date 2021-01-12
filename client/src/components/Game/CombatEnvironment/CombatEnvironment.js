@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCombatPhase, setPlayerCoords } from '../../../actions';
+import { setCombatPhase,} from '../../../actions';
 import {
   setupPlayerMovePhase,
   playerMove,
@@ -19,13 +19,10 @@ import globalState from '../../../state';
 import { useRecoilValue, useRecoilState } from 'recoil';
 
 import {
-  movementTimeout,
-  sleep,
   possiblePaths,
   pathfinder,
 } from '../../../Helpers/playerMoveHelper';
 
-import { attackRange } from '../../../Helpers/playerCombatHelper';
 import data from '../../../data/mapSeed.json';
 import baddieData from '../../../data/baddie.json';
 
@@ -35,32 +32,26 @@ import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 import CombatUi from './CombatUi';
 import LevelVisualGenerator from './LevelVisualGenerator';
 
-const CombatTestEnvironment = () => {
+const CombatEnvironment = () => {
   const dispatch = useDispatch();
-  // const { health, hype, ACTION_POINTS } = useRecoilValue(combatState)
   const ACTION_POINTS = useRecoilValue(combatState.ACTION_POINTS);
   const level = useRecoilValue(globalState.level);
-  // const [PLAYER_POS, SET_PLAYER_POS] = React.useState({ x: 5, y: 1 });
   // Bring in the global state:
   const combatPhase = useSelector((state) => state.game.combatPhase);
-  // const [TURN, SET_TURN] = React.useState('idle');
-
   const [PLAYER_MOVE_OPTIONS, SET_MOVE_OPTIONS] = useRecoilState(
     combatState.PLAYER_MOVE_OPTIONS
   );
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(
     combatState.ATTACK_RADIUS
   );
+  const [health, setHealth] = useRecoilState(combatState.health);
   const [PLAYER_POS, SET_PLAYER_POS] = useRecoilState(combatState.PLAYER_POS);
-  const [enemyDecision, setEnemyDecision] = useState({})
+  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack);
   const [ENEMY_ATTACK_RADIUS, SET_ENEMY_ATTACK_RADIUS] = useState([])
 
   // temporary character state//
-  // const [actionPoints, setActionPoints] = React.useState(4);
-  // const [playerHP, setPlayerHP] = React.useState(10); playerCombatState
   const [enemyHP, setEnemyHP] = React.useState(10);
   const [baddiePosition, setBaddiePosition] = React.useState({ x: 5, y: 10 });
-  // const [level, setLevel] = React.useState('parking lot');
   const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
   const baddie = baddieData.find((obj) => obj.level === level);
   const seed = data.find((obj) => obj.level === level);
@@ -74,8 +65,9 @@ const CombatTestEnvironment = () => {
         setMapGrid(mapGenerate(seed));
         // Then dispatch player movement phase:
         dispatch(setCombatPhase('baddieDecision'));
+        break;
       case 'baddieDecision':
-        baddieDecision(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, setEnemyDecision);
+        baddieDecision(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, setEnemyDecision, enemyDecision);
         break;
       case 'playerMove':
         setupPlayerMovePhase(
@@ -88,7 +80,8 @@ const CombatTestEnvironment = () => {
         );
         break;
       case 'baddieAction':
-        baddieAction(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, enemyDecision, SET_ENEMY_ATTACK_RADIUS)
+        baddieAction(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, enemyDecision.decision, SET_ENEMY_ATTACK_RADIUS);
+        break;
       case 'playerAction':
         playerActionPhase(dispatch, setCombatPhase);
         break;
@@ -111,6 +104,12 @@ const CombatTestEnvironment = () => {
     }
   }, [combatPhase]);
 
+  React.useEffect(() => {
+    if (health === 0 ){
+      console.log('Game Over')
+    }
+  }, [health])
+
   const playerMove = (x, y) => {
     //
     // const movementData = movementTimeout({x:x, y:y},PLAYER_POS) //total time, xTime, yTime, isTurn, movement x and y
@@ -124,13 +123,6 @@ const CombatTestEnvironment = () => {
     SET_MOVE_OPTIONS([]);
     dispatch(setCombatPhase('baddieAction'));
     // playerAnimation(playerPath)
-  };
-
-  const playerAnimation = (path) => {
-    path.forEach(async (move) => {
-      await sleep(1);
-      SET_PLAYER_POS({ x: move.x, y: move.y });
-    });
   };
 
   return (
@@ -163,4 +155,4 @@ const Wrapper = styled.div`
   margin-left: 5%;
 `;
 
-export default CombatTestEnvironment;
+export default CombatEnvironment;

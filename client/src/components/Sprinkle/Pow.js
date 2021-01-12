@@ -1,5 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled, { keyframes } from 'styled-components';
+
+import {useRecoilState} from 'recoil';
+import combatState from '../../state/';
 
 import powImg from '../../assets/pow.png';
 
@@ -17,19 +20,20 @@ const disappear = keyframes`
     opacity: 1;
     display: block;
     margin-left: 200px;
-    margin-top: 200px;
+    top: ${props => props.xPos + '200px'};
   };
   70% {
     opacity: 1;
     display: block;
     margin-left: 40px;
-    margin-top: 40px;
+    top: ${props => props.xPos + '40px'};
+
   };
   100% {
     opacity: 0;
     display: none;
     margin-left: 0px;
-    margin-top: 0px;
+    top: ${props => props.xpos};
   };
 `
 

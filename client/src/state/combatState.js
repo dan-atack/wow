@@ -40,3 +40,11 @@ export const mapGrid = atom({
   key: 'mapGrid',
   default: [],
 })
+
+export const baddieAttack = atom({
+  key: 'enemyDecision',
+  default: {
+    decision: {},
+    isHit: false,
+  },
+})

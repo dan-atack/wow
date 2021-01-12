@@ -7,6 +7,7 @@ import {
   hype,
   mapGrid,
   PLAYER_SKILLS,
+  baddieAttack,
 } from './combatState';
 
 import {
@@ -22,5 +23,6 @@ export default {
   PLAYER_POS,
   PLAYER_MOVE_OPTIONS,
   PLAYER_SKILLS,
-  level
+  level,
+  baddieAttack
 }

@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 function Customizer({ words }) {
+  // to do: build character interface (stats, skills, skillsheet, intermittent between battles)
+  // initial character construction
+  // returned to periodically in between battles
   return (
     <Wrapper>
       <h1>Character Customization and Sandbox UI!!!</h1>

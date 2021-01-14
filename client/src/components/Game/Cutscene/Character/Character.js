@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import Player from '../../../../assets/avatar_01.png';
 import Valet from '../../../../assets/valet.png';
+import Placeholder from '../../../../assets/character frames/images/Placeholder_01.png';
+import PlaceholderB from '../../../../assets/character frames/images/Placeholder_01B.png';
 
 function Character({ avatar }) {
   // there has GOT to be a better way than this, but for now...
-  const characters = { player: Player, valet: Valet };
+  const characters = { player: Player, valet: Valet, placeholder: Placeholder, placeholderB: PlaceholderB };
   return (
     <Wrapper>
       <CharacterImg src={characters[avatar]} />

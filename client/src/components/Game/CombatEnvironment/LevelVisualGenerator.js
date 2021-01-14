@@ -10,15 +10,17 @@ import { useDispatch } from 'react-redux';
 import { startReflexCheck } from '../../../actions';
 
 import Pow from '../../Sprinkle/Pow';
+import TerrainTile from './TerrainTile';
 
 
 //generates the map based on the player position, enemy location, obstruction and seed
 const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RADIUS}) => { 
   const level = useRecoilValue(globalState.level);
-  const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
-  const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS)
-  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS)
-  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack)
+  const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS);
+  const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS);
+  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
+  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack);
+  console.log(enemyDecision);
 
   const seed = data.find(obj => obj.level === level);
   const dispatch = useDispatch()
@@ -35,13 +37,16 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
           seed.obstructions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
           return (
-            <Box key={Math.random() * 100000}>
+            <TerrainTile
+            key={Math.random() * 100000}
+            type='obstacle'
+            text='obstacle'>
               {
                 seed.obstructions.find(
                   (obs) => sq.x === obs.x && sq.y === obs.y
                 ).obstacle
               }
-            </Box>
+            </TerrainTile>
           );
         } else if (
           sq.x === baddiePosition.x &&
@@ -93,13 +98,12 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
           );
         } else {
           return (
-            <Box
+            <TerrainTile
             key={Math.random() * 100000}
-            style={{ border: '1px solid black' }}
+            type='empty'
+            text={`${sq.x}, ${sq.y}`}
             >
-            {sq.x},
-            {sq.y}
-          </Box>
+          </TerrainTile>
           )}
         ;
       })}

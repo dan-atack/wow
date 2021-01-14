@@ -1,0 +1,32 @@
+{
+    "frames": {
+        "parkingLot": {
+          "frame_0": {
+            "character": "You should not see this.",
+            "background": "This is not visible.",
+            "text": "loading cutscene...",
+            "duration": 1000
+          },
+          "frame_1": {
+            "character": "placeholderB",
+            "background": "gate",
+            "text": "Let me in! I got an appointment with Mr. Moneybags!",
+            "duration": 5000
+          },
+          "frame_2": {
+            "character": "valet",
+            "background": "gate",
+            "text": "Not with those shoes, 'sir'",
+            "duration": 4000
+          },
+          "frame_3": {
+            "character": "placeholderB",
+            "background": "gate",
+            "text":
+              "You are asking for an initiation in the meaning of hard times, sir.",
+            "duration": 5000,
+            "last": true
+          }
+        }
+      }
+}

@@ -16,10 +16,11 @@ import TerrainTile from './TerrainTile';
 //generates the map based on the player position, enemy location, obstruction and seed
 const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RADIUS}) => { 
   const level = useRecoilValue(globalState.level);
-  const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
-  const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS)
-  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS)
-  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack)
+  const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS);
+  const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS);
+  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
+  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack);
+  console.log(enemyDecision);
 
   const seed = data.find(obj => obj.level === level);
   const dispatch = useDispatch()

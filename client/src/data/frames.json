@@ -8,7 +8,7 @@
             "duration": 1000
           },
           "frame_1": {
-            "character": "player",
+            "character": "placeholderB",
             "background": "gate",
             "text": "Let me in! I got an appointment with Mr. Moneybags!",
             "duration": 5000
@@ -20,7 +20,7 @@
             "duration": 4000
           },
           "frame_3": {
-            "character": "player",
+            "character": "placeholderB",
             "background": "gate",
             "text":
               "You are asking for an initiation in the meaning of hard times, sir.",

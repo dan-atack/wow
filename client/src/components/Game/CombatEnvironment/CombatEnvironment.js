@@ -6,14 +6,12 @@ import {
   setupPlayerMovePhase,
   playerMove,
 } from '../../../Helpers/playerMovePhase';
-// Dan's redux-advancing imports start:
+// Redux-advancing helper functions:
 import { playerActionPhase } from '../../../Helpers/playerActionPhase';
 import { baddieMoveLogic } from '../../../Helpers/baddieMoveLogic';
 import { baddieDecision, baddieAction } from '../../../Helpers/baddieActionLogic'; 
 import { specialEventLogic } from '../../../Helpers/specialEventLogic';
-// Dan's redux-advancing imports end
-
-// recoil state management
+// Recoil state management:
 import combatState from '../../../state';
 import globalState from '../../../state';
 import { useRecoilValue, useRecoilState } from 'recoil';
@@ -59,17 +57,20 @@ const CombatEnvironment = () => {
   // Super Switch Case Start //
   // One Effect to Call Them All:
   React.useEffect(() => {
+    console.log(combatPhase);
     switch (combatPhase) {
       case 'noCombat':
         // On initial round of combat, generate map from seed:
         setMapGrid(mapGenerate(seed));
-        // Then dispatch player movement phase:
-        dispatch(setCombatPhase('baddieDecision'));
-        break;
+        // Then fall straight through to the baddie decision phase:
       case 'baddieDecision':
-        baddieDecision(dispatch, setCombatPhase, baddiePosition, PLAYER_POS, baddie, seed, setEnemyDecision, enemyDecision);
+        // Helper function contains the logic to determine which move is made:
+        const decision = baddieDecision(baddiePosition, PLAYER_POS, baddie);
+        setEnemyDecision({...enemyDecision, decision : decision});    // Pass baddie's move data to recoil
+        dispatch(setCombatPhase('playerMove'));                       // Advance to next combat phase with redux
         break;
       case 'playerMove':
+        console.log(enemyDecision)
         setupPlayerMovePhase(
           ACTION_POINTS,
           SET_MOVE_OPTIONS,
@@ -91,13 +92,14 @@ const CombatEnvironment = () => {
       case 'baddieMove':
         baddieMoveLogic(dispatch, setCombatPhase, baddiePosition, setBaddiePosition, PLAYER_POS, baddie, seed,);
         break;
+      default:
+        console.log('invalid phase requested');
     }
   }, [combatPhase, PLAYER_POS]);
   // End of Super Switch Statement
 
   // Combat initiator line, rewired for Redux state:
   React.useEffect(() => {
-    // console.log(combatPhase);
     if (combatPhase === 'noCombat') {
       dispatch(setCombatPhase('playerMove'));
       possiblePaths(ACTION_POINTS, SET_MOVE_OPTIONS, PLAYER_POS, level);
@@ -111,18 +113,10 @@ const CombatEnvironment = () => {
   }, [health])
 
   const playerMove = (x, y) => {
-    //
-    // const movementData = movementTimeout({x:x, y:y},PLAYER_POS) //total time, xTime, yTime, isTurn, movement x and y
-    // const TotalDistance = PLAYER_MOVES.find(sq => sq.x === x && sq.y === y).distance;
-    // console.log(x, y, 'xy')
-    // console.log(actionPoints, 'action points')
-    // console.log(TotalDistance, 'distance')
     const playerPath = pathfinder({ x: x, y: y }, PLAYER_MOVE_OPTIONS);
-    // setActionPoints(actionPoints - TotalDistance)
     SET_PLAYER_POS({ x: x, y: y });
     SET_MOVE_OPTIONS([]);
     dispatch(setCombatPhase('baddieAction'));
-    // playerAnimation(playerPath)
   };
 
   return (

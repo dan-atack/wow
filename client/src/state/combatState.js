@@ -44,7 +44,13 @@ export const mapGrid = atom({
 export const baddieAttack = atom({
   key: 'enemyDecision',
   default: {
-    decision: {},
+    decision: {
+      damage: 0,
+      effect: '',
+      name: '',
+      shape: '',
+      threshold: 0
+    },
     isHit: false,
   },
 })

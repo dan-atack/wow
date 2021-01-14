@@ -1,29 +1,15 @@
 // This File contains functions for the automated control of baddie action functions:
 
-import { setCombatPhase } from "../actions";
 import { cross } from '../components/Library/attackShapeLibrary'
 
-import combatState from '../state/combatState';
-import {useRecoilState} from 'recoil';
-
 // Future versions of this function will eventually produce something from the baddie and player's respective positions...
-// For now we'll just print that the baddie has acted and then set state to the next phase of the combat cycle:
-export const baddieDecision = (
-  dispatch, 
-  setCombatPhase, 
-  baddiePosition,
-  playerPosition, 
-  baddie, 
-  seed,
-  setEnemyDecision,
-  enemyDecision
-  ) => {
-
-  console.log('baddie decision phase')
-  setEnemyDecision({...enemyDecision, decision : baddie.skills[Math.floor(Math.random() * baddie.skills.length)]})
-
-
-  dispatch(setCombatPhase('playerMove'));
+export const baddieDecision = (baddiePosition, playerPosition, baddie) => {
+  console.log('baddie decision phase');
+  // ... For now it will simply randomly select an entry from the baddie's skills list, and pass that to the Combat Env:
+  const choice = baddie.skills[Math.floor(Math.random() * baddie.skills.length)];
+  console.log("Baddie: ", baddiePosition);
+  console.log("Player: ", playerPosition);
+  return choice;
 };
 
 export const baddieAction = (

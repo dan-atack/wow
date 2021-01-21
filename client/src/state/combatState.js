@@ -1,24 +1,30 @@
 import { atom } from 'recoil';
 import moveCombos from '../data/playerMoves.json';
 
-export const PLAYER_SKILLS = atom({
+// Player-Related Variables:
+export const playerSkills = atom({
   key: 'playerSkills',
   default: moveCombos,
 })
 
-export const ACTION_POINTS = atom({
-  key: 'actionPoints',
+export const playerAP = atom({
+  key: 'playerAP',
   default: 4,
 })
 
-export const hype = atom({
-  key: 'hype',
+export const playerHype = atom({
+  key: 'playerHype',
   default: 100,
 })
 
-export const health = atom({
-  key: 'health',
+export const playerHealth = atom({
+  key: 'playerHealth',
   default: 100,
+})
+
+export const playerCoords = atom({
+  key: 'playerCoords',
+  default: {x:5, y:1},
 })
 
 export const ATTACK_RADIUS = atom({
@@ -31,14 +37,16 @@ export const PLAYER_MOVE_OPTIONS = atom({
   default: [],
 })
 
-export const PLAYER_POS = atom({
-  key: 'playerPosition',
-  default: {x:5, y:1},
+// Baddie-Related Variables:
+
+export const baddieHP = atom({
+  key: 'baddieHP',
+  default: 100,
 })
 
-export const mapGrid = atom({
-  key: 'mapGrid',
-  default: [],
+export const baddieCoords = atom({
+  key: 'baddieCoords',
+  default: { x: 5, y: 10 },
 })
 
 export const baddieAttack = atom({
@@ -53,4 +61,9 @@ export const baddieAttack = atom({
     },
     isHit: false,
   },
+})
+
+export const mapGrid = atom({
+  key: 'mapGrid',
+  default: [],
 })

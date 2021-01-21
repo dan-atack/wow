@@ -9,12 +9,14 @@
           },
           "frame_1": {
             "character": "placeholderB",
+            "characterPosition": "left",
             "background": "gate",
             "text": "Let me in! I got an appointment with Mr. Moneybags!",
             "duration": 5000
           },
           "frame_2": {
             "character": "valet",
+            "characterPosition": "right",
             "background": "gate",
             "text": "Not with those shoes, 'sir'",
             "duration": 4000
@@ -22,6 +24,7 @@
           "frame_3": {
             "character": "placeholderB",
             "background": "gate",
+            "characterPosition": "left",
             "text":
               "You are asking for an initiation in the meaning of hard times, sir.",
             "duration": 5000,

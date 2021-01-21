@@ -10,14 +10,14 @@ function Dialogue({ text }) {
 }
 
 const Wrapper = styled.div`
-  border: 2px solid darkblue;
-  border-radius: 12px;
-  position: relative;
+  border: 3px solid black;
+  position: absolute;
   background-color: white;
   padding: 8px;
-  bottom: -15%;
-  left: 25%;
-  max-width: 75%;
+  bottom: 12px;
+  left: 12px;
+  height: 100px;
+  width: calc(100% - 48px);
 `;
 
 export default Dialogue;

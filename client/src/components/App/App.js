@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Game from '../Game';
 import MainMenu from '../MainMenu';
 import SelectCharacter from '../SelectCharacter';
+import './App.css';
 import styled from 'styled-components';
 
 function App() {

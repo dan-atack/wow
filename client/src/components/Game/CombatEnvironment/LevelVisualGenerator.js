@@ -14,13 +14,12 @@ import TerrainTile from './TerrainTile';
 
 
 //generates the map based on the player position, enemy location, obstruction and seed
-const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RADIUS}) => { 
+const LevelVisualGenerator = ({row, baddieCoords, playerMove, ENEMY_ATTACK_RADIUS}) => { 
   const level = useRecoilValue(globalState.level);
-  const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS);
+  const playerCoords = useRecoilValue(combatState.playerCoords);
   const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS);
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
   const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack);
-  console.log(enemyDecision);
 
   const seed = data.find(obj => obj.level === level);
   const dispatch = useDispatch()
@@ -49,14 +48,14 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
             </TerrainTile>
           );
         } else if (
-          sq.x === baddiePosition.x &&
-          sq.y === baddiePosition.y
+          sq.x === baddieCoords.x &&
+          sq.y === baddieCoords.y
         ) {
           return <Enemy key={Math.random() * 100000}>enemy</Enemy>;
         } else if (
           ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
             //make a useeffect that checks for player and enemy intersection instead of this damned pow component in CombatEnvironment
-            if(sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y) {
+            if(sq.x === playerCoords.x && sq.y === playerCoords.y) {
               return (
                 <Player key={Math.random() * 10000000}>
                   {sq.x}, {sq.y}
@@ -71,7 +70,7 @@ const LevelVisualGenerator = ({row, baddiePosition, playerMove, ENEMY_ATTACK_RAD
               )
             }
         } else if (
-          sq.x === PLAYER_POS.x && sq.y === PLAYER_POS.y
+          sq.x === playerCoords.x && sq.y === playerCoords.y
           ) {
           return <Player key={Math.random() * 100000} />;
         } else if (

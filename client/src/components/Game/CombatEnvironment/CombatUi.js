@@ -18,14 +18,14 @@ import playerMoves from '../../../data/playerMoves.json';
 
 
 const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
-  const [playerHealth, setPlayerHealth] = useRecoilState(combatState.health);
-  const [playerHype, setPlayerHype] = useRecoilState(combatState.hype);
+  const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
+  const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
   const [PLAYER_MOVE_OPTIONS, SET_MOVE_OPTIONS] = useRecoilState(
     combatState.PLAYER_MOVE_OPTIONS
   );
-  const PLAYER_SKILLS = useRecoilValue(combatState.PLAYER_SKILLS)
-  const PLAYER_POS = useRecoilValue(combatState.PLAYER_POS)
+  const playerSkills = useRecoilValue(combatState.playerSkills)
+  const playerCoords = useRecoilValue(combatState.playerCoords)
   const level = useRecoilValue(globalState.level)
   // Conditionally render reflex check based on this value (and falsilly don't render on a zero!):
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);
@@ -43,7 +43,7 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
     dispatch(setReflexCheck(skill.id))
     SET_ENEMY_ATTACK_RADIUS([])
     SET_MOVE_OPTIONS([])
-    const range = await attackRange(skill, PLAYER_POS, seed.width, seed.height, seed.obstructions);
+    const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
     SET_ATTACK_RADIUS(range);
   }
 
@@ -73,7 +73,7 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
 
       </ButtonDiv>
       <SkillsDiv>
-        {PLAYER_SKILLS.map(skill => {
+        {playerSkills.map(skill => {
           return <Skill onClick={() => skillClick(skill)}>{skill.name}</Skill>
         })}
         { turn === 'playerAction' && <Skill onClick={() => dispatch(setCombatPhase('playerMove'))}>undo</Skill>}

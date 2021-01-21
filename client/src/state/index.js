@@ -1,12 +1,14 @@
 import {
-  ACTION_POINTS,
+  playerHealth,
+  playerAP,
+  playerHype,
+  playerCoords,
+  playerSkills,
   ATTACK_RADIUS,
   PLAYER_MOVE_OPTIONS,
-  PLAYER_POS,
-  health,
-  hype,
   mapGrid,
-  PLAYER_SKILLS,
+  baddieHP,
+  baddieCoords,
   baddieAttack,
 } from './combatState';
 
@@ -15,14 +17,16 @@ import {
 } from './globalState'
 
 export default {
+  playerHealth,
+  playerAP,
+  playerHype,
+  playerCoords,
+  playerSkills,
   mapGrid,
-  hype,
-  health,
   ATTACK_RADIUS,
-  ACTION_POINTS,
-  PLAYER_POS,
   PLAYER_MOVE_OPTIONS,
-  PLAYER_SKILLS,
+  baddieHP,
+  baddieCoords,
+  baddieAttack,
   level,
-  baddieAttack
 }

@@ -41,23 +41,28 @@ function Game() {
       ) : (
         <> </>
       )}
-      <button style={{ marginTop: 16 }} onClick={handleAdvance}>
-        Next
-      </button>
+      <NextButton onClick={handleAdvance}>
+        <i>SKIP &gt;&gt;&gt;</i>
+      </NextButton>
     </GameBody>
   );
 }
 
+const NextButton = styled.button`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: none;
+  color: white;
+  text-shadow: 2px 2px 2px black;
+  font-weight: 700;
+`
+
 const GameBody = styled.div`
-  border: 3px solid limegreen;
-  border-radius: 16px;
-  padding: 16px;
-  display: grid;
-  height: 90vh;
-  grid-template-areas:
-    'ui'
-    'next';
-  grid-template-rows: 11fr 0.8fr;
+  height: 100vh;
+  width: 100%;
+  position: relative;
 `;
 
 export default Game;

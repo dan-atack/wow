@@ -31,22 +31,27 @@ function CutscenePrototype({ scene }) {
   }, [now]);
   return (
     <Wrapper className='background' bg={backgrounds[frameData.background]}>
-      <h1>CUTSCENE</h1>
-      <Character avatar={frameData.character} />
+      <WIPHeader>WORK IN PROGRESS - CUTSCENE</WIPHeader>
+      <Character avatar={frameData.character} characterPosition={frameData.characterPosition}/>
       <Dialogue text={frameData.text} />
     </Wrapper>
   );
 }
 
+const WIPHeader = styled.div`
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  opacity: 50%;
+`
+
 const Wrapper = styled.div`
-  grid-area: ui;
-  margin: 4% 8%;
-  border: 2px solid black;
   background: url(${(props) => props.bg}) no-repeat;
   background-size: 100%;
-  border: 3px solid green;
-  border-radius: 12px;
   transition-duration: 0.25s;
+  width: 100%;
+  height: 100vh;
+  position: relative;
 `;
 
 export default CutscenePrototype;

@@ -30,22 +30,14 @@ function SelectCharacter() {
 }
 
 const Wrapper = styled.div`
-  height: 87vh;
-  width: 80vw;
-  margin: 4% 9%;
-  border: 2px solid black;
-  border-radius: 12px;
-  color: white;
-  background-color: black;
+  width: 100%;
+  color: black;
+  background-color: white;
 `;
 
 const Option = styled.button`
-  width: 20vw;
-  border: 3px solid gray;
-  border-radius: 12px;
-  background-color: black;
-  color: white;
-  margin: 8px;
+  width: 100px;
+  color: black;
   &:hover {
     cursor: pointer;
   }

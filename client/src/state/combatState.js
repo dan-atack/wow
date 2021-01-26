@@ -32,7 +32,7 @@ export const ATTACK_RADIUS = atom({
   default: [],
 })
 
-export const PLAYER_MOVE_OPTIONS = atom({
+export const playerMoveOptions = atom({
   key: 'playerMoveOptions',
   default: [],
 })

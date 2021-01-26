@@ -8,8 +8,8 @@ import { attackRange } from '../../../Helpers/playerCombatHelper';
 import data from '../../../data/mapSeed.json'
 import { useDispatch, useSelector } from 'react-redux';
 // recoil state management
-import combatState from '../../../state'
-import globalState from '../../../state'
+import combatState from '../../../state';
+import globalState from '../../../state';
 import { useRecoilValue, useRecoilState } from 'recoil'
 import { setCombatPhase, setReflexCheck } from '../../../actions';
 // Components:
@@ -21,8 +21,8 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
   const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
   const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
-  const [PLAYER_MOVE_OPTIONS, SET_MOVE_OPTIONS] = useRecoilState(
-    combatState.PLAYER_MOVE_OPTIONS
+  const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(
+    combatState.playerMoveOptions
   );
   const playerSkills = useRecoilValue(combatState.playerSkills)
   const playerCoords = useRecoilValue(combatState.playerCoords)
@@ -42,7 +42,7 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
     dispatch(setCombatPhase('playerAction'));
     dispatch(setReflexCheck(skill.id))
     SET_ENEMY_ATTACK_RADIUS([])
-    SET_MOVE_OPTIONS([])
+    setPlayerMoveOptions([])
     const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
     SET_ATTACK_RADIUS(range);
   }

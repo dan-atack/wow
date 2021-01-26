@@ -40,8 +40,8 @@ const CombatEnvironment = () => {
   const [playerAP, setPlayerAP] = useRecoilState(combatState.playerAP);
   const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
   const [playerCoords, setPlayerCoords] = useRecoilState(combatState.playerCoords);
-  const [PLAYER_MOVE_OPTIONS, SET_MOVE_OPTIONS] = useRecoilState(
-    combatState.PLAYER_MOVE_OPTIONS
+  const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(
+    combatState.playerMoveOptions
   );
   // ?????
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(
@@ -74,14 +74,9 @@ const CombatEnvironment = () => {
         // IDEA: Use time hook to make this phase last 1 - 2 seconds; use that time to show a GIF that telegraphs the move!
         break;
       case 'playerMove':
-        setupPlayerMovePhase(
-          playerAP,
-          SET_MOVE_OPTIONS,
-          playerCoords,
-          level,
-          dispatch,
-          setCombatPhase
-        );
+        // Set possibleMoves to the outcome of this function:
+        const possibleMoves = setupPlayerMovePhase(playerAP, playerCoords, level);
+        setPlayerMoveOptions(possibleMoves);
         break;
       case 'baddieAction':
         baddieAction(dispatch, setCombatPhase, baddieCoords, playerCoords, baddie, seed, baddieDecision, SET_ENEMY_ATTACK_RADIUS);
@@ -105,7 +100,7 @@ const CombatEnvironment = () => {
   React.useEffect(() => {
     if (combatPhase === 'noCombat') {
       dispatch(setCombatPhase('playerMove'));
-      possiblePaths(playerAP, SET_MOVE_OPTIONS, playerCoords, level);
+      possiblePaths(playerAP, setPlayerMoveOptions, playerCoords, level);
     }
   }, [combatPhase]);
 
@@ -116,9 +111,9 @@ const CombatEnvironment = () => {
   }, [playerHealth])
 
   const playerMove = (x, y) => {
-    const playerPath = pathfinder({ x: x, y: y }, PLAYER_MOVE_OPTIONS);
+    const playerPath = pathfinder({ x: x, y: y }, playerMoveOptions);
     setPlayerCoords({ x: x, y: y });
-    SET_MOVE_OPTIONS([]);
+    setPlayerMoveOptions([]);
     dispatch(setCombatPhase('baddieAction'));
   };
 

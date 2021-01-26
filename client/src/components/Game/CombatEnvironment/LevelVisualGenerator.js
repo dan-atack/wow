@@ -17,7 +17,7 @@ import TerrainTile from './TerrainTile';
 const LevelVisualGenerator = ({row, baddieCoords, playerMove, ENEMY_ATTACK_RADIUS}) => { 
   const level = useRecoilValue(globalState.level);
   const playerCoords = useRecoilValue(combatState.playerCoords);
-  const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS);
+  const playerMoveOptions = useRecoilValue(combatState.playerMoveOptions);
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
   const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
 
@@ -85,7 +85,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, ENEMY_ATTACK_RADIU
             </AttackRadius>
           )
         } else if (
-          PLAYER_MOVE_OPTIONS.find((obs) => sq.x === obs.x && sq.y === obs.y)
+          playerMoveOptions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
           return (
             <PossibleBox

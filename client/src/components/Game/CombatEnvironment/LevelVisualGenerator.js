@@ -56,6 +56,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, ENEMY_ATTACK_RADIU
           ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
             //make a useeffect that checks for player and enemy intersection instead of this damned pow component in CombatEnvironment
             if(sq.x === playerCoords.x && sq.y === playerCoords.y) {
+              console.log('POW!');
               return (
                 <Player key={Math.random() * 10000000}>
                   {sq.x}, {sq.y}

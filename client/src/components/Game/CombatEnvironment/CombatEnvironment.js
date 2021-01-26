@@ -74,12 +74,15 @@ const CombatEnvironment = () => {
         // IDEA: Use time hook to make this phase last 1 - 2 seconds; use that time to show a GIF that telegraphs the move!
         break;
       case 'playerMove':
-        // Set possibleMoves to the outcome of this function:
+        // Setup possible moves for the player then await their decision:
         const possibleMoves = setupPlayerMovePhase(playerAP, playerCoords, level);
         setPlayerMoveOptions(possibleMoves);
+        // No dispatch here; the phase advances when the player picks their move.
         break;
       case 'baddieAction':
-        baddieAction(dispatch, setCombatPhase, baddieCoords, playerCoords, baddie, seed, baddieDecision, SET_ENEMY_ATTACK_RADIUS);
+        const dangerZone = baddieAction(baddieCoords, seed, baddieDecision);
+        SET_ENEMY_ATTACK_RADIUS(dangerZone);
+        dispatch(setCombatPhase('playerAction'))
         break;
       case 'playerAction':
         playerActionPhase(dispatch, setCombatPhase);
@@ -111,6 +114,7 @@ const CombatEnvironment = () => {
   }, [playerHealth])
 
   const playerMove = (x, y) => {
+    console.log('player moves');
     const playerPath = pathfinder({ x: x, y: y }, playerMoveOptions);
     setPlayerCoords({ x: x, y: y });
     setPlayerMoveOptions([]);

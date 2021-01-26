@@ -3,55 +3,32 @@
 import { cross } from '../components/Library/attackShapeLibrary'
 
 // Future versions of this function will eventually produce something from the baddie and player's respective positions...
-export const baddieMakeDecision = (baddiePosition, playerPosition, baddie) => {
+export const baddieMakeDecision = (baddieCoords, playerCoords, baddie) => {
   console.log('baddie decision phase');
   // ... For now it will simply randomly select an entry from the baddie's skills list, and pass that to the Combat Env:
   const choice = baddie.skills[Math.floor(Math.random() * baddie.skills.length)];
   return choice;
 };
 
-export const baddieAction = (
-  dispatch,
-  setCombatPhase,
-  baddiePosition,
-  playerPosition,
-  baddie,
-  seed,
-  enemyDecision,
-  SET_ENEMY_ATTACK_RADIUS,
-) => {
-
-  // from here what i need to do is set up a state which is the attack
-  // there will have to be a switch statement that literally holds the algorithms for every single move
-
+export const baddieAction = (baddieCoords, seed, baddieDecision) => {
   console.log('baddie does their action now')
-  if(enemyDecision) {
-    switch (enemyDecision.name) {
+  if(baddieDecision) {
+    switch (baddieDecision.name) {
       case "Crisis of Faith": 
         //shape is a cross
-        SET_ENEMY_ATTACK_RADIUS(cross(baddiePosition, seed))
-  
-        break;
+        return cross(baddieCoords, seed);
       case "Stigmata":
         //shape is a cross
-        SET_ENEMY_ATTACK_RADIUS(cross(baddiePosition, seed))
-  
-        break;
+        return cross(baddieCoords, seed);
       case "Holy Man":
         //shape is a cross
-        SET_ENEMY_ATTACK_RADIUS(cross(baddiePosition, seed))
-  
-        break;
+        return cross(baddieCoords, seed);
       case  "Revelations" :
-        //shape is a cross
-        SET_ENEMY_ATTACK_RADIUS(cross(baddiePosition, seed))
-        
-        break;
+        // they're all crosses! get it? ahahahaha
+        return cross(baddieCoords, seed);
       default:
-        console.log('error', enemyDecision);
+        console.log('error', baddieDecision);
         break;
     }
   }
-
-  dispatch(setCombatPhase('playerAction'))
 }

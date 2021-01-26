@@ -9,7 +9,7 @@ import {
 // Redux-advancing helper functions:
 import { playerActionPhase } from '../../../Helpers/playerActionPhase';
 import { baddieMoveLogic } from '../../../Helpers/baddieMoveLogic';
-import { baddieDecision, baddieAction } from '../../../Helpers/baddieActionLogic'; 
+import { baddieMakeDecision, baddieAction } from '../../../Helpers/baddieActionLogic'; 
 import { specialEventLogic } from '../../../Helpers/specialEventLogic';
 // Recoil state management:
 import combatState from '../../../state';
@@ -43,13 +43,14 @@ const CombatEnvironment = () => {
   const [PLAYER_MOVE_OPTIONS, SET_MOVE_OPTIONS] = useRecoilState(
     combatState.PLAYER_MOVE_OPTIONS
   );
+  // ?????
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(
     combatState.ATTACK_RADIUS
   );
   // Baddie Related State Values:
   const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
   const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
-  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack);
+  const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
   const [ENEMY_ATTACK_RADIUS, SET_ENEMY_ATTACK_RADIUS] = useState([]);
 
   // temporary character state//
@@ -57,7 +58,7 @@ const CombatEnvironment = () => {
   const baddie = baddieData.find((obj) => obj.level === level);
   const seed = data.find((obj) => obj.level === level);
 
-  // Super Switch Case Start //
+  // Switch case acts as the game's Engine, calling helper functions and then managing state with their outputs.
   // One Effect to Call Them All:
   React.useEffect(() => {
     switch (combatPhase) {
@@ -67,12 +68,12 @@ const CombatEnvironment = () => {
         // Then fall straight through to the baddie decision phase:
       case 'baddieDecision':
         // Helper function contains the logic to determine which move is made:
-        const decision = baddieDecision(baddieCoords, playerCoords, baddie);
-        setEnemyDecision({...enemyDecision, decision : decision});    // Pass baddie's move data to recoil
+        const decision = baddieMakeDecision(baddieCoords, playerCoords, baddie);
+        setBaddieDecision(decision);    // Pass baddie's move data to recoil
         dispatch(setCombatPhase('playerMove'));                       // Advance to next combat phase with redux
+        // IDEA: Use time hook to make this phase last 1 - 2 seconds; use that time to show a GIF that telegraphs the move!
         break;
       case 'playerMove':
-        console.log(enemyDecision)
         setupPlayerMovePhase(
           playerAP,
           SET_MOVE_OPTIONS,
@@ -83,7 +84,7 @@ const CombatEnvironment = () => {
         );
         break;
       case 'baddieAction':
-        baddieAction(dispatch, setCombatPhase, baddieCoords, playerCoords, baddie, seed, enemyDecision.decision, SET_ENEMY_ATTACK_RADIUS);
+        baddieAction(dispatch, setCombatPhase, baddieCoords, playerCoords, baddie, seed, baddieDecision, SET_ENEMY_ATTACK_RADIUS);
         break;
       case 'playerAction':
         playerActionPhase(dispatch, setCombatPhase);
@@ -130,6 +131,7 @@ const CombatEnvironment = () => {
         playerCoords={playerCoords}
         baddieHP={baddieHP}
         baddieCoords={baddieCoords}
+        baddieDecision={baddieDecision}
       /> : <></>}
       <CombatUi
         turn={combatPhase}

@@ -49,17 +49,14 @@ export const baddieCoords = atom({
   default: { x: 5, y: 10 },
 })
 
-export const baddieAttack = atom({
-  key: 'enemyDecision',
+export const baddieDecision = atom({
+  key: 'baddieDecision',
   default: {
-    decision: {
       damage: 0,
       effect: '',
       name: '',
       shape: '',
       threshold: 0
-    },
-    isHit: false,
   },
 })
 

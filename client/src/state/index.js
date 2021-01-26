@@ -9,7 +9,7 @@ import {
   mapGrid,
   baddieHP,
   baddieCoords,
-  baddieAttack,
+  baddieDecision,
 } from './combatState';
 
 import {
@@ -27,6 +27,6 @@ export default {
   PLAYER_MOVE_OPTIONS,
   baddieHP,
   baddieCoords,
-  baddieAttack,
+  baddieDecision,
   level,
 }

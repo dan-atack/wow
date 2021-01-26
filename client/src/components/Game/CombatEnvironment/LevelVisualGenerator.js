@@ -19,7 +19,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, ENEMY_ATTACK_RADIU
   const playerCoords = useRecoilValue(combatState.playerCoords);
   const PLAYER_MOVE_OPTIONS = useRecoilValue(combatState.PLAYER_MOVE_OPTIONS);
   const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
-  const [enemyDecision, setEnemyDecision] = useRecoilState(combatState.baddieAttack);
+  const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
 
   const seed = data.find(obj => obj.level === level);
   const dispatch = useDispatch()

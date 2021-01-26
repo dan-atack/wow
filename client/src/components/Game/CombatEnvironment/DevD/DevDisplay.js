@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const DevDisplay = ({playerHP, playerAP, playerHype, playerCoords, baddieHP, baddieCoords}) => {
+const DevDisplay = ({ playerHP, playerAP, playerHype, playerCoords, baddieHP, baddieCoords, baddieDecision }) => {
     return (
         <Wrapper>
             <p>Player HP: {playerHP}</p>
@@ -10,6 +10,7 @@ const DevDisplay = ({playerHP, playerAP, playerHype, playerCoords, baddieHP, bad
             <p>Player Coords: ({playerCoords.x}, {playerCoords.y})</p>
             <p>Baddie HP: {baddieHP}</p>
             <p>Baddie Coords: ({baddieCoords.x}, {baddieCoords.y})</p>
+            <p>Baddie Decision: {baddieDecision.name}</p>
         </Wrapper>
     )
 }

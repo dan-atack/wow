@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import TickerBox from '../TickerBox';
+import TimerBox from '../TimerBox';
 
 // The Karmameter will be a round display output which tracks your position on two axes: Karmic and Virtuosic
 // Later iterations of this should have space for inner rings/regions to indicate when your dialogue choices have
@@ -11,26 +12,38 @@ function Karmameter({ karma, showmanship, minigameRound, ticker, ROUND_DURATION 
   return (
     <Wrapper>
       <Casing>
-        <CompassPoint style={{ right: '40%', top: '-14%', color: 'limegreen' }}>GOOD{karma > 0 ? `: ${karma}` : ''}</CompassPoint>
-        <CompassPoint style={{ right: '40%', top: '100%', color: 'red' }}>EVIL{karma < 0 ? `: ${karma}` : ''}</CompassPoint>
-        <CompassPoint style={{ right: '90%', top: '50%', color: 'orange' }}>BOMBASTIC{showmanship > 0 ? `: ${showmanship}` : ''}</CompassPoint>
-        <CompassPoint style={{ right: '-32%', top: '50%', color: 'darkblue' }}>LACONIC{showmanship < 0 ? `: ${showmanship}` : ''}</CompassPoint>
+        <CompassPoint style={{ right: '46%', top: '0px', color: 'limegreen' }}>GOOD{karma > 0 ? `: ${karma}` : ''}</CompassPoint>
+        <CompassPoint style={{ right: '46%', bottom: '0px', color: 'red' }}>EVIL{karma < 0 ? `: ${karma}` : ''}</CompassPoint>
+        <CompassPoint style={{ left: '0px', top: '47.5%', color: 'orange' }}>BOMBASTIC{showmanship > 0 ? `: ${showmanship}` : ''}</CompassPoint>
+        <CompassPoint style={{ right: '0px', top: '47.5%', color: 'darkblue' }}>LACONIC{showmanship < 0 ? `: ${showmanship}` : ''}</CompassPoint>
         <Blip vertical={karma} horizontal={showmanship}></Blip>
       </Casing>
-      <TickerBox value={minigameRound} gridArea={'roundr'} text={'Current Round:'}></TickerBox>
-      <TickerBox value={(ROUND_DURATION-(ticker/15)).toFixed(2)} gridArea={'timerr'} text={'Time Remaining:'}></TickerBox>
+      <ColumnFlexDiv>
+        <TickerBox value={minigameRound} text={'Current Round:'}/>
+        <TimerBox value={(ROUND_DURATION-(ticker/15)).toFixed(2)} text={'Time Remaining:'}/>
+      </ColumnFlexDiv>
     </Wrapper>
   );
 }
 
+const ColumnFlexDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+`
+
 const Casing = styled.div`
   font-size: 1em;
-  background-color: #228c13;
-  border: 3px solid black;
-  border-radius: 50%;
-  color: whitesmoke;
+  background: rgb(79,251,63);
+  background: radial-gradient(circle, rgba(79,251,63,1) 8%, rgba(250,0,0,1) 100%);
+  border: 2px solid black;
+  border-right: none;
+  border-bottom: none;
+  color: white;
   position: relative;
-  grid-area: casing;
+  width: 100%;
 `;
 
 const Blip = styled.div`
@@ -42,6 +55,7 @@ const Blip = styled.div`
   position: absolute;
   left: ${(props) => `calc(${props.horizontal + 50}% - 8px)`};
   bottom: ${(props) => `calc(${props.vertical + 50}% - 8px)`};
+  transform: translate(-50%, 0); 
 `
 
 const CompassPoint = styled.h3`
@@ -50,14 +64,9 @@ const CompassPoint = styled.h3`
 `
 
 const Wrapper = styled.div`
-  grid-area: karma;
-  display: grid;
-  grid-template-areas:
-  'casing casing'
-  'roundr timerr';
-  grid-template-rows: 2fr 1fr;
-  margin-left: 10%;
+  display: flex;
   justify-content: space-around;
+  width: 100%;
 `
 
 export default Karmameter;

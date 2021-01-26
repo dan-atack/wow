@@ -78,34 +78,62 @@ function ReflexCheck({ move, combo, numPrevMoves }) {
     }, [now]);
     return (
         <Wrapper failure={failStatus} success={successStatus}>
-            <h4>MOVE: {move.name.toUpperCase()}</h4>
-            <h4>TIME: {timeString}</h4>
+            <Ticker progress={timeLeft/timeToPerform * 100}/>
+            <MoveHeader><i>MOVE: {move.name.toUpperCase()}</i></MoveHeader>
+            <FlexDiv>
             <h4>KEYS:</h4>
-            {move.combos[combo].map((key, idx) => {
-                return(
-                    <KeyPad key={Math.random() * 10000000} done={idx < currentKey}>{key}</KeyPad>
-                )
-            })}
+                {move.combos[combo].map((key, idx) => {
+                    return(
+                        <KeyPad key={Math.random() * 10000000} done={idx < currentKey}>{key}</KeyPad>
+                    )
+                })}
+            </FlexDiv>
         </Wrapper>
     )
 };
 
-const Wrapper = styled.div`
-    height: 384px;
-    width: 128px;
-    border: 2px solid black;
-    border-radius: 8px;
-    box-shadow: 0px 0px 8px ${(props) => props.success ? 'limegreen' : props.failure ? 'red' : 'orange'};
+const MoveHeader = styled.div`
+    text-shadow: 2px 2px 2px black;
+    font-weight: 700;
+    margin-top: 12px;
+    font-size: 20px;
+    font-family: sans-serif;
+`
+
+const Ticker = styled.div`
     position: absolute;
-    bottom: 256px;
-    right: 64px;
+    width: ${props => props.progress}%;
+    height: 100%;
+    bottom: 0px;
+    left: 0px;
+    background: orange;
+    opacity: .5;
+    transition: all .2s;
+    z-index: -3;
+`
+
+const FlexDiv = styled.div`
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
+const Wrapper = styled.div`
+    height: 200px;
+    border: 2px solid black;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 `;
 
 const KeyPad = styled.div`
     border: 2px solid black;
+    width: 20px;
+    height: 20px;
     margin: 12px;
-    background-color: ${(props) => props.done ? 'limegreen' : 'cyan'};
-    box-shadow: ${(props) => props.done ? '0px 0px 10px 8px limegreen' : '0 0 0 0 white'};
+    background-color: ${(props) => props.done ? 'grey' : 'white'};
+    box-shadow: ${(props) => props.done ? '0 0 0 0 white' : '2px 2px 4px 2px black'};
 `
 
 export default ReflexCheck;

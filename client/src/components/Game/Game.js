@@ -27,7 +27,7 @@ function Game() {
       case 'cutscene':
         return <Cutscene scene={scene.name} />;
       case 'fight':
-        return <CombatEnvironment />;
+        return <AlignCenterDiv><CombatEnvironment /></AlignCenterDiv>;
       case 'minigame':
         return <Minigame />;
       case 'customizer':
@@ -48,6 +48,12 @@ function Game() {
   );
 }
 
+const AlignCenterDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 const NextButton = styled.button`
   position: absolute;
   top: 12px;
@@ -57,12 +63,14 @@ const NextButton = styled.button`
   color: white;
   text-shadow: 2px 2px 2px black;
   font-weight: 700;
+  font-family: sans-serif;
 `
 
 const GameBody = styled.div`
   height: 100vh;
   width: 100%;
   position: relative;
+  overflow: hidden;
 `;
 
 export default Game;

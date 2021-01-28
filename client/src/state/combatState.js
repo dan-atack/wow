@@ -27,8 +27,8 @@ export const playerCoords = atom({
   default: {x:5, y:1},
 })
 
-export const ATTACK_RADIUS = atom({
-  key: 'attackRadius',
+export const playerAttackRadius = atom({
+  key: 'playerAttackRadius',
   default: [],
 })
 

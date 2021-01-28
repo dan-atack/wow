@@ -20,7 +20,7 @@ import playerMoves from '../../../data/playerMoves.json';
 const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
   const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
   const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
-  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
+  const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(
     combatState.playerMoveOptions
   );
@@ -39,12 +39,11 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
   const seed = data.find(obj => obj.level === level)
 
   const skillClick = async (skill) => { // individual skill being called from map function
-    dispatch(setCombatPhase('playerAction'));
-    dispatch(setReflexCheck(skill.id))
-    SET_ENEMY_ATTACK_RADIUS([])
-    setPlayerMoveOptions([])
+    dispatch(setReflexCheck(skill.id));
+    SET_ENEMY_ATTACK_RADIUS([]);
+    setPlayerMoveOptions([]);
     const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
-    SET_ATTACK_RADIUS(range);
+    setPlayerAttackRadius(range);
   }
 
   const dispatch = useDispatch();

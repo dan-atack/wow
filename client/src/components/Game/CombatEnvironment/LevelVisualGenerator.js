@@ -14,19 +14,19 @@ import TerrainTile from './TerrainTile';
 
 
 //generates the map based on the player position, enemy location, obstruction and seed
-const LevelVisualGenerator = ({row, baddieCoords, playerMove, ENEMY_ATTACK_RADIUS}) => { 
+const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, ENEMY_ATTACK_RADIUS}) => { 
   const level = useRecoilValue(globalState.level);
   const playerCoords = useRecoilValue(combatState.playerCoords);
   const playerMoveOptions = useRecoilValue(combatState.playerMoveOptions);
-  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(combatState.ATTACK_RADIUS);
+  const playerAttackRadius = useRecoilValue(combatState.playerAttackRadius);
   const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
 
   const seed = data.find(obj => obj.level === level);
   const dispatch = useDispatch()
 
-  const playerAction = () => {
-    dispatch(startReflexCheck());    // When the player selects their action, begin a reflex check but don't advance combat round.
-    SET_ATTACK_RADIUS([]);
+  const baddieIsAttackable = false;
+  const determineBaddieIsAttackable = () => {
+    playerAttackRadius.forEach();
   }
 
   return (
@@ -56,7 +56,6 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, ENEMY_ATTACK_RADIU
           ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
             //make a useeffect that checks for player and enemy intersection instead of this damned pow component in CombatEnvironment
             if(sq.x === playerCoords.x && sq.y === playerCoords.y) {
-              console.log('POW!');
               return (
                 <Player key={Math.random() * 10000000}>
                   {sq.x}, {sq.y}
@@ -75,12 +74,12 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, ENEMY_ATTACK_RADIU
           ) {
           return <Player key={Math.random() * 100000} />;
         } else if (
-          ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)
+          playerAttackRadius.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
           return (
             <AttackRadius
               key={Math.random() * 100000}
-              onClick = {() => playerAction()}
+              onClick = {() => playerAttack()}
             >
               {sq.x}, {sq.y}
             </AttackRadius>
@@ -89,12 +88,12 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, ENEMY_ATTACK_RADIU
           playerMoveOptions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
           return (
-            <PossibleBox
+            <PossibleMove
               key={Math.random() * 100000}
               onClick={() => playerMove(sq.x, sq.y)}
             >
               {sq.x}, {sq.y}
-            </PossibleBox>
+            </PossibleMove>
           );
         } else {
           return (
@@ -145,7 +144,15 @@ const Enemy = styled.div`
   opacity: 0.5;
 `;
 
-const PossibleBox = styled.div`
+const AttackableEnemy = styled.div`
+  width: 50px;
+  height: 50px;
+  background-color: purple;
+  border: 1px solid black;
+  opacity: 0.5;
+`;
+
+const PossibleMove = styled.div`
   width: 50px;
   height: 50px;
   background-color: grey;

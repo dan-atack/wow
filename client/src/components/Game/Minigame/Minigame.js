@@ -8,7 +8,6 @@ import MinigameButton from './MinigameButton';
 import Karmameter from './Karmameter';
 import dialogueOptions from '../../../data/dialogueOptions.json';
 // "Art"work imports
-import upperCorner from '../../../assets/minigame_corner.png';
 import interview from '../../../assets/promo_bg.png';
 import bubbleTick from '../../../assets/bubble_tick.png';
 
@@ -48,23 +47,24 @@ function MinigamePrototype() {
   }, [now]);
   return (
     <MinigameUI className={'MinigameUI'}>
-      <LeftFrame src={upperCorner}/>
-      <TitleBanner>MINIGAME</TitleBanner>
-      <RightFrame src={upperCorner}/>
-      <SpeechBubble>
-        <p>Speech bubble!!</p>
-        <img src={bubbleTick} style={{ position: 'absolute', bottom: '-64px', left: '15%' }}/>
-        <img src={bubbleTick} style={{ transform: 'rotateY(180deg)', position: 'absolute', bottom: '-64px' }}/>
-      </SpeechBubble>
-      <Karmameter
-        karma={karma}
-        showmanship={showmanship}
-        style={{ gridArea: 'karma' }}
-        ticker={ticker}
-        minigameRound={minigameRound}
-        ROUND_DURATION={ROUND_DURATION}
-      ></Karmameter>
-      <img src={interview} style={{gridArea: 'image', maxHeight: '100%', maxWidth: '100%'}}/>
+      <TitleBanner>WORK IN PROGRESS - MINIGAME</TitleBanner>
+      <FlexDiv>
+        <ImageWrapper>
+          <SpeechBubble>
+            <p>Speech bubble!!</p>
+            <img src={bubbleTick} style={{ transform: 'rotateY(180deg)', position: 'absolute', bottom: '-64px', left: '50px' }}/>
+            <img src={bubbleTick} style={{ position: 'absolute', bottom: '-64px', right: '100px' }}/>
+          </SpeechBubble>
+          <img src={interview} style={{maxHeight: '100%', maxWidth: '100%', position: 'relative', bottom: '-4px'}}/>
+        </ImageWrapper>
+        <Karmameter
+          karma={karma}
+          showmanship={showmanship}
+          ticker={ticker}
+          minigameRound={minigameRound}
+          ROUND_DURATION={ROUND_DURATION}
+        />
+      </FlexDiv>
       <ButtonCluster className='button-cluster'>
         <MinigameButton
           buttonData={dialogueOptions[currentButtons]}
@@ -83,54 +83,44 @@ function MinigamePrototype() {
   );
 }
 
-const MinigameUI = styled.div`
-  grid-area: ui;
-  border: 3px solid black;
-  border-radius: 8px;
-  display: grid;
-  grid-template-areas:
-    'lfram title title rfram'
-    'lfram bubbl karma rfram'
-    'lfram bubbl karma rfram'
-    'image image karma rfram'
-    'image image optns optns'
-    'image image optns optns';
-  grid-template-rows: 2fr 2fr 1fr 2fr 2fr 1fr;
-  grid-template-columns: 1fr 5fr 5fr 1fr;
-  overflow: hidden;
-`;
+const ImageWrapper = styled.div`
+  width: 100%;
+`
 
-const TitleBanner = styled.h1`
-  border: 2px solid goldenrod;
-  border-radius: 14px;
-  grid-area: title;
+const FlexDiv = styled.div`
+  display: flex;
+`
+
+const MinigameUI = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const TitleBanner = styled.div`
+  opacity: .65;
+  margin-top: 12px;
+  margin-left: 12px;
+  display: flex;
+  width: 100%;
 `
 
 const SpeechBubble = styled.div`
   border: 2px solid black;
-  border-radius: 24px;
-  grid-area: bubbl;
   position: relative;
+  height: 100px;
+  border-left: none;
+  border-right: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 `
 
 const ButtonCluster = styled.div`
-  grid-area: optns;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  border: 4px solid rgb(221, 171, 34);
-  border-radius: 18px;
-  background-color: rgb(53, 39, 2);
-`
-
-const LeftFrame = styled.img`
-  grid-area: lfram;
-`
-
-const RightFrame = styled.img`
-  grid-area: rfram;
-  transform: rotateY(180deg);
-  height: 50%;
+  display: flex;
+  flex-direction: column;
+  height: 175px;
+  justify-content: space-between;
 `
 
 export default MinigamePrototype;

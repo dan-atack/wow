@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Tickerbox({ value, gridArea, text }) {
+function Tickerbox({ value, text }) {
     return (
-        <Wrapper gridArea={gridArea}>
+        <Wrapper>
             <Label>{text}</Label>
             <TimeLeft>{value}</TimeLeft>
         </Wrapper>
@@ -15,19 +15,19 @@ const TimeLeft = styled.h3`
 `
 
 const Label = styled.h5`
-    margin-top: -5%;
 `
 
 const Wrapper = styled.div`
     border: 2px solid black;
-    border-radius: 50%;
-    width: 84px;
-    height: 84px;
-    margin-top: 2%;
-    padding: 5%;
-    padding-top: 10%;
-    grid-area: ${(props) => props.gridArea};
-    background-color: #3f704d;
+    width: 100px;
+    height: 100%;
+    background-color: white;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom:none;
 `
 
 export default Tickerbox;

@@ -30,10 +30,15 @@ const Clicker = styled.button`
   height: 100%;
   width: 100%;
   background-color: black;
-  color: whitesmoke;
+  color: white;
   font-size: 1em;
-  border: 3px solid rgb(197, 185, 151);
-  border-radius: 18px;
+  text-align: left;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  :hover {
+    background: grey;
+  }
 `;
 
 export default MinigameButton;

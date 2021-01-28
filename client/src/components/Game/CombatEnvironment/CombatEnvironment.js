@@ -24,7 +24,7 @@ import baddieData from '../../../data/baddie.json';
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 
 //components
-import CombatUi from './CombatUi';
+import CombatUi from './CombatUi/CombatUi';
 import LevelVisualGenerator from './LevelVisualGenerator';
 // Variable display element for dev-assistance purposes:
 import DevDisplay from './DevD';

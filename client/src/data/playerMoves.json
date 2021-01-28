@@ -4,11 +4,13 @@
         "id": 1,
         "baseDmg": 5,
         "maxHype": 20,
-        "special": "none",
+        "special": null,
         "challengeType": "combo",
         "shape": "radial",
         "range": 1,
         "time": 5000,
+        "icon": "takedown.png",
+        "description" : "Chaperone your shoulder into your opponents gut, driving them to their destination... the cold hard floor",
         "combos": [
             [
                 "A", "W", "D", "S"
@@ -26,11 +28,12 @@
         "id": 2,
         "baseDmg": 5,
         "maxHype": 20,
-        "special": "none",
+        "special": null,
         "challengeType": "combo",
         "shape": "radial",
         "range": 2,
         "time": 4000,
+        "description": "release your stress and anger like a spring and excuse the strength from your opponent's knees",
         "combos": [
             [
                 "A", "S", "D", "F"
@@ -48,11 +51,12 @@
         "id": 3,
         "baseDmg": 5,
         "maxHype": 20,
-        "special": "none",
+        "special": null,
         "challengeType": "combo",
         "shape": "radial",
         "range": 3,
         "time": 5000,
+        "description": "Throw your enemy as far as you can trust them",
         "combos": [
             [
                 "A", "Q", "W", "E"
@@ -70,11 +74,12 @@
         "id": 4,
         "baseDmg": 100,
         "maxHype": 50,
-        "special": "none",
+        "special": null,
         "challengeType": "combo",
         "shape": "radial",
         "range": 1,
         "time": 7000,
+        "description": "Skies the limit, hope you have your space suit",
         "combos": [
             [
                 "B", "D", "S", "M", "O"

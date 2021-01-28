@@ -1,15 +1,9 @@
 // This file is the prototype 'Top level' function for handling the player's movement phase of their turn:
 import { possiblePaths } from '../Helpers/playerMoveHelper';
 
-export const setupPlayerMovePhase = (
-  movePoints,
-  movePointsHandler,
-  playerCoords,
-  level
-) => {
-  possiblePaths(movePoints, movePointsHandler, playerCoords, level);
-
-  console.log('setting players actions')
+export const setupPlayerMovePhase = (playerAP, playerCoords, level) => {
+  console.log('setting player move options.')
+  return possiblePaths(playerAP, playerCoords, level);
 };
 
 export const playerMove = (

@@ -5,11 +5,11 @@ import {
   playerCoords,
   playerSkills,
   ATTACK_RADIUS,
-  PLAYER_MOVE_OPTIONS,
+  playerMoveOptions,
   mapGrid,
   baddieHP,
   baddieCoords,
-  baddieAttack,
+  baddieDecision,
 } from './combatState';
 
 import {
@@ -24,9 +24,9 @@ export default {
   playerSkills,
   mapGrid,
   ATTACK_RADIUS,
-  PLAYER_MOVE_OPTIONS,
+  playerMoveOptions,
   baddieHP,
   baddieCoords,
-  baddieAttack,
+  baddieDecision,
   level,
 }

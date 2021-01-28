@@ -39,12 +39,11 @@ export const sleep = (duration) => {
 	})
 }
 
-export const possiblePaths = (actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level) => { //function to show the web of movements a player can take on their turn
-  SET_PLAYER_MOVES([]); //sets the populated array of moves to none
+export const possiblePaths = (playerAP, playerCoords, level) => { //function to show the web of movements a player can take on their turn
   const seed = data.find(obj => obj.level === level)
   let distanceCounter = 1;  // iterating counter to tell which iteration of the algorithm this possible move was generated on
-  let moves = actionPoints; // indexing number for algorithm loop
-  const possibleArray = [PLAYER_POS]; //djikstra's to solve spaces starting at PLAYER_POS
+  let moves = playerAP; // indexing number for algorithm loop
+  const possibleArray = [playerCoords]; //djikstra's to solve spaces starting at playerCoords
   for (let i = moves; i > 0; i -= 1) {
     possibleArray.forEach((node) => {
       const unsolvedSpaces = [
@@ -77,7 +76,7 @@ export const possiblePaths = (actionPoints, SET_PLAYER_MOVES, PLAYER_POS, level)
     });
     distanceCounter += 1;
   }
-  SET_PLAYER_MOVES(possibleArray);
+  return possibleArray;
 }
 
 export const pathfinder = (target, PLAYER_MOVES) => { // takes target location and extrapolates a path backwards

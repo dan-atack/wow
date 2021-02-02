@@ -1,20 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import healthbar from '../../../assets/healthbar.png';
-import skillborder from '../../../assets/skillborder.png';
-import menuButton from '../../../assets/menuButton.png';
+import healthbar from '../../../../assets/healthbar.png';
+import skillborder from '../../../../assets/skillborder.png';
+import menuButton from '../../../../assets/menuButton.png';
 
-import { attackRange } from '../../../Helpers/playerCombatHelper';
-import data from '../../../data/mapSeed.json'
+import { attackRange } from '../../../../Helpers/playerCombatHelper';
+import data from '../../../../data/mapSeed.json'
 import { useDispatch, useSelector } from 'react-redux';
 // recoil state management
-import combatState from '../../../state';
-import globalState from '../../../state';
+import combatState from '../../../../state';
+import globalState from '../../../../state';
 import { useRecoilValue, useRecoilState } from 'recoil'
-import { setCombatPhase, setReflexCheck } from '../../../actions';
+import { setCombatPhase, setReflexCheck } from '../../../../actions';
 // Components:
-import ReflexCheck from '../ReflexCheck';
-import playerMoves from '../../../data/playerMoves.json';
+import ReflexCheck from '../../ReflexCheck';
+import SkillButton from './SkillButton';
+import playerMoves from '../../../../data/playerMoves.json';
 
 
 const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
@@ -38,10 +39,11 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
   
   const seed = data.find(obj => obj.level === level)
 
-  const skillClick = async (skill) => { // individual skill being called from map function
-    dispatch(setReflexCheck(skill.id));
-    SET_ENEMY_ATTACK_RADIUS([]);
-    setPlayerMoveOptions([]);
+  const handleClick = async (skill) => { // individual skill being called from map function
+    dispatch(setCombatPhase('playerAction'));
+    dispatch(setReflexCheck(skill.id))
+    SET_ENEMY_ATTACK_RADIUS([])
+    setPlayerMoveOptions([])
     const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
     setPlayerAttackRadius(range);
   }
@@ -68,14 +70,11 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
         <button onClick={() => setPlayerHype(playerHype - 10)}>lower hype</button>
         <button onClick={() => setPlayerHealth(playerHealth + 10)}>increase health</button>
         <button onClick={() => setPlayerHype(playerHype + 10)}>increase hype</button>
-
-
       </ButtonDiv>
       <SkillsDiv>
         {playerSkills.map(skill => {
-          return <Skill onClick={() => skillClick(skill)}>{skill.name}</Skill>
+          return <SkillButton skill={skill} handleClick={handleClick}/>
         })}
-        { turn === 'playerAction' && <Skill onClick={() => dispatch(setCombatPhase('playerMove'))}>undo</Skill>}
       </SkillsDiv>
       <TurnDiv>{turn}</TurnDiv>
       <MenuDiv>
@@ -99,19 +98,6 @@ const MenuDiv = styled.div`
   right: 0px;
   align-items: center;
   justify-content: center;
-`
-
-const Skill = styled.div`
-  height: 50px;
-  width: 50px;
-  outline: 3px solid red;
-  border-radius: 1px;
-  background-color: orange;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: red;
-  cursor: pointer;
 `
 
 const SkillsDiv = styled.div`

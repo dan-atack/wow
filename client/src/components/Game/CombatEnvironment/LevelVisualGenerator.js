@@ -13,28 +13,38 @@ import Pow from '../../Sprinkle/Pow';
 import TerrainTile from './TerrainTile';
 
 
-//generates the map based on the player position, enemy location, obstruction and seed
-const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, ENEMY_ATTACK_RADIUS}) => { 
+// generates the map based on the player position, enemy location, obstruction and seed
+// PROP TYPES
+// row: array of 3-part tuples {x, y, obstacle},
+// baddieCoords: {x, y},
+// playerMove: Handler function to be mapped to each tile in the player's move radius
+// playerAttack: Handler function to be mapped to each tile in the player's ATTACK radius
+// enemyAttackRadius: Array of 2-part coordinates {x, y} representing the baddie's "danger zone"
+const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enemyAttackRadius}) => { 
   const level = useRecoilValue(globalState.level);
   const playerCoords = useRecoilValue(combatState.playerCoords);
   const playerMoveOptions = useRecoilValue(combatState.playerMoveOptions);
   const playerAttackRadius = useRecoilValue(combatState.playerAttackRadius);
-  const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
 
   const seed = data.find(obj => obj.level === level);
-  const dispatch = useDispatch()
 
-  const baddieIsAttackable = false;
+  let baddieIsAttackable = false;
   const determineBaddieIsAttackable = () => {
-    playerAttackRadius.forEach();
+    if (playerAttackRadius.length > 0) {
+      playerAttackRadius.forEach((tile) => {
+        if (tile.x === baddieCoords.x && tile.y === baddieCoords.y) baddieIsAttackable = true;
+      });
+    }
   }
 
+  determineBaddieIsAttackable();
   return (
     <div key={Math.random() * 100000} style={{ display: 'flex' }}>
       {row.map((sq) => {
         if (
           seed.obstructions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
+          // This renders an obstacle if the map file contains an obstacle at the specified coords:
           return (
             <TerrainTile
             key={Math.random() * 100000}
@@ -51,11 +61,17 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, ENEM
           sq.x === baddieCoords.x &&
           sq.y === baddieCoords.y
         ) {
+          if (baddieIsAttackable) {
+            // If you can attack the enemy, we render him as an attackable enemy:
+            return <AttackableEnemy key={Math.random() * 100000} onClick={() => playerAttack(sq.x, sq.y)}>enemy</AttackableEnemy>
+          } else {
+          // Otherwise we render the regular thing:
           return <Enemy key={Math.random() * 100000}>enemy</Enemy>;
+          }
         } else if (
-          ENEMY_ATTACK_RADIUS.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
-            //make a useeffect that checks for player and enemy intersection instead of this damned pow component in CombatEnvironment
+          enemyAttackRadius.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
             if(sq.x === playerCoords.x && sq.y === playerCoords.y) {
+              // If, within the enemy's danger zone, we find the player's coords, render the Player with a POW animation:
               return (
                 <Player key={Math.random() * 10000000}>
                   {sq.x}, {sq.y}
@@ -63,6 +79,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, ENEM
                 </Player>
               )
             } else {
+              // Otherwise, within the enemy's danger zone, render the 'attack radius' tile to indicate danger:
               return (
                 <EnemyAttackRadius key={Math.random() * 100000000}>
                   {sq.x}, {sq.y}
@@ -72,14 +89,16 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, ENEM
         } else if (
           sq.x === playerCoords.x && sq.y === playerCoords.y
           ) {
+          // If we've run through the enemy's danger zone and not found the Player, render the Player, sans pow:
           return <Player key={Math.random() * 100000} />;
         } else if (
           playerAttackRadius.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
+          // Next, render the Player's attack radius if applicable:
           return (
             <AttackRadius
               key={Math.random() * 100000}
-              onClick = {() => playerAttack()}
+              onClick = {() => playerAttack(sq.x, sq.y)}
             >
               {sq.x}, {sq.y}
             </AttackRadius>
@@ -87,6 +106,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, ENEM
         } else if (
           playerMoveOptions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
+          // Next, render the Player's movement radius, if applicable:
           return (
             <PossibleMove
               key={Math.random() * 100000}
@@ -96,6 +116,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, ENEM
             </PossibleMove>
           );
         } else {
+          // Finally, render whatever coordinates are left with the generic 'empty tile':
           return (
             <TerrainTile
             key={Math.random() * 100000}

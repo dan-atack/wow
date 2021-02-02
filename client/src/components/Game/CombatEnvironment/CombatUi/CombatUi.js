@@ -18,7 +18,7 @@ import SkillButton from './SkillButton';
 import playerMoves from '../../../../data/playerMoves.json';
 
 
-const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
+const CombatUi = ({turn, setEnemyAttackRadius}) => {
   const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
   const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
   const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
@@ -34,15 +34,14 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
   const randomMove = Math.floor(Math.random() * playerMoves.length);
   // For the initial test, we will take a random move, rather than the one specified by the button you pressed...
   const randomCombo = Math.floor(Math.random() * 3);
-  const fakePreviousMoves = 0;// to simulate time-reduction for a move that is at the end of a chain of moves
-  const testMove = playerMoves[randomMove];
+  let previousMoves = 0;// for time-reduction for a move that is at the end of a chain of moves
   
   const seed = data.find(obj => obj.level === level)
 
   const handleClick = async (skill) => { // individual skill being called from map function
     dispatch(setCombatPhase('playerAction'));
     dispatch(setReflexCheck(skill.id))
-    SET_ENEMY_ATTACK_RADIUS([])
+    setEnemyAttackRadius([])
     setPlayerMoveOptions([])
     const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
     setPlayerAttackRadius(range);
@@ -52,13 +51,13 @@ const CombatUi = ({turn, SET_ENEMY_ATTACK_RADIUS}) => {
 
   return(
     <div className="Combat-UI">
-      {doReflexCheck ? 
+      {doReflexCheck && 
       <ReflexCheck
         move={playerMoves.find((move) => move.id === reflexCheckId)}
         combo={randomCombo}
-        numPrevMoves={fakePreviousMoves}
+        numPrevMoves={previousMoves}
         style={{ position: 'absolute', top: '0px', right: '50px' }}
-      /> : <></>}
+      />}
       <HealthHud src={healthbar}/>
       <SkillHud src={skillborder}/> 
       <Wrapper>

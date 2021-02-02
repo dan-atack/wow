@@ -141,7 +141,7 @@ const CombatEnvironment = () => {
         baddieHP={baddieHP}
         baddieCoords={baddieCoords}
         baddieDecision={baddieDecision}
-      />}
+      />} 
       {/* <Versus/> */}
       <CombatUi
         turn={combatPhase}

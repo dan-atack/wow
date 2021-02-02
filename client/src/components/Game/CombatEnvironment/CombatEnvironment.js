@@ -15,6 +15,7 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 
 import data from '../../../data/mapSeed.json';
+import playerMoveData from '../../../data/playerMoves.json';  // 'Moves' here refers to wrestling moves, not movement options
 import baddieData from '../../../data/baddie.json';
 
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
@@ -41,11 +42,14 @@ const CombatEnvironment = () => {
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(
     combatState.playerMoveOptions
   );
+  // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
+  const reflexCheckId = useSelector((state) => state.game.reflexCheck);
+  const playerAttackData = playerMoveData.find((move) => move.id === reflexCheckId);  // Hacky but effective!
   // Baddie Related State Values:
   const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
   const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
   const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
-  const [ENEMY_ATTACK_RADIUS, SET_ENEMY_ATTACK_RADIUS] = useState([]);
+  const [enemyAttackRadius, setEnemyAttackRadius] = useState([]);
 
   // temporary character state//
   const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
@@ -76,7 +80,7 @@ const CombatEnvironment = () => {
       case 'baddieAction':
         const dangerZone = baddieAction(baddieCoords, seed, baddieDecision);
         // This will change the Level Visual Generator's props, causing it to reload:
-        SET_ENEMY_ATTACK_RADIUS(dangerZone);
+        setEnemyAttackRadius(dangerZone);
         // Determine here if the player gets hit:
         dangerZone.forEach((point) => {
           if (point.x === playerCoords.x && point.y === playerCoords.y) {
@@ -117,17 +121,19 @@ const CombatEnvironment = () => {
 
   // Handler function passed to the LVG, to be fired when the player selects a tile for ATTACK:
   const playerAttack = (x, y) => {
-    console.log('player attacks!');
+    console.log('player attacks at ', x, y);
     dispatch(startReflexCheck());    // When the player selects their action, begin a reflex check but don't advance combat round.
-    setPlayerAttackRadius([]);      // Clear player attack radius once attack is selected.
+    setPlayerAttackRadius([]);       // Clear player attack radius once attack is selected.
     if (baddieCoords.x === x && baddieCoords.y === y) {
+      // Attack damage without reflex check:
+      setBaddieHP(baddieHP - playerAttackData.baseDmg);
       console.log(`Player hits baddie with attack!`);
     }
   }
 
   return (
     <>
-      {devMode ? <DevDisplay
+      {devMode && <DevDisplay
         playerHP={playerHealth}
         playerAP={playerAP}
         playerHype={playerHype}
@@ -135,21 +141,21 @@ const CombatEnvironment = () => {
         baddieHP={baddieHP}
         baddieCoords={baddieCoords}
         baddieDecision={baddieDecision}
-      /> : <></>}
+      />}
       {/* <Versus/> */}
       <CombatUi
         turn={combatPhase}
-        SET_ENEMY_ATTACK_RADIUS={SET_ENEMY_ATTACK_RADIUS}
+        setEnemyAttackRadius={setEnemyAttackRadius}
       />
       <Wrapper>
-        {mapGrid.map((row, idx) => {
+        {mapGrid.map((row) => {
           return (
             <LevelVisualGenerator
               row={row}
               baddieCoords={baddieCoords}
               playerMove={playerMove}
               playerAttack={playerAttack}
-              ENEMY_ATTACK_RADIUS={ENEMY_ATTACK_RADIUS}
+              enemyAttackRadius={enemyAttackRadius}
             />
           );
         })}

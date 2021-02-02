@@ -22,6 +22,7 @@ import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 //components
 import CombatUi from './CombatUi/CombatUi';
 import LevelVisualGenerator from './LevelVisualGenerator';
+import Versus from '../VersusScreen/Versus';
 // Variable display element for dev-assistance purposes:
 import DevDisplay from './DevD';
 
@@ -135,6 +136,7 @@ const CombatEnvironment = () => {
         baddieCoords={baddieCoords}
         baddieDecision={baddieDecision}
       /> : <></>}
+      {/* <Versus/> */}
       <CombatUi
         turn={combatPhase}
         SET_ENEMY_ATTACK_RADIUS={SET_ENEMY_ATTACK_RADIUS}

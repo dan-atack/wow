@@ -7,7 +7,6 @@ const SkillButton = (props) => {
   const {skill, handleClick} = props;
   const [open, setOpen] = useState(false);
 
-
   return (
     <Wrapper 
       onClick={() => handleClick(skill)}

@@ -33,6 +33,7 @@
         "shape": "radial",
         "range": 2,
         "time": 4000,
+        "icon": "lunge.png",
         "description": "release your stress and anger like a spring and excuse the strength from your opponent's knees",
         "combos": [
             [
@@ -56,6 +57,7 @@
         "shape": "radial",
         "range": 3,
         "time": 5000,
+        "icon": "throw.png",
         "description": "Throw your enemy as far as you can trust them",
         "combos": [
             [
@@ -79,6 +81,7 @@
         "shape": "radial",
         "range": 1,
         "time": 7000,
+        "icon": "limitBreak.png",
         "description": "Skies the limit, hope you have your space suit",
         "combos": [
             [

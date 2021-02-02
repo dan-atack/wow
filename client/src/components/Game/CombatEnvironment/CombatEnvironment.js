@@ -1,13 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCombatPhase,} from '../../../actions';
-import {
-  setupPlayerMovePhase,
-  playerMove,
-} from '../../../Helpers/playerMovePhase';
+import { setCombatPhase, startReflexCheck } from '../../../actions';
+import { setupPlayerMovePhase } from '../../../Helpers/playerMovePhase';
 // Redux-advancing helper functions:
-import { playerActionPhase } from '../../../Helpers/playerActionPhase';
 import { baddieMoveLogic } from '../../../Helpers/baddieMoveLogic';
 import { baddieMakeDecision, baddieAction } from '../../../Helpers/baddieActionLogic'; 
 import { specialEventLogic } from '../../../Helpers/specialEventLogic';
@@ -38,14 +34,11 @@ const CombatEnvironment = () => {
   // Player Related State Values:
   const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
   const [playerAP, setPlayerAP] = useRecoilState(combatState.playerAP);
+  const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
   const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
   const [playerCoords, setPlayerCoords] = useRecoilState(combatState.playerCoords);
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(
     combatState.playerMoveOptions
-  );
-  // ?????
-  const [ATTACK_RADIUS, SET_ATTACK_RADIUS] = useRecoilState(
-    combatState.ATTACK_RADIUS
   );
   // Baddie Related State Values:
   const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
@@ -81,11 +74,19 @@ const CombatEnvironment = () => {
         break;
       case 'baddieAction':
         const dangerZone = baddieAction(baddieCoords, seed, baddieDecision);
+        // This will change the Level Visual Generator's props, causing it to reload:
         SET_ENEMY_ATTACK_RADIUS(dangerZone);
-        dispatch(setCombatPhase('playerAction'))
+        // Determine here if the player gets hit:
+        dangerZone.forEach((point) => {
+          if (point.x === playerCoords.x && point.y === playerCoords.y) {
+            setPlayerHealth(playerHealth - baddieDecision.damage);
+            console.log(`Player is hit by ${baddieDecision.name}, causing ${baddieDecision.damage} damage!`)
+          }
+        });
+        dispatch(setCombatPhase('playerAction'));
         break;
       case 'playerAction':
-        playerActionPhase(dispatch, setCombatPhase);
+        // Await input from the attack selection inputs and no more.
         break;
       case 'specialEvent':
         specialEventLogic(dispatch, setCombatPhase, level);
@@ -96,23 +97,15 @@ const CombatEnvironment = () => {
       default:
         console.log('invalid phase requested');
     }
-  }, [combatPhase, playerCoords]);
-  // End of Super Switch Statement
-
-  // Combat initiator line, rewired for Redux state:
-  React.useEffect(() => {
-    if (combatPhase === 'noCombat') {
-      dispatch(setCombatPhase('playerMove'));
-      possiblePaths(playerAP, setPlayerMoveOptions, playerCoords, level);
-    }
   }, [combatPhase]);
 
   React.useEffect(() => {
-    if (playerHealth === 0 ){
-      console.log('Game Over')
+    if (playerHealth <= 0 ){
+      console.log('Game Over Man.')
     }
   }, [playerHealth])
 
+  // Handler function passed to the LVG, to be fired when the player selects a tile for MOVEMENT:
   const playerMove = (x, y) => {
     console.log('player moves');
     const playerPath = pathfinder({ x: x, y: y }, playerMoveOptions);
@@ -120,6 +113,16 @@ const CombatEnvironment = () => {
     setPlayerMoveOptions([]);
     dispatch(setCombatPhase('baddieAction'));
   };
+
+  // Handler function passed to the LVG, to be fired when the player selects a tile for ATTACK:
+  const playerAttack = (x, y) => {
+    console.log('player attacks!');
+    dispatch(startReflexCheck());    // When the player selects their action, begin a reflex check but don't advance combat round.
+    setPlayerAttackRadius([]);      // Clear player attack radius once attack is selected.
+    if (baddieCoords.x === x && baddieCoords.y === y) {
+      console.log(`Player hits baddie with attack!`);
+    }
+  }
 
   return (
     <>
@@ -143,6 +146,7 @@ const CombatEnvironment = () => {
               row={row}
               baddieCoords={baddieCoords}
               playerMove={playerMove}
+              playerAttack={playerAttack}
               ENEMY_ATTACK_RADIUS={ENEMY_ATTACK_RADIUS}
             />
           );

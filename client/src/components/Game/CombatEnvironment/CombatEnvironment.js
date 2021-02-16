@@ -122,12 +122,11 @@ const CombatEnvironment = () => {
   // Handler function passed to the LVG, to be fired when the player selects a tile for ATTACK:
   const playerAttack = (x, y) => {
     console.log('player attacks at ', x, y);
-    dispatch(startReflexCheck());    // When the player selects their action, begin a reflex check but don't advance combat round.
     setPlayerAttackRadius([]);       // Clear player attack radius once attack is selected.
     if (baddieCoords.x === x && baddieCoords.y === y) {
-      // Attack damage without reflex check:
-      setBaddieHP(baddieHP - playerAttackData.baseDmg);
-      console.log(`Player hits baddie with attack!`);
+      dispatch(startReflexCheck());    // If the player hits the baddie, begin a reflex check but don't advance combat round.
+    } else {                           // Otherwise, do advance the combat round:
+      dispatch(setCombatPhase('specialEvent'))
     }
   }
 

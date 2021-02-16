@@ -6,10 +6,8 @@ import { useTime } from '../../../hooks/useTime';
 import { frames } from '../../../data/frames.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFrame } from '../../../actions';
-import Gate from '../../../assets/gate.png';
 
 function CutscenePrototype({ scene }) {
-  const backgrounds = { gate: Gate };
   const dispatch = useDispatch();
   const currentFrame = useSelector((state) => state.game.frame);
   const frameData = frames[scene]
@@ -30,13 +28,19 @@ function CutscenePrototype({ scene }) {
     if (!frameData.last) dispatch(setFrame(currentFrame + 1));
   }, [now]);
   return (
-    <Wrapper className='background' bg={backgrounds[frameData.background]}>
+    <Wrapper className='background' >
+      <Background src={require(`../../../assets/backgrounds/${frameData.background}.png`)} alt='background scene'/>
       <WIPHeader>WORK IN PROGRESS - CUTSCENE</WIPHeader>
       <Character avatar={frameData.character} characterPosition={frameData.characterPosition}/>
       <Dialogue text={frameData.text} />
     </Wrapper>
   );
 }
+
+const Background = styled.img`
+  width: 100%;
+  height: 100vh;
+`
 
 const WIPHeader = styled.div`
   position: absolute;

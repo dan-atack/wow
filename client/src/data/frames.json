@@ -3,30 +3,54 @@
         "parkingLot": {
           "frame_0": {
             "character": "You should not see this.",
-            "background": "This is not visible.",
+            "background": "testScene1",
             "text": "loading cutscene...",
             "duration": 1000
           },
           "frame_1": {
             "character": "placeholderB",
             "characterPosition": "left",
-            "background": "gate",
-            "text": "Let me in! I got an appointment with Mr. Moneybags!",
+            "background": "testScene1",
+            "text": "ZZzzzzZZZZzzzz....",
             "duration": 5000
           },
           "frame_2": {
             "character": "valet",
             "characterPosition": "right",
-            "background": "gate",
-            "text": "Not with those shoes, 'sir'",
+            "background": "testScene1",
+            "text": "BRRRRRRRINNNNGGGGGGG",
             "duration": 4000
           },
           "frame_3": {
             "character": "placeholderB",
-            "background": "gate",
+            "background": "testScene1",
             "characterPosition": "left",
             "text":
-              "You are asking for an initiation in the meaning of hard times, sir.",
+              "What's going on- hello? What do you want?",
+            "duration": 5000
+          },
+          "frame_4": {
+            "character": "valet",
+            "background": "testScene1",
+            "characterPosition": "right",
+            "text":
+              "Bzzzp- Hey, I know it's your day off, but I was wondering if you could come in to work today. Apparently the big boss wants to speak with you",
+            "duration": 5000
+          },
+          "frame_5": {
+            "character": "placeholderB",
+            "background": "testScene1",
+            "characterPosition": "left",
+            "text":
+              "The boss wants to see me? Thanks for the heads up, I hope it is what I think it is...",
+            "duration": 5000
+          },
+          "frame_6": {
+            "character": "valet",
+            "background": "testScene1",
+            "characterPosition": "right",
+            "text":
+              "Look buddy, you didn't hear it from me, but the boss seemed pretty excited to see you, so just hurry up alright? I'll see you when you get here",
             "duration": 5000,
             "last": true
           }

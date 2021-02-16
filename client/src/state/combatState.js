@@ -24,7 +24,7 @@ export const playerHealth = atom({
 
 export const playerCoords = atom({
   key: 'playerCoords',
-  default: {x:5, y:1},
+  default: {x:6, y:1},
 })
 
 export const playerAttackRadius = atom({
@@ -46,7 +46,7 @@ export const baddieHP = atom({
 
 export const baddieCoords = atom({
   key: 'baddieCoords',
-  default: { x: 5, y: 10 },
+  default: { x: 6, y: 11 },
 })
 
 export const baddieDecision = atom({

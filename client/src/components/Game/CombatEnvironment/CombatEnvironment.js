@@ -147,28 +147,30 @@ const CombatEnvironment = () => {
         setEnemyAttackRadius={setEnemyAttackRadius}
       />
       <Wrapper>
-        {mapGrid.map((row) => {
-          return (
-            <LevelVisualGenerator
-              row={row}
-              baddieCoords={baddieCoords}
-              playerMove={playerMove}
-              playerAttack={playerAttack}
-              enemyAttackRadius={enemyAttackRadius}
-            />
-          );
-        })}
+        <div>
+          {mapGrid.map((row) => {
+            return (
+              <LevelVisualGenerator
+                row={row}
+                baddieCoords={baddieCoords}
+                playerMove={playerMove}
+                playerAttack={playerAttack}
+                enemyAttackRadius={enemyAttackRadius}
+              />
+            );
+          })}
+        </div>
       </Wrapper>
     </>
   );
 };
 
 const Wrapper = styled.div`
-  grid-area: ui;
-  width: auto;
-  height: 1000px;
-  margin-top: 5%;
-  margin-left: 5%;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default CombatEnvironment;

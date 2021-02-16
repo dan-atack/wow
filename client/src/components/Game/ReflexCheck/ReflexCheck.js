@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import useSound from 'use-sound';
+import ugh from '../../../assets/sounds/ugh-01.mp3';
 import { useTime } from '../../../hooks/useTime';
 import { useDispatch } from 'react-redux';
+import combatState from '../../../state';
+import { useRecoilState } from 'recoil';
 import { setCombatPhase, stopReflexCheck } from '../../../actions';
 
 // Args: move = the data object for the move, combo = integer for which of the 3 possible key combos, numPrevMoves = integer.
@@ -21,12 +25,26 @@ function ReflexCheck({ move, combo, numPrevMoves }) {
     // Replace this with a useSelector?
     const [failStatus, setFailStatus] = React.useState(false);
     const [successStatus, setSuccessStatus] = React.useState(false);
+    // Baddie HP, to be set (reduced) by a successful completion of the reflex check:
+    const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
+    // Introducing sound effects:
+    const [playUghSound] = useSound(ugh);
+    // This function calculates the damage you inflict if you succeed:
+    const determineDamage = () => {
+        const remainder = timeLeft / move.time * 100;
+        if (remainder > 75) {
+            return move.baseDmg * 2;                // Double damage if you have more than 75% time left
+        } else if (remainder > 50) {
+            return Math.ceil(move.baseDmg * 1.5);   // 50% bonus damage if you have more than 50% time left
+        } else {
+            return move.baseDmg;                    // Otherwise you just do the base dmg.
+        }
+    }
     // One Effect to handle all the keys:
     React.useEffect(() => {
         // If you've failed, ensure the string is exactly zero, and dispatch to advance state AND declare an end to the reflex check):
         if (failStatus) {
             setTimeString('00:00.00');
-            console.log('Reflex check failed... spectacularly!');
             dispatch(setCombatPhase('specialEvent'));
             dispatch(stopReflexCheck());
         }
@@ -62,12 +80,14 @@ function ReflexCheck({ move, combo, numPrevMoves }) {
                 })
                 setKeystrokes(keystrokes + 1);
                 }
-            };
+            };  // IF SUCCESS:
             if (move.combos[combo].length === currentKey && !failStatus) {
                 setSuccessStatus(true);
+                playUghSound();
+                console.log(`Player hits baddie with ${move.name} for ${determineDamage()} damage!`);
+                setBaddieHP(baddieHP - determineDamage());
                 dispatch(setCombatPhase('specialEvent'));
                 dispatch(stopReflexCheck());
-                console.log('Reflex check successful! Yay!');
             } 
             window.addEventListener('keydown', handleKeydown);
         

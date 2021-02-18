@@ -14,7 +14,7 @@ export const playerAP = atom({
 
 export const playerHype = atom({
   key: 'playerHype',
-  default: 100,
+  default: 0,
 })
 
 export const playerHealth = atom({
@@ -35,6 +35,11 @@ export const playerAttackRadius = atom({
 export const playerMoveOptions = atom({
   key: 'playerMoveOptions',
   default: [],
+})
+
+export const playerIsDead = atom({
+  key: 'playerIsDead',
+  default: false,
 })
 
 // Baddie-Related Variables:

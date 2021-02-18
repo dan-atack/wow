@@ -15,6 +15,8 @@ import { setCombatPhase, setReflexCheck } from '../../../../actions';
 // Components:
 import ReflexCheck from '../../ReflexCheck';
 import SkillButton from './SkillButton';
+import ResetButton from './ResetButton';
+// Data:
 import playerMoves from '../../../../data/playerMoves.json';
 
 
@@ -25,8 +27,9 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(
     combatState.playerMoveOptions
   );
-  const playerSkills = useRecoilValue(combatState.playerSkills)
-  const playerCoords = useRecoilValue(combatState.playerCoords)
+  const playerSkills = useRecoilValue(combatState.playerSkills);
+  const playerCoords = useRecoilValue(combatState.playerCoords);
+  const playerIsDead = useRecoilValue(combatState.playerIsDead);  // Flag for the reset button
   const level = useRecoilValue(globalState.level)
   // Conditionally render reflex check based on this value (and falsilly don't render on a zero!):
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);
@@ -51,6 +54,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
 
   return(
     <div className="Combat-UI">
+      {playerIsDead && <ResetButton />}
       {doReflexCheck && 
       <ReflexCheck
         move={playerMoves.find((move) => move.id === reflexCheckId)}

@@ -42,6 +42,7 @@ const CombatEnvironment = () => {
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(
     combatState.playerMoveOptions
   );
+  const [playerIsDead, setPlayerIsDead] = useRecoilState(combatState.playerIsDead);
   // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);
   const playerAttackData = playerMoveData.find((move) => move.id === reflexCheckId);  // Hacky but effective!
@@ -91,28 +92,31 @@ const CombatEnvironment = () => {
         dispatch(setCombatPhase('playerAction'));
         break;
       case 'playerAction':
-        // Await input from the attack selection inputs and no more.
-        break;
+        break;  // Await input from the attack selection inputs and no more.
       case 'specialEvent':
         specialEventLogic(dispatch, setCombatPhase, level);
         break;
       case 'baddieMove':
         baddieMoveLogic(dispatch, setCombatPhase, baddieCoords, setBaddieCoords, playerCoords, baddie, seed,);
         break;
+      case 'gameOver':
+        break;  // Just hang and wait for the player to hit the reset button.
       default:
         console.log('invalid phase requested');
     }
   }, [combatPhase]);
 
+  // Check for player death:
   React.useEffect(() => {
     if (playerHealth <= 0 ){
+      setPlayerIsDead(true);
+      dispatch(setCombatPhase('gameOver'));
       console.log('Game Over Man.')
     }
   }, [playerHealth])
 
   // Handler function passed to the LVG, to be fired when the player selects a tile for MOVEMENT:
   const playerMove = (x, y) => {
-    console.log('player moves');
     const playerPath = pathfinder({ x: x, y: y }, playerMoveOptions);
     setPlayerCoords({ x: x, y: y });
     setPlayerMoveOptions([]);

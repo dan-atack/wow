@@ -27,12 +27,15 @@ function CutscenePrototype({ scene }) {
   React.useEffect(() => {
     if (!frameData.last) dispatch(setFrame(currentFrame + 1));
   }, [now]);
+  const advanceScene = () => {
+    dispatch(setFrame(currentFrame + 1));
+  };
   return (
     <Wrapper className='background' >
       <Background src={require(`../../../assets/backgrounds/${frameData.background}.png`)} alt='background scene'/>
       <WIPHeader>WORK IN PROGRESS - CUTSCENE</WIPHeader>
       <Character avatar={frameData.character} characterPosition={frameData.characterPosition}/>
-      <Dialogue text={frameData.text} />
+      <Dialogue advanceScene={advanceScene} text={frameData.text} type={frameData.type} option={frameData.option}/>
     </Wrapper>
   );
 }

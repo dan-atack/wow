@@ -41,16 +41,32 @@
             "character": "placeholderB",
             "background": "testScene1",
             "characterPosition": "left",
-            "text":
-              "The boss wants to see me? Thanks for the heads up, I hope it is what I think it is...",
-            "duration": 5000
+            "type": "choice",
+            "option": {
+              "optionOne" : {
+                "text" : "Well he should've told me yesterday while I was at work!",
+                "response" : "The sun doesn't revolve around you Galilleo, you punk bitch",
+                "effect" : "something"
+              },
+              "optionTwo" : {
+                "text" : "I don't really want to come in for work today",
+                "response" : "That's not very middle-manager of you",
+                "effect" : "something"
+              },
+              "optionThree" : {
+                "text" : "I'll be right down",
+                "response" : "look buddy, you didn't hear it from me, but the boss seemed pretty excited to see you, so just hurry up alright? I'l; see you when you get here",
+                "effect" : "something"
+              }
+            },
+            "duration": 5000000000
           },
           "frame_6": {
             "character": "valet",
             "background": "testScene1",
             "characterPosition": "right",
             "text":
-              "Look buddy, you didn't hear it from me, but the boss seemed pretty excited to see you, so just hurry up alright? I'll see you when you get here",
+              "response",
             "duration": 5000,
             "last": true
           }

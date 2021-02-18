@@ -10,7 +10,7 @@ const store = configureStore();
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RecoilRoot>
+      <RecoilRoot key={'recoil-root'}>
         <App />
       </RecoilRoot>
     </Provider>

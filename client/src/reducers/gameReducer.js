@@ -8,7 +8,7 @@ const initialState = {
   minigameRound: 0,
   // This momentarily lights up true when a button is pressed, to tell the minigame component to refresh the button options:
   newMinigameRound: false,
-  // Seven possible combat phases: playerMove, playerAction, baddieMove, baddieAction, specialEvent, noCombat, and gameOver:
+  // Eight possible combat phases: playerMove, playerAction, baddieMove, baddieAction, specialEvent, noCombat, gameOver and victory:
   combatPhase: 'noCombat',
   // Reflex check will be either zero, OR the ID number of one of the playerMoves:
   reflexCheck: 0,

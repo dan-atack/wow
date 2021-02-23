@@ -101,6 +101,8 @@ const CombatEnvironment = () => {
         break;
       case 'gameOver':
         break;  // Just hang and wait for the player to hit the reset button.
+      case 'victory':
+        break;  // Just hang and wait for the player to hit the next level button (and possibly play some kind of animation).
       default:
         console.log('invalid phase requested');
     }
@@ -114,6 +116,14 @@ const CombatEnvironment = () => {
       console.log('Game Over Man.')
     }
   }, [playerHealth])
+
+  // Check for baddie death:
+  React.useEffect(() => {
+    if (baddieHP <= 0) {
+      console.log('Victory! We have victory!')
+      dispatch(setCombatPhase('victory'));
+    }
+  }, [baddieHP])
 
   // Handler function passed to the LVG, to be fired when the player selects a tile for MOVEMENT:
   const playerMove = (x, y) => {

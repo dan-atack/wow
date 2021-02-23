@@ -12,6 +12,7 @@ const ResetButton = () => {
     const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
     const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
     const [playerCoords, setPlayerCoords] = useRecoilState(combatState.playerCoords);
+    const [playerIsDead, setPlayerIsDead] = useRecoilState(combatState.playerIsDead);
     const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
     const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
     const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
@@ -20,7 +21,16 @@ const ResetButton = () => {
         setPlayerAttackRadius([]);
         setPlayerHype(0);
         setPlayerCoords({x:6, y:1});
-        // TODO: Reset the rest of the shit.
+        setPlayerIsDead(false);
+        setBaddieHP(100);
+        setBaddieCoords({ x: 6, y: 11 });
+        setBaddieDecision({
+            damage: 0,
+            effect: '',
+            name: '',
+            shape: '',
+            threshold: 0
+        })
         dispatch(setScene(scene - 1))
         dispatch(setCombatPhase('noCombat'));
     }

@@ -34,7 +34,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   // Conditionally render reflex check based on this value (and falsilly don't render on a zero!):
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);
   const doReflexCheck = useSelector((state) => state.game.doReflexCheck);
-  const randomMove = Math.floor(Math.random() * playerMoves.length);
+  const combatPhase = useSelector((state) => state.game.combatPhase);
   // For the initial test, we will take a random move, rather than the one specified by the button you pressed...
   const randomCombo = Math.floor(Math.random() * 3);
   let previousMoves = 0;// for time-reduction for a move that is at the end of a chain of moves
@@ -42,12 +42,13 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   const seed = data.find(obj => obj.level === level)
 
   const handleClick = async (skill) => { // individual skill being called from map function
-    dispatch(setCombatPhase('playerAction'));
-    dispatch(setReflexCheck(skill.id))
-    setEnemyAttackRadius([])
-    setPlayerMoveOptions([])
-    const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
-    setPlayerAttackRadius(range);
+    if (!playerIsDead && combatPhase === 'playerAction') {  // Skill can only be used if player is alive and it's their action phase
+      dispatch(setReflexCheck(skill.id))
+      setEnemyAttackRadius([])
+      setPlayerMoveOptions([])
+      const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
+      setPlayerAttackRadius(range);
+    }
   }
 
   const dispatch = useDispatch();
@@ -76,7 +77,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       </ButtonDiv>
       <SkillsDiv>
         {playerSkills.map(skill => {
-          return <SkillButton skill={skill} handleClick={handleClick}/>
+          return <SkillButton skill={skill} handleClick={handleClick} key={`player-move-${skill.id}`}/>
         })}
       </SkillsDiv>
       <TurnDiv>{turn}</TurnDiv>

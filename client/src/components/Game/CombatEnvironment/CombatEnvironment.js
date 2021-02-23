@@ -155,6 +155,7 @@ const CombatEnvironment = () => {
           {mapGrid.map((row) => {
             return (
               <LevelVisualGenerator
+                key={Math.random() * 100000}
                 row={row}
                 baddieCoords={baddieCoords}
                 playerMove={playerMove}

@@ -16,6 +16,7 @@ import { setCombatPhase, setReflexCheck } from '../../../../actions';
 import ReflexCheck from '../../ReflexCheck';
 import SkillButton from './SkillButton';
 import ResetButton from './ResetButton';
+import VictoryButton from './VictoryButton';
 // Data:
 import playerMoves from '../../../../data/playerMoves.json';
 
@@ -56,6 +57,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   return(
     <div className="Combat-UI">
       {playerIsDead && <ResetButton />}
+      {combatPhase === 'victory' && <VictoryButton />}
       {doReflexCheck && 
       <ReflexCheck
         move={playerMoves.find((move) => move.id === reflexCheckId)}

@@ -46,22 +46,39 @@
               "optionOne" : {
                 "text" : "Well he should've told me yesterday while I was at work!",
                 "response" : "The sun doesn't revolve around you Galilleo, you punk bitch",
-                "effect" : "something"
+                "effect" : "+ 1 tenacity"
               },
               "optionTwo" : {
                 "text" : "I don't really want to come in for work today",
                 "response" : "That's not very middle-manager of you",
-                "effect" : "something"
+                "effect" : "- 1 backbone"
               },
               "optionThree" : {
                 "text" : "I'll be right down",
                 "response" : "look buddy, you didn't hear it from me, but the boss seemed pretty excited to see you, so just hurry up alright? I'l; see you when you get here",
-                "effect" : "something"
+                "effect" : "- 4 self respect"
               }
             },
             "duration": 5000000000
           },
           "frame_6": {
+            "character": "valet",
+            "background": "testScene1",
+            "characterPosition": "right",
+            "text":
+              "Bzzzp- Hey, I know it's your day off, but I was wondering if you could come in to work today. Apparently the big boss wants to speak with you",
+            "duration": 5000
+          },
+          "frame_7": {
+            "character": "valet",
+            "background": "testScene1",
+            "characterPosition": "right",
+            "text":
+              "response",
+            "duration": 5000,
+            "last": true
+          },
+          "frame_8": {
             "character": "valet",
             "background": "testScene1",
             "characterPosition": "right",

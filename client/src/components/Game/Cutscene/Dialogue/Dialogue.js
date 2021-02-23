@@ -1,23 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
-function Dialogue({ text, option, type, advanceScene }) {
+function Dialogue({ text, option, type, advanceScene, setResponse }) {
 
-  if(option) console.log(Object.values(option));
+  const selectChoice = (response) => {
+    setResponse(response)
+    advanceScene()
+  }
+
+  const TextElement = () => {
+    return (
+      <Wrapper>
+        <h1>{text}</h1>
+      </Wrapper>
+    )
+  }
+
   return (
     <>
       {option &&
         <ChoiceWrapper>
           {
-            Object.values(option).map((choice) => {
-              return <Choice onClick={() => advanceScene()}>{choice.text}</Choice>
+            Object.values(option).map((choice, index) => {
+              return <Choice key={index + 1} onClick={() => selectChoice(choice.response)}>{choice.text}</Choice>
             })
           }
         </ChoiceWrapper>
       }
-      <Wrapper>
-        <h1>{text}</h1>
-      </Wrapper>
+      <TextElement/>
     </>
   );
 }

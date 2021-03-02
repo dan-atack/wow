@@ -1,7 +1,7 @@
 [
   {
     "name" : "chess_knight",
-    "level": "parking lot",
+    "level": "parkingLot",
     "health" : 100,
     "actionPoints" : 3,
     "skills" : [

@@ -1,6 +1,6 @@
 [
   {
-    "level" : "parking lot",
+    "level" : "parkingLot",
     "width" : 11,
     "height" : 11,
     "playerStartPosition" : {"x":6, "y":1},

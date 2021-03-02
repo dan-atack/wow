@@ -18,7 +18,7 @@ function MinigamePrototype() {
   const showmanship = useSelector((state) => state.player.showmanship);
   // Global game state also controls the minigame round (and starts at round 0):
   const minigameRound = useSelector((state) => state.game.minigameRound);
-  const newRound = useSelector((state) => state.game.newMinigameRound);
+  const updateRound = useSelector((state) => state.game.newMinigameRound);
   // Rounds last 3 seconds by default:
   const ROUND_DURATION = 3;
   // Define max rounds to avoid an error when you run out of dialogue options:
@@ -40,9 +40,12 @@ function MinigamePrototype() {
   // UseEffect is like the engine; advancing the ticker and updating the buttons each round:
   React.useEffect(() => {
     setTicker(ticker + 1);
-    if (newRound || ticker > (ROUND_DURATION * 15)) {
-      // Add logic to limit to the max round here
-      advanceRound();
+    if (updateRound || ticker > (ROUND_DURATION * 15)) {
+      if (minigameRound < MAX_ROUNDS) {
+        advanceRound();
+      } else {
+        dispatch(setMinigameRound(0, false))
+      }
     }
   }, [now]);
   return (
@@ -65,6 +68,7 @@ function MinigamePrototype() {
           ROUND_DURATION={ROUND_DURATION}
         />
       </FlexDiv>
+      {minigameRound < MAX_ROUNDS &&
       <ButtonCluster className='button-cluster'>
         <MinigameButton
           buttonData={dialogueOptions[currentButtons]}
@@ -78,7 +82,7 @@ function MinigamePrototype() {
         <MinigameButton
           buttonData={dialogueOptions[currentButtons + 3]}
         ></MinigameButton>
-      </ButtonCluster>
+      </ButtonCluster>}
     </MinigameUI>
   );
 }

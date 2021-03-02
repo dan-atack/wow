@@ -1,22 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
-// TO DO: Import image file for use as the 'skin'
+import Tile0 from '../../../../assets/combat/tile-0.png';
+import Tile1 from '../../../../assets/combat/tile-1.png';
+import Turnbuckle from '../../../../assets/combat/turnbuckle.png';
 
-const TerrainTile = ({ type, text }) => {
-    // Determine the terrain's "skin" by referring to its type:
-    let skin = '';
+// PROPS: Level = string name of level (required), obstacle = string name of obstacle (optional)
+const TerrainTile = ({ level, obstacle, x, y }) => {
+    if (obstacle) console.log(obstacle);
+    const tiles = {
+        tile0: Tile0,
+        tile1: Tile1
+    }
+    // TO DO: Randomly choose from a random selection of possible tiles? Hard to do since rerenders are common!
+    const even = x % 2;
 
-    return (
-        <Wrapper>
-            {text}
-        </Wrapper>
-    )
+    return <Tile src={obstacle ? Turnbuckle : tiles[`tile${even}`]}/>
 };
 
-const Wrapper = styled.div`
+const Tile = styled.div`
     width: 50px;
     height: 50px;
-    background-color: grey;
+    background: url(${(props) => props.src}) no-repeat;
     border: 1px solid black;
     opacity: 0.5;
 `;

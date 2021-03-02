@@ -11,11 +11,12 @@ import { startReflexCheck } from '../../../actions';
 
 import Pow from '../../Sprinkle/Pow';
 import TerrainTile from './TerrainTile';
-
+// Asset Imports
+import PlayerSprite from '../../../assets/combat/player.png';
 
 // generates the map based on the player position, enemy location, obstruction and seed
 // PROP TYPES
-// row: array of 3-part tuples {x, y, obstacle},
+// row: array of 3-part tuples {x, y, obstacle},  <---- obstacle is optional string
 // baddieCoords: {x, y},
 // playerMove: Handler function to be mapped to each tile in the player's move radius
 // playerAttack: Handler function to be mapped to each tile in the player's ATTACK radius
@@ -47,15 +48,11 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
           // This renders an obstacle if the map file contains an obstacle at the specified coords:
           return (
             <TerrainTile
-            key={Math.random() * 100000}
-            type='obstacle'
-            text='obstacle'>
-              {
-                seed.obstructions.find(
-                  (obs) => sq.x === obs.x && sq.y === obs.y
-                ).obstacle
-              }
-            </TerrainTile>
+              key={Math.random() * 100000}
+              obstacle={seed.obstructions.find((obs) => sq.x === obs.x && sq.y === obs.y).obstacle}
+              x={sq.x}
+              y={sq.y}
+            />
           );
         } else if (
           sq.x === baddieCoords.x &&
@@ -73,8 +70,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
             if(sq.x === playerCoords.x && sq.y === playerCoords.y) {
               // If, within the enemy's danger zone, we find the player's coords, render the Player with a POW animation:
               return (
-                <Player key={Math.random() * 10000000}>
-                  {sq.x}, {sq.y}
+                <Player key={Math.random() * 100000} src={PlayerSprite}>
                   <Pow/>
                 </Player>
               )
@@ -90,7 +86,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
           sq.x === playerCoords.x && sq.y === playerCoords.y
           ) {
           // If we've run through the enemy's danger zone and not found the Player, render the Player, sans pow:
-          return <Player key={Math.random() * 100000} />;
+          return <Player key={Math.random() * 100000 } src={PlayerSprite}/>;
         } else if (
           playerAttackRadius.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
@@ -120,8 +116,9 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
           return (
             <TerrainTile
             key={Math.random() * 100000}
-            type='empty'
-            text={`${sq.x}, ${sq.y}`}
+            level={level} // e.g. 'parkingLot', 'wrestlingRing', etc.
+            x={sq.x}
+            y={sq.y}
             >
           </TerrainTile>
           )}
@@ -130,15 +127,6 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
     </div>
   );
 }
-
-
-const Box = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: grey;
-  border: 1px solid black;
-  opacity: 0.5;
-`;
 
 const AttackRadius = styled.div`
   width: 50px;
@@ -182,6 +170,7 @@ const PossibleMove = styled.div`
 `;
 
 const Player = styled.div`
+  background: url(${(props) => props.src}) no-repeat;
   width: 50px;
   height: 50px;
   background-color: red;

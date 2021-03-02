@@ -13,6 +13,7 @@ import Pow from '../../Sprinkle/Pow';
 import TerrainTile from './TerrainTile';
 // Asset Imports
 import PlayerSprite from '../../../assets/combat/player.png';
+import Tony from '../../../assets/combat/tony.gif';
 
 // generates the map based on the player position, enemy location, obstruction and seed
 // PROP TYPES
@@ -60,10 +61,10 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
         ) {
           if (baddieIsAttackable) {
             // If you can attack the enemy, we render him as an attackable enemy:
-            return <AttackableEnemy key={Math.random() * 100000} onClick={() => playerAttack(sq.x, sq.y)}>enemy</AttackableEnemy>
+            return <Enemy key={Math.random() * 100000} onClick={() => playerAttack(sq.x, sq.y)}><EnemyImg src={Tony} /></Enemy>
           } else {
           // Otherwise we render the regular thing:
-          return <Enemy key={Math.random() * 100000}>enemy</Enemy>;
+          return <Enemy key={Math.random() * 100000} src={Tony}><EnemyImg src={Tony} /></Enemy>;
           }
         } else if (
           enemyAttackRadius.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
@@ -148,17 +149,17 @@ const EnemyAttackRadius = styled.div`
 const Enemy = styled.div`
   width: 50px;
   height: 50px;
-  background-color: blue;
   border: 1px solid black;
-  opacity: 0.5;
+  position: relative;
 `;
 
-const AttackableEnemy = styled.div`
+const EnemyImg = styled.img`
+  object-fit: contain;
   width: 50px;
   height: 50px;
-  background-color: purple;
-  border: 1px solid black;
-  opacity: 0.5;
+  position: absolute;
+  left: 0;
+  background-color: red;
 `;
 
 const PossibleMove = styled.div`
@@ -173,7 +174,7 @@ const Player = styled.div`
   background: url(${(props) => props.src}) no-repeat;
   width: 50px;
   height: 50px;
-  background-color: red;
+  background-color: limegreen;
   border: 1px solid black;
   opacity: 0.8;
 `;

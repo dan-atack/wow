@@ -44,7 +44,7 @@ const StyledPow = styled.img`
   bottom: ${props => props.yPos + '%'};
   left: ${props => props.xPos + '%'};
   opacity: 0;
-  z-index: -5;
+  z-index: 5;
 `
 
 export default Pow

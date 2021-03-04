@@ -51,6 +51,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
             <TerrainTile
               key={Math.random() * 100000}
               obstacle={seed.obstructions.find((obs) => sq.x === obs.x && sq.y === obs.y).obstacle}
+              overlay={'none'}
               x={sq.x}
               y={sq.y}
             />
@@ -78,9 +79,12 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
             } else {
               // Otherwise, within the enemy's danger zone, render the 'attack radius' tile to indicate danger:
               return (
-                <EnemyAttackRadius key={Math.random() * 100000000}>
-                  {sq.x}, {sq.y}
-                </EnemyAttackRadius>
+                <TerrainTile
+                  key={Math.random() * 100000000}
+                  overlay={'baddieAttack'}
+                  x={sq.x}
+                  y={sq.y}
+                />
               )
             }
         } else if (
@@ -93,24 +97,26 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
         ) {
           // Next, render the Player's attack radius if applicable:
           return (
-            <AttackRadius
+            <TerrainTile
               key={Math.random() * 100000}
               onClick = {() => playerAttack(sq.x, sq.y)}
-            >
-              {sq.x}, {sq.y}
-            </AttackRadius>
+              overlay={'playerAttack'}
+              x={sq.x}
+              y={sq.y}
+            />
           )
         } else if (
           playerMoveOptions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
           // Next, render the Player's movement radius, if applicable:
           return (
-            <PossibleMove
+            <TerrainTile
               key={Math.random() * 100000}
               onClick={() => playerMove(sq.x, sq.y)}
-            >
-              {sq.x}, {sq.y}
-            </PossibleMove>
+              overlay={'playerMove'}
+              x={sq.x}
+              y={sq.y}
+            />
           );
         } else {
           // Finally, render whatever coordinates are left with the generic 'empty tile':
@@ -118,10 +124,10 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
             <TerrainTile
             key={Math.random() * 100000}
             level={level} // e.g. 'parkingLot', 'wrestlingRing', etc.
+            overlay={'none'}  // Possible overlays: 'none', 'playerAttack', 'baddieAttack', 'playerMove'
             x={sq.x}
             y={sq.y}
-            >
-          </TerrainTile>
+          />
           )}
         ;
       })}

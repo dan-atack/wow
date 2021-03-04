@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setKarma, setShowmanship, setMinigameRound } from '../../../../actions';
-import { useSelector } from 'react-redux';
 
 // buttons in the minigame will be fed a data object containing info such as text for the button, and the buttons' karma value.
 function MinigameButton({ buttonData }) {

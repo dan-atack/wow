@@ -3,17 +3,18 @@ import styled from 'styled-components';
 import { useTime } from '../../../hooks/useTime';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setMinigameRound } from '../../../actions';
+import { setMinigameRound, setScene } from '../../../actions';
 import MinigameButton from './MinigameButton';
 import Karmameter from './Karmameter';
 import dialogueOptions from '../../../data/dialogueOptions.json';
-// "Art"work imports
+// "Art"work imports:
 import interview from '../../../assets/promo_bg.png';
 import bubbleTick from '../../../assets/bubble_tick.png';
 
 function MinigamePrototype() {
   const dispatch = useDispatch();
   // Bring in player's karma and showmanship global state values:
+  const scene = useSelector((state) => state.game.scene);
   const karma = useSelector((state) => state.player.karma);
   const showmanship = useSelector((state) => state.player.showmanship);
   // Global game state also controls the minigame round (and starts at round 0):
@@ -29,6 +30,8 @@ function MinigamePrototype() {
   const [ticker, setTicker] = React.useState(0);
   // Buttons' values will be set initially as 1 and 2; these match the first 2 serial id's in the dialogue options dictionary.
   const [currentButtons, setCurrentButtons] = React.useState(0);
+  // Track if the game is still going on:
+  const [gameover, setGameover] = React.useState(false);
   // Button update handler function:
   const advanceRound = () => {
     // Remember to add whatever the number of buttons is to prevent duplicate calls from the dialogtionary.
@@ -37,17 +40,23 @@ function MinigamePrototype() {
     // When this function runs it increments the minigame round, and sets the 'update minigame' flag to false:
     dispatch(setMinigameRound(minigameRound + 1, false));
   };
+  const handleGameOver = () => {
+    dispatch(setMinigameRound(0, false));
+    dispatch(setScene(scene + 1));
+  }
   // UseEffect is like the engine; advancing the ticker and updating the buttons each round:
   React.useEffect(() => {
     setTicker(ticker + 1);
     if (updateRound || ticker > (ROUND_DURATION * 15)) {
-      if (minigameRound < MAX_ROUNDS) {
+      if (!gameover && minigameRound < MAX_ROUNDS) {
         advanceRound();
       } else {
-        dispatch(setMinigameRound(0, false))
+        // Game Over button does this dispatch and advances the scene:
+        setGameover(true);
       }
     }
   }, [now]);
+
   return (
     <MinigameUI className={'MinigameUI'}>
       <TitleBanner>WORK IN PROGRESS - MINIGAME</TitleBanner>
@@ -68,7 +77,12 @@ function MinigamePrototype() {
           ROUND_DURATION={ROUND_DURATION}
         />
       </FlexDiv>
-      {minigameRound < MAX_ROUNDS &&
+      {gameover ?
+      <GameoverWrapper>
+        <GameoverButton onClick={handleGameOver}>
+          NEXT SCENE
+        </GameoverButton>
+      </GameoverWrapper> :
       <ButtonCluster className='button-cluster'>
         <MinigameButton
           buttonData={dialogueOptions[currentButtons]}
@@ -107,6 +121,24 @@ const TitleBanner = styled.div`
   display: flex;
   width: 100%;
 `
+
+const GameoverButton = styled.button`
+    color: white;
+    background-color: #A93355;
+    font-size: 24px;
+    height: 200px;
+    width: 500px;
+    border: 2px solid black;
+    border-radius: 16px;
+`;
+
+const GameoverWrapper = styled.div`
+    position: absolute;
+    z-index: 100;
+    left: 0px;
+    bottom: 0px;
+    border-radius: 16px;
+`;
 
 const SpeechBubble = styled.div`
   border: 2px solid black;

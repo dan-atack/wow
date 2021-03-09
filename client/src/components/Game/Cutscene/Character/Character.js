@@ -1,19 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import Player from '../../../../assets/avatar_01.png';
-import Valet from '../../../../assets/valet.png';
-import Placeholder from '../../../../assets/character frames/images/Placeholder_01.png';
-import PlaceholderB from '../../../../assets/character frames/images/Placeholder_01B.png';
 
 function Character({ avatar, characterPosition }) {
   // there has GOT to be a better way than this, but for now...
-  const characters = { player: Player, valet: Valet, placeholder: Placeholder, placeholderB: PlaceholderB };
   return (
     <Wrapper characterPosition={characterPosition}>
-      <CharacterImg src={characters[avatar]}/>
+      <CharacterBorder>
+        <CharacterImg src={require(`../../../../assets/character frames/images/${avatar}.png`)}/> 
+      </CharacterBorder>
     </Wrapper>
   );
 }
+
+const CharacterImg = styled.img`
+  height: 256px;
+  width: 256px;
+`
 
 const Wrapper = styled.div`
   position: absolute;
@@ -22,12 +24,14 @@ const Wrapper = styled.div`
   bottom: 127px;
 `;
 
-const CharacterImg = styled.img`
-  background-image: url(${(props) => props.src}) no-repeat;
+const CharacterBorder = styled.div`
   height: 256px;
   width: 256px;
   border: 3px solid black;
   transition-duration: 0.25s;
+  position:relative;
 `;
+
+
 
 export default Character;

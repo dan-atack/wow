@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import mainPage from '../../assets/mainPage.jpg';
+import livingRoom from '../../assets/backgrounds/livingRoom.png';
 
 function MainMenu() {
   return (
@@ -17,6 +17,7 @@ function MainMenu() {
 const Header = styled.h1`
   margin-bottom: 48px;
   font-size: 72px;
+  color: black;
 `
 
 const Wrapper = styled.div`
@@ -25,7 +26,7 @@ const Wrapper = styled.div`
   margin: 0;
   border: none;
   border-radius: 0px;
-  background-image: url(${mainPage});
+  background-image: url(${livingRoom});
   color: white;
   display: flex;
   justify-content: center;
@@ -37,9 +38,13 @@ const Start = styled.button`
   height: 50px;
   width: 300px;
   border: 3px solid black;
-  border-radius: 12px;
   font-size: 24px;
   text-decoration: none;
+  background: rgb(255,255,255,0.5);
+  transition: all .2s ease-in;
+  :hover {
+    background: rgb(255,255,255,1);
+  }
 `;
 
 export default MainMenu;

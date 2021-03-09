@@ -4,15 +4,12 @@ import styled from 'styled-components';
 
 import combatState from '../../../state'
 import globalState from '../../../state'
-import { useRecoilState, useRecoilValue } from 'recoil';
-
-import { useDispatch } from 'react-redux';
-import { startReflexCheck } from '../../../actions';
+import { useRecoilValue } from 'recoil';
 
 import Pow from '../../Sprinkle/Pow';
 import TerrainTile from './TerrainTile';
+import SpriteTile from './SpriteTile';
 // Asset Imports
-import PlayerSprite from '../../../assets/combat/player.png';
 import Tony from '../../../assets/combat/tony.gif';
 
 // generates the map based on the player position, enemy location, obstruction and seed
@@ -62,19 +59,30 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
         ) {
           if (baddieIsAttackable) {
             // If you can attack the enemy, we render him as an attackable enemy:
-            return <Enemy key={Math.random() * 100000} onClick={() => playerAttack(sq.x, sq.y)}><EnemyImg src={Tony} /></Enemy>
-          } else {
-          // Otherwise we render the regular thing:
-          return <Enemy key={Math.random() * 100000} src={Tony}><EnemyImg src={Tony} /></Enemy>;
+              return (
+                <SpriteTile 
+                  key={Math.random() * 100000}
+                  level={seed.level}
+                  onClick={() => playerAttack(sq.x, sq.y)}
+                />
+              )
+            } else {
+            // Otherwise we render them as a non-clickable image:
+            return (
+              <SpriteTile 
+              key={Math.random() * 100000}
+              level={seed.level}
+            />
+            )
           }
         } else if (
           enemyAttackRadius.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
             if(sq.x === playerCoords.x && sq.y === playerCoords.y) {
               // If, within the enemy's danger zone, we find the player's coords, render the Player with a POW animation:
               return (
-                <Player key={Math.random() * 100000} src={PlayerSprite}>
-                  <Pow/>
-                </Player>
+                <SpriteTile key={Math.random() * 1000000} isPlayer={true}>
+                  <Pow />
+                </SpriteTile>
               )
             } else {
               // Otherwise, within the enemy's danger zone, render the 'attack radius' tile to indicate danger:
@@ -91,7 +99,9 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
           sq.x === playerCoords.x && sq.y === playerCoords.y
           ) {
           // If we've run through the enemy's danger zone and not found the Player, render the Player, sans pow:
-          return <Player key={Math.random() * 100000 } src={PlayerSprite}/>;
+          return (
+            <SpriteTile key={Math.random() * 100000} isPlayer={true} />
+          );
         } else if (
           playerAttackRadius.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
@@ -134,64 +144,6 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
     </div>
   );
 }
-
-const AttackRadius = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: pink;
-  border: 1px solid black;
-  opacity: 0.5;
-  cursor: pointer;
-`;
-
-const EnemyAttackRadius = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: pink;
-  border: 1px solid black;
-  opacity: 0.5;
-`;
-
-const Enemy = styled.div`
-  width: 50px;
-  height: 50px;
-  border: 1px solid black;
-  position: relative;
-`;
-
-const EnemyImg = styled.img`
-  object-fit: contain;
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  left: 0;
-  background-color: red;
-`;
-
-const PossibleMove = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: grey;
-  border: 1px solid black;
-  opacity: 0.9;
-`;
-
-const Player = styled.div`
-  background: url(${(props) => props.src}) no-repeat;
-  width: 50px;
-  height: 50px;
-  background-color: limegreen;
-  border: 1px solid black;
-  opacity: 0.8;
-`;
-
-const Path = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: yellow;
-  border: 1px solid black;
-  opacity: 0.8;
-`;
 
 export default LevelVisualGenerator;
 

@@ -4,14 +4,12 @@ import { cross } from '../components/Library/attackShapeLibrary'
 
 // Future versions of this function will eventually produce something from the baddie and player's respective positions...
 export const baddieMakeDecision = (baddieCoords, playerCoords, baddie) => {
-  console.log('baddie decision phase');
   // ... For now it will simply randomly select an entry from the baddie's skills list, and pass that to the Combat Env:
   const choice = baddie.skills[Math.floor(Math.random() * baddie.skills.length)];
   return choice;
 };
 
 export const baddieAction = (baddieCoords, seed, baddieDecision) => {
-  console.log('baddie does their action now')
   if(baddieDecision) {
     switch (baddieDecision.name) {
       case "Crisis of Faith": 

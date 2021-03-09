@@ -4,7 +4,9 @@ import Tile0 from '../../../../assets/combat/tile-0.png';
 import Tile1 from '../../../../assets/combat/tile-1.png';
 import Turnbuckle from '../../../../assets/combat/turnbuckle.png';
 
-// PROPS: Level = string name of level (required), obstacle = string name of obstacle (optional)
+// PROPS: Level = string name of level (required), x & y = self-explanatory, obstacle = string name of obstacle (optional),
+// overlay = string name of overlay style (optional; options are 'playerMove', 'playerAttack' and 'baddieAttack'
+// onClick = handler function
 const TerrainTile = ({ level, x, y, obstacle, overlay, onClick }) => {
     const tiles = {
         tile0: Tile0,

@@ -2,7 +2,6 @@
 import { possiblePaths } from '../Helpers/playerMoveHelper';
 
 export const setupPlayerMovePhase = (playerAP, playerCoords, level) => {
-  console.log('setting player move options.')
   return possiblePaths(playerAP, playerCoords, level);
 };
 

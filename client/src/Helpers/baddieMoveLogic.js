@@ -1,7 +1,6 @@
 // This File contains functions for the automated control of baddie movement functions:
 
 export const baddieMoveLogic = ( dispatch, setCombatPhase, baddiePosition, setBaddiePosition, playerPosition, baddie, seed) => {
-  console.log('baddie moves now')
   // orientationFinder returns an array that informs direction of movement logic
   const orientation = orientationFinder(baddiePosition, playerPosition) 
 

@@ -2,13 +2,13 @@
     "frames": {
         "parkingLot": {
           "frame_0": {
-            "character": "You should not see this.",
+            "character": "sharkNeutral",
             "background": "livingRoom",
             "text": "loading cutscene...",
             "duration": 1000
           },
           "frame_1": {
-            "character": "placeholderB",
+            "character": "sharkNeutral",
             "characterPosition": "left",
             "background": "livingRoom",
             "text": "ZZzzzzZZZZzzzz....",
@@ -22,7 +22,7 @@
             "duration": 4000
           },
           "frame_3": {
-            "character": "placeholderB",
+            "character": "sharkSurprised",
             "background": "livingRoom",
             "characterPosition": "left",
             "text":
@@ -38,7 +38,7 @@
             "duration": 5000
           },
           "frame_5": {
-            "character": "placeholderB",
+            "character": "sharkNeutral",
             "background": "livingRoom",
             "characterPosition": "left",
             "type": "choice",
@@ -70,15 +70,6 @@
             "duration": 5000
           },
           "frame_7": {
-            "character": "valet",
-            "background": "livingRoom",
-            "characterPosition": "right",
-            "text":
-              "response",
-            "duration": 5000,
-            "last": true
-          },
-          "frame_8": {
             "character": "valet",
             "background": "livingRoom",
             "characterPosition": "right",

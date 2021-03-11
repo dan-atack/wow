@@ -14,6 +14,7 @@ function CutscenePrototype({ scene }) {
   const currentFrame = useSelector((state) => state.game.frame);
   const currentScene = useSelector((state) => state.game.scene);
 
+  // FIGURE OUT WHY BACKGROUND COLOR ISNT SHOWING UP [ERIC]
 
   const frameData = frames[scene]
     ? frames[scene][`frame_${currentFrame}`] || {
@@ -29,6 +30,7 @@ function CutscenePrototype({ scene }) {
         duration: 10000,
       };
   const now = useTime(frameData.duration ? frameData.duration : null);
+  console.log(frameData);
   React.useEffect(() => {
     if (!frameData.last) dispatch(setFrame(currentFrame + 1));
   }, [now]);
@@ -59,7 +61,7 @@ function CutscenePrototype({ scene }) {
     <Wrapper className='background' onClick={advanceSceneOnClick}>
       <Background src={require(`../../../assets/backgrounds/${frameData.background}.png`)} alt='background scene'/>
       <WIPHeader>WORK IN PROGRESS - CUTSCENE</WIPHeader>
-      <Character avatar={frameData.character} characterPosition={frameData.characterPosition}/>
+      <Character avatar={frameData.character} characterPosition={frameData.characterPosition} background={frameData.backgroundColor}/>
       <Dialogue advanceScene={advanceScene} text={responseHandler(frameData.text)} type={frameData.type} option={frameData.option} response={response} setResponse={setResponse}/>
     </Wrapper>
   );

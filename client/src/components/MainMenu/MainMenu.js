@@ -10,9 +10,20 @@ function MainMenu() {
       <Link to='/select-character'>
         <Start>Start New Game</Start>
       </Link>
+      <BackgroundImage src={livingRoom} alt='picture of a living room'/>
     </Wrapper>
   );
 }
+
+const BackgroundImage = styled.img`
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  position: absolute;
+  /* top: 0px; */
+  /* left: 0px; */
+  z-index: -1;
+`
 
 const Header = styled.h1`
   margin-bottom: 48px;
@@ -26,7 +37,6 @@ const Wrapper = styled.div`
   margin: 0;
   border: none;
   border-radius: 0px;
-  background-image: url(${livingRoom});
   color: white;
   display: flex;
   justify-content: center;

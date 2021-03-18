@@ -13,12 +13,16 @@ import globalState from '../../../../state';
 import { useRecoilValue, useRecoilState } from 'recoil'
 import { setCombatPhase, setReflexCheck } from '../../../../actions';
 // Components:
+import Portrait from './Portrait';
 import ReflexCheck from '../../ReflexCheck';
 import SkillButton from './SkillButton';
 import ResetButton from './ResetButton';
 import VictoryButton from './VictoryButton';
 // Data:
 import playerMoves from '../../../../data/playerMoves.json';
+// Placeholder temp stuff
+import placeholder from '../../../../assets/character frames/images/Placeholder_01.png';
+import sharkNeutral from '../../../../assets/character frames/images/sharkNeutral.png';
 
 
 const CombatUi = ({turn, setEnemyAttackRadius}) => {
@@ -83,27 +87,28 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
         })}
       </SkillsDiv>
       <TurnDiv>{turn}</TurnDiv>
-      <MenuDiv>
-        <img src={menuButton} alt='menu button'/> 
-      </MenuDiv>
+      <PortraitWrapper>
+        <Portrait character={placeholder}/>
+        <Portrait character={sharkNeutral}/>
+      </PortraitWrapper>
     </div>
   )
 }
 
-const TurnDiv = styled.div`
+const PortraitWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: absolute;
-  right: 50px;
-  top: 50px;
+  height: 100%;
+  bottom: 0px;
+  right: 0px;
 `
 
-const MenuDiv = styled.div`
-  cursor: pointer;
-  display: flex;
+const TurnDiv = styled.div`
   position: absolute;
-  bottom:0px;
-  right: 0px;
-  align-items: center;
-  justify-content: center;
+  right: 300px;
+  top: 30px;
 `
 
 const SkillsDiv = styled.div`

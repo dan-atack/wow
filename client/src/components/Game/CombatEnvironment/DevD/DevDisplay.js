@@ -18,7 +18,7 @@ const DevDisplay = ({ playerHP, playerAP, playerHype, playerCoords, baddieHP, ba
 const Wrapper = styled.div`
     position: absolute;
     top: 50px;
-    right: 200px;
+    right: 300px;
 `
 
 export default DevDisplay;

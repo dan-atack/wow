@@ -41,9 +41,11 @@ function Game() {
       ) : (
         <> </>
       )}
-      <NextButton onClick={handleAdvance}>
-        <i>SKIP &gt;&gt;&gt;</i>
-      </NextButton>
+      {scene !== 3 &&
+        <NextButton onClick={handleAdvance}>
+          <i>SKIP &gt;&gt;&gt;</i>
+        </NextButton>
+      }
     </GameBody>
   );
 }

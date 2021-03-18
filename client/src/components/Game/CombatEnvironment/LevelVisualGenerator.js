@@ -9,6 +9,7 @@ import { useRecoilValue } from 'recoil';
 import Pow from '../../Sprinkle/Pow';
 import TerrainTile from './TerrainTile';
 import SpriteTile from './SpriteTile';
+import OrientationPicker from './OrientationPicker';
 // Asset Imports
 import Tony from '../../../assets/combat/tony.gif';
 
@@ -23,6 +24,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
   const level = useRecoilValue(globalState.level);
   const playerCoords = useRecoilValue(combatState.playerCoords);
   const playerMoveOptions = useRecoilValue(combatState.playerMoveOptions);
+  const playerMovementDecision = useRecoilValue(combatState.playerMovementDecision);
   const playerAttackRadius = useRecoilValue(combatState.playerAttackRadius);
 
   const seed = data.find(obj => obj.level === level);
@@ -40,6 +42,9 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
   return (
     <div key={Math.random() * 100000} style={{ display: 'flex' }}>
       {row.map((sq) => {
+        if (sq.x === playerMovementDecision.x && sq.y === playerMovementDecision.y) {
+          return <OrientationPicker key={Math.random() * 100000} />
+        }
         if (
           seed.obstructions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {

@@ -39,9 +39,9 @@ const CombatEnvironment = () => {
   const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
   const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
   const [playerCoords, setPlayerCoords] = useRecoilState(combatState.playerCoords);
-  const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(
-    combatState.playerMoveOptions
-  );
+  const [playerOrientation, setPlayerOrientation] = useRecoilState(combatState.playerOrientation);
+  const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(combatState.playerMoveOptions);
+  const [playerMovementDecision, setPlayerMovementDecision] = useRecoilState(combatState.playerMovementDecision);
   const [playerIsDead, setPlayerIsDead] = useRecoilState(combatState.playerIsDead);
   // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);
@@ -49,6 +49,7 @@ const CombatEnvironment = () => {
   // Baddie Related State Values:
   const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
   const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
+  const [baddieOrientation, setBaddieOrientation] = useRecoilState(combatState.baddieOrientation);
   const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
   const [enemyAttackRadius, setEnemyAttackRadius] = useState([]);
 
@@ -97,7 +98,8 @@ const CombatEnvironment = () => {
         specialEventLogic(dispatch, setCombatPhase, level);
         break;
       case 'baddieMove':
-        baddieMoveLogic(dispatch, setCombatPhase, baddieCoords, setBaddieCoords, playerCoords, baddie, seed,);
+        baddieMoveLogic(baddieCoords, baddieOrientation, setBaddieCoords, playerCoords, baddie, seed);
+        dispatch(setCombatPhase('baddieDecision'));
         break;
       case 'gameOver':
         break;  // Just hang and wait for the player to hit the reset button.
@@ -128,9 +130,8 @@ const CombatEnvironment = () => {
   // Handler function passed to the LVG, to be fired when the player selects a tile for MOVEMENT:
   const playerMove = (x, y) => {
     const playerPath = pathfinder({ x: x, y: y }, playerMoveOptions);
-    setPlayerCoords({ x: x, y: y });
     setPlayerMoveOptions([]);
-    dispatch(setCombatPhase('baddieAction'));
+    setPlayerMovementDecision({ x: x, y: y });
   };
 
   // Handler function passed to the LVG, to be fired when the player selects a tile for ATTACK:
@@ -151,8 +152,10 @@ const CombatEnvironment = () => {
         playerAP={playerAP}
         playerHype={playerHype}
         playerCoords={playerCoords}
+        playerOrientation={playerOrientation}
         baddieHP={baddieHP}
         baddieCoords={baddieCoords}
+        baddieOrientation={baddieOrientation}
         baddieDecision={baddieDecision}
       />} 
       {/* <Versus/> */}

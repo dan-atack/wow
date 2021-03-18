@@ -1,7 +1,8 @@
 // This File contains functions for the automated control of baddie movement functions:
 
-export const baddieMoveLogic = ( dispatch, setCombatPhase, baddiePosition, setBaddiePosition, playerPosition, baddie, seed) => {
+export const baddieMoveLogic = ( baddiePosition, baddieOrientation, setBaddiePosition, playerPosition, baddie, seed) => {
   // orientationFinder returns an array that informs direction of movement logic
+  // NOTE: This orientation refers to the baddie's stance relative to the player, NOT their cardinal direction
   const orientation = orientationFinder(baddiePosition, playerPosition) 
 
   // now that we have the orientation, 
@@ -24,13 +25,12 @@ export const baddieMoveLogic = ( dispatch, setCombatPhase, baddiePosition, setBa
   console.log(
     'DEBUG LOG',
     {
+      'baddie orientation': baddieOrientation,
       'baddie previous position': baddiePosition,
       'baddie position': {x: baddiePosition.x + randomMove.x, y: baddiePosition.y + randomMove.y},
       'move that baddie decided to take' : {x: randomMove.x, y: randomMove.y},
       'players orientation relative to baddie': {orientation},
     })
-
-  dispatch(setCombatPhase('baddieDecision'));
 };
 
 const moveFinder = (baddiePosition, baddie, seed, orientation, possibleArray, playerPosition) => { // this is what i need to fix

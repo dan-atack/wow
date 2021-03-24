@@ -68,7 +68,7 @@ const CombatEnvironment = () => {
         // Then fall straight through to the baddie decision phase:
       case 'baddieDecision':
         // Helper function contains the logic to determine which move is made:
-        const decision = baddieMakeDecision(baddieCoords, playerCoords, baddie);
+        const decision = baddieMakeDecision(baddieCoords, baddieOrientation, playerCoords, playerOrientation, baddie);
         setBaddieDecision(decision);    // Pass baddie's move data to recoil
         dispatch(setCombatPhase('playerMove'));                       // Advance to next combat phase with redux
         // IDEA: Use time hook to make this phase last 1 - 2 seconds; use that time to show a GIF that telegraphs the move!
@@ -98,7 +98,16 @@ const CombatEnvironment = () => {
         specialEventLogic(dispatch, setCombatPhase, level);
         break;
       case 'baddieMove':
-        baddieMoveLogic(baddieCoords, baddieOrientation, setBaddieCoords, playerCoords, baddie, seed);
+        baddieMoveLogic(
+          baddieCoords,
+          baddieOrientation,
+          setBaddieCoords,
+          setBaddieOrientation,
+          playerCoords,
+          playerOrientation,
+          baddie,
+          seed
+        );
         dispatch(setCombatPhase('baddieDecision'));
         break;
       case 'gameOver':
@@ -115,7 +124,6 @@ const CombatEnvironment = () => {
     if (playerHealth <= 0 ){
       setPlayerIsDead(true);
       dispatch(setCombatPhase('gameOver'));
-      console.log('Game Over Man.')
     }
   }, [playerHealth])
 
@@ -136,7 +144,6 @@ const CombatEnvironment = () => {
 
   // Handler function passed to the LVG, to be fired when the player selects a tile for ATTACK:
   const playerAttack = (x, y) => {
-    console.log('player attacks at ', x, y);
     setPlayerAttackRadius([]);       // Clear player attack radius once attack is selected.
     if (baddieCoords.x === x && baddieCoords.y === y) {
       dispatch(startReflexCheck());    // If the player hits the baddie, begin a reflex check but don't advance combat round.

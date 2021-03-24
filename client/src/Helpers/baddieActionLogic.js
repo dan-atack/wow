@@ -3,7 +3,10 @@
 import { cross } from '../components/Library/attackShapeLibrary'
 
 // Future versions of this function will eventually produce something from the baddie and player's respective positions...
-export const baddieMakeDecision = (baddieCoords, playerCoords, baddie) => {
+export const baddieMakeDecision = (baddieCoords, baddieOrientation, playerCoords, playerOrientation, baddie) => {
+  // Baddie must be 'aware' of their own position/orientation as well as the player's:
+  console.log(`baddie: ${baddieCoords.x}, ${baddieCoords.y} facing ${baddieOrientation}`);
+  console.log(`player: ${playerCoords.x}, ${playerCoords.y} facing ${playerOrientation}`);
   // ... For now it will simply randomly select an entry from the baddie's skills list, and pass that to the Combat Env:
   const choice = baddie.skills[Math.floor(Math.random() * baddie.skills.length)];
   return choice;

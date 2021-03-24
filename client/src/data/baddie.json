@@ -11,14 +11,14 @@
       {"name" : "Revelations", "damage" : 99, "effect" : "none", "shape" : "cross", "threshold" : 80}
     ],
     "movement" : [
-      {"x": -1, "y": 2, "orientation" : ["west", "south", "southwest"]},
-      {"x": -1, "y": -2, "orientation" : ["west", "north", "northwest"]},
-      {"x": 1, "y": 2, "orientation" : ["east", "south", "southeast"]},
-      {"x": 1, "y": -2, "orientation" : ["east", "north", "northeast"]},
-      {"x": -2, "y": 1, "orientation" : ["west", "south", "southwest"]},
-      {"x": -2, "y": -1, "orientation" : ["west", "north", "northwest"]},
-      {"x": 2, "y": 1, "orientation" : ["east", "south", "southeast"]},
-      {"x": 2, "y": -1, "orientation" : ["east", "north", "northeast"]}
+      {"x": -1, "y": 2, "relativePosition" : ["west", "south", "southwest"]},
+      {"x": -1, "y": -2, "relativePosition" : ["west", "north", "northwest"]},
+      {"x": 1, "y": 2, "relativePosition" : ["east", "south", "southeast"]},
+      {"x": 1, "y": -2, "relativePosition" : ["east", "north", "northeast"]},
+      {"x": -2, "y": 1, "relativePosition" : ["west", "south", "southwest"]},
+      {"x": -2, "y": -1, "relativePosition" : ["west", "north", "northwest"]},
+      {"x": 2, "y": 1, "relativePosition" : ["east", "south", "southeast"]},
+      {"x": 2, "y": -1, "relativePosition" : ["east", "north", "northeast"]}
     ]
   }
 ]

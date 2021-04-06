@@ -1,14 +1,44 @@
 [
   {
-    "name" : "Tony",
+    "name" : "tony",
     "level": "parkingLot",
     "health" : 100,
     "actionPoints" : 3,
     "skills" : [
-      {"name" : "Crisis of Faith", "damage" : 20, "effect" : "none", "shape" : "cross", "threshold" : 0},
-      {"name" : "Stigmata", "damage" : 50, "effect" : "none", "shape" : "cross", "threshold" : 30},
-      {"name" : "Holy Man", "damage" : 80, "effect" : "none", "shape" : "cross", "threshold" : 60},
-      {"name" : "Revelations", "damage" : 99, "effect" : "none", "shape" : "cross", "threshold" : 80}
+      {
+        "name" : "Crisis of Faith", 
+        "damage" : 20, "effect" : "none", 
+        "shape" : "cross", 
+        "threshold" : 0,
+        "portrait" : {"name" : "Placeholder_01", "color" : "teal"},
+        "hint" : "Cast ye gods down, for thou art blinded by petrol"
+      },
+      {
+        "name" : "Stigmata", 
+        "damage" : 50, 
+        "effect" : "none", 
+        "shape" : "cross", 
+        "threshold" : 30,
+        "portrait" : {"name" : "Placeholder_01", "color" : "pink"},
+        "hint" : "I'll nail you to the cross"
+      },
+      {
+        "name" : "Holy Man",
+        "damage" : 80, "effect" : "none", 
+        "shape" : "cross", 
+        "threshold" : 60,
+        "portrait" : {"name" : "Placeholder_01", "color" : "salmon"},
+        "hint" : "Power of Christ compels you to buy our slightly cheaper than competition petrol"
+      },
+      {
+        "name" : "Revelations", 
+        "damage" : 99, 
+        "effect" : "none", 
+        "shape" : "cross", 
+        "threshold" : 80,
+        "portrait" : {"name" : "Placeholder_01", "color" : "brown"},
+        "hint" : "On the eighth day he burnt rubber and tweeted about vaccines"
+      }
     ],
     "movement" : [
       {"x": -1, "y": 2, "relativePosition" : ["west", "south", "southwest"]},

@@ -14,8 +14,6 @@ function CutscenePrototype({ scene }) {
   const currentFrame = useSelector((state) => state.game.frame);
   const currentScene = useSelector((state) => state.game.scene);
 
-  // FIGURE OUT WHY BACKGROUND COLOR ISNT SHOWING UP [ERIC]
-
   const frameData = frames[scene]
     ? frames[scene][`frame_${currentFrame}`] || {
         character: null,

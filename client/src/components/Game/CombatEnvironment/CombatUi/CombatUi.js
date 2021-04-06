@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import healthbar from '../../../../assets/healthbar.png';
 import skillborder from '../../../../assets/skillborder.png';
 import menuButton from '../../../../assets/menuButton.png';
 
 import { attackRange } from '../../../../Helpers/playerCombatHelper';
-import data from '../../../../data/mapSeed.json'
+import data from '../../../../data/mapSeed.json';
+import baddieData from '../../../../data/baddie.json';
 import { useDispatch, useSelector } from 'react-redux';
 // recoil state management
 import combatState from '../../../../state';
@@ -21,11 +22,12 @@ import VictoryButton from './VictoryButton';
 // Data:
 import playerMoves from '../../../../data/playerMoves.json';
 // Placeholder temp stuff
-import placeholder from '../../../../assets/character frames/images/Placeholder_01.png';
-import sharkNeutral from '../../../../assets/character frames/images/sharkNeutral.png';
+
 
 
 const CombatUi = ({turn, setEnemyAttackRadius}) => {
+  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
   const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
   const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
   const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
@@ -43,17 +45,20 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   // For the initial test, we will take a random move, rather than the one specified by the button you pressed...
   const randomCombo = Math.floor(Math.random() * 3);
   let previousMoves = 0;// for time-reduction for a move that is at the end of a chain of moves
+
   
-  const seed = data.find(obj => obj.level === level)
+  const seed = data.find(obj => obj.level === level);
+  const encounter = baddieData.find(obj => obj.level === level);
 
   const handleClick = async (skill) => { // individual skill being called from map function
     if (!playerIsDead && combatPhase === 'playerAction') {  // Skill can only be used if player is alive and it's their action phase
       dispatch(setReflexCheck(skill.id))
+      setSelectedSkill(skill);
       setEnemyAttackRadius([])
       setPlayerMoveOptions([])
       const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
       setPlayerAttackRadius(range);
-    }
+    } 
   }
 
   const dispatch = useDispatch();
@@ -88,8 +93,9 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       </SkillsDiv>
       <TurnDiv>{turn}</TurnDiv>
       <PortraitWrapper>
-        <Portrait character={placeholder}/>
-        <Portrait character={sharkNeutral}/>
+        {/* query the data for the base portraits */}
+        <Portrait playerPortrait={true} />
+        <Portrait playerPortrait={false} base={encounter.name}/>
       </PortraitWrapper>
     </div>
   )

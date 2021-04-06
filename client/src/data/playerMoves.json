@@ -10,6 +10,7 @@
         "range": 1,
         "time": 5000,
         "icon": "takedown.png",
+        "portrait" : {"name": "sharkSurprised", "color":"chartreuse"},
         "description" : "Chaperone your shoulder into your opponents gut, driving them to their destination... the cold hard floor",
         "combos": [
             [
@@ -34,6 +35,7 @@
         "range": 2,
         "time": 4000,
         "icon": "lunge.png",
+        "portrait" : {"name": "sharkHappy", "color":"yellow"},
         "description": "release your stress and anger like a spring and excuse the strength from your opponent's knees",
         "combos": [
             [
@@ -58,6 +60,7 @@
         "range": 3,
         "time": 5000,
         "icon": "throw.png",
+        "portrait" : {"name": "sharkAngry", "color":"red"},
         "description": "Throw your enemy as far as you can trust them",
         "combos": [
             [
@@ -82,6 +85,7 @@
         "range": 1,
         "time": 7000,
         "icon": "limitBreak.png",
+        "portrait" : {"name": "sharkNeutral", "color":"orange"},
         "description": "Skies the limit, hope you have your space suit",
         "combos": [
             [

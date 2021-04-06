@@ -93,6 +93,31 @@ const CombatEnvironment = () => {
         dispatch(setCombatPhase('playerAction'));
         break;
       case 'playerAction':
+        // Get longest range player attack, and see if the baddie is in range:
+        let baddieInXRange = false;
+        let baddieInYRange = false;
+        playerMoveData.forEach((datum) => {
+          // See if baddie is within x or y range of each attack:
+          if (playerCoords.x < baddieCoords.x && playerCoords.x + datum.range >= baddieCoords.x) {
+            baddieInXRange = true;
+          }
+          if (playerCoords.x >= baddieCoords.x && playerCoords.x - datum.range >= baddieCoords.x) {
+            baddieInXRange = true;
+          }
+          if (playerCoords.y < baddieCoords.y && playerCoords.y + datum.range >= baddieCoords.y) {
+            baddieInYRange = true;
+          }
+          if (playerCoords.y >= baddieCoords.y && playerCoords.y - datum.range >= baddieCoords.y) {
+            baddieInYRange = true;
+          }
+        });
+        // If none of the player's moves is in range of the baddie, skip to the next phase:
+        if (!(baddieInXRange && baddieInYRange)) {
+          console.log('Baddie is not in range of any player attacks');
+          // This code down here is from the combat ui for the attack button handlers: IT SHOULD BE IN A HELPER FUNCTION!
+          setEnemyAttackRadius([]);
+          setPlayerMoveOptions([]);
+        }
         break;  // Await input from the attack selection inputs and no more.
       case 'specialEvent':
         specialEventLogic(dispatch, setCombatPhase, level);

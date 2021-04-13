@@ -10,7 +10,10 @@
         "damage" : 20, "effect" : "none", 
         "shape" : "cross", 
         "threshold" : 0,
-        "portrait" : {"name" : "Placeholder_01", "color" : "teal"},
+        "portrait" : {
+          "color" : "orange", 
+          "permutation" : "surprised"
+        },        
         "hint" : "Cast ye gods down, for thou art blinded by petrol"
       },
       {
@@ -19,7 +22,10 @@
         "effect" : "none", 
         "shape" : "cross", 
         "threshold" : 30,
-        "portrait" : {"name" : "Placeholder_01", "color" : "pink"},
+        "portrait" : {
+          "color" : "pink", 
+          "permutation" : "happy"
+        },
         "hint" : "I'll nail you to the cross"
       },
       {
@@ -27,7 +33,10 @@
         "damage" : 80, "effect" : "none", 
         "shape" : "cross", 
         "threshold" : 60,
-        "portrait" : {"name" : "Placeholder_01", "color" : "salmon"},
+        "portrait" : {
+          "color" : "yellow", 
+          "permutation" : "angry"
+        },
         "hint" : "Power of Christ compels you to buy our slightly cheaper than competition petrol"
       },
       {
@@ -36,7 +45,10 @@
         "effect" : "none", 
         "shape" : "cross", 
         "threshold" : 80,
-        "portrait" : {"name" : "Placeholder_01", "color" : "brown"},
+        "portrait" : {
+          "color" : "salmon", 
+          "permutation" : "neutral"
+        },        
         "hint" : "On the eighth day he burnt rubber and tweeted about vaccines"
       }
     ],

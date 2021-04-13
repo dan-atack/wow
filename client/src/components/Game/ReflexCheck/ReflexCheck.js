@@ -144,7 +144,7 @@ const Wrapper = styled.div`
     border: 2px solid black;
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    right: calc(50% - 100px);
 `;
 
 const KeyPad = styled.div`

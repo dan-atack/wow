@@ -94,7 +94,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       <TurnDiv>{turn}</TurnDiv>
       <PortraitWrapper>
         {/* query the data for the base portraits */}
-        <Portrait playerPortrait={true} />
+        <Portrait playerPortrait={true} selectedSkill={selectedSkill}/>
         <Portrait playerPortrait={false} base={encounter.name}/>
       </PortraitWrapper>
     </div>

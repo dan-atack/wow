@@ -6,20 +6,49 @@ import {useRecoilState} from 'recoil';
 import combatState from '../../../../state'
 
 
-const Portrait = ({playerPortrait, value, base}) => {
+const Portrait = ({playerPortrait, selectedSkill, base}) => {
     // for this component to work, the naming convention of the baddie json must be, non capitalized.
     
     const combatPhase = useSelector((state) => state.game.combatPhase);
     const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
 
+    let baddiePortraitHandler = () => {
+        if (baddieDecision.name !== "") {
+            return require(`../../../../assets/character frames/images/${base}_${baddieDecision.portrait.permutation}.png`);
+        } else {
+            require(`../../../../assets/character frames/images/${base}_neutral.png`);
+        }
+    }
+
+    let backgroundColorHandler = () => {
+        if(playerPortrait) {
+            if(selectedSkill) {
+               return selectedSkill.portrait.color;
+            } else {
+                return
+            }
+        } else if (!playerPortrait && baddieDecision.name !== '') {
+            return baddieDecision.portrait.color;
+        } else {
+            return
+        }
+    }
+
+    let playerPortraitHandler = () => {
+        if(selectedSkill) {
+            return require(`../../../../assets/character frames/images/${selectedSkill.portrait.name}.png`)
+        } else {
+            return require('../../../../assets/character frames/images/shark_neutral.png');
+        }
+    }
 
     return (
-        <Wrapper>
+        <Wrapper backgroundColor={backgroundColorHandler() || 'orange'}>
             <Image 
                 playerPortrait={playerPortrait}
                 src={ playerPortrait ? 
-                    require(`../../../../assets/character frames/images/sharkNeutral.png`) : 
-                    require(`../../../../assets/character frames/images/${base}.png`)} alt='character portrait'
+                    playerPortraitHandler() : 
+                    baddiePortraitHandler()} alt='character portrait'
                 />
             {
                 !playerPortrait && combatPhase === 'playerMove' && 

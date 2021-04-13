@@ -2,27 +2,27 @@
     "frames": {
         "parkingLot": {
           "frame_0": {
-            "character": "sharkNeutral",
+            "character": "shark_neutral",
             "background": "livingRoom",
             "text": "loading cutscene...",
             "duration": 1000
           },
           "frame_1": {
-            "character": "sharkNeutral",
+            "character": "shark_neutral",
             "characterPosition": "left",
             "background": "livingRoom",
             "text": "ZZzzzzZZZZzzzz....",
             "duration": 5000
           },
           "frame_2": {
-            "character": "phoneNeutral",
+            "character": "phone_neutral",
             "characterPosition": "right",
             "background": "livingRoom",
             "text": "BRRRRRRRINNNNGGGGGGG",
             "duration": 4000
           },
           "frame_3": {
-            "character": "sharkSurprised",
+            "character": "shark_surprised",
             "background": "livingRoom",
             "characterPosition": "left",
             "text":
@@ -30,7 +30,7 @@
             "duration": 5000
           },
           "frame_4": {
-            "character": "phoneNeutral",
+            "character": "phone_neutral",
             "background": "livingRoom",
             "characterPosition": "right",
             "text":
@@ -38,7 +38,7 @@
             "duration": 5000
           },
           "frame_5": {
-            "character": "sharkNeutral",
+            "character": "shark_neutral",
             "background": "livingRoom",
             "characterPosition": "left",
             "type": "choice",
@@ -62,7 +62,7 @@
             "duration": 5000000000
           },
           "frame_6": {
-            "character": "phoneNeutral",
+            "character": "phone_neutral",
             "background": "livingRoom",
             "characterPosition": "right",
             "backgroundColor" : "orange",
@@ -71,7 +71,7 @@
             "duration": 5000
           },
           "frame_7": {
-            "character": "phoneNeutral",
+            "character": "phone_neutral",
             "background": "livingRoom",
             "characterPosition": "right",
             "text":

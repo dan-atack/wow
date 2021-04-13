@@ -101,22 +101,24 @@ const CombatEnvironment = () => {
           if (playerCoords.x < baddieCoords.x && playerCoords.x + datum.range >= baddieCoords.x) {
             baddieInXRange = true;
           }
-          if (playerCoords.x >= baddieCoords.x && playerCoords.x - datum.range >= baddieCoords.x) {
+          if (playerCoords.x >= baddieCoords.x && playerCoords.x - datum.range <= baddieCoords.x) {
             baddieInXRange = true;
           }
           if (playerCoords.y < baddieCoords.y && playerCoords.y + datum.range >= baddieCoords.y) {
             baddieInYRange = true;
           }
-          if (playerCoords.y >= baddieCoords.y && playerCoords.y - datum.range >= baddieCoords.y) {
+          if (playerCoords.y >= baddieCoords.y && playerCoords.y - datum.range <= baddieCoords.y) {
             baddieInYRange = true;
           }
         });
         // If none of the player's moves is in range of the baddie, skip to the next phase:
         if (!(baddieInXRange && baddieInYRange)) {
-          console.log('Baddie is not in range of any player attacks');
           // This code down here is from the combat ui for the attack button handlers: IT SHOULD BE IN A HELPER FUNCTION!
           setEnemyAttackRadius([]);
           setPlayerMoveOptions([]);
+          dispatch(setCombatPhase('specialEvent'));
+        } else {
+          console.log(baddieInXRange, baddieInYRange, 'Baddie should be in range.')
         }
         break;  // Await input from the attack selection inputs and no more.
       case 'specialEvent':

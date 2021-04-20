@@ -58,7 +58,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       setPlayerMoveOptions([])
       const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
       setPlayerAttackRadius(range);
-      setMovesSelected(movesSelected + 1);
+      setPlayerAttacksInQueue(playerAttacksInQueue + 1);
     } 
   }
 
@@ -72,7 +72,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       <ReflexCheck
         move={playerMoves.find((move) => move.id === reflexCheckId)}
         combo={randomCombo}
-        numPrevMoves={movesSelected}
+        numPrevMoves={playerAttacksInQueue}
         style={{ position: 'absolute', top: '0px', right: '50px' }}
       />}
       <HealthHud src={healthbar}/>

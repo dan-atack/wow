@@ -12,6 +12,11 @@ export const playerAP = atom({
   default: 4,
 })
 
+export const playerAttacksInQueue = atom({
+  key: 'playerMovesInQueue',
+  default: [],
+})
+
 export const playerHype = atom({
   key: 'playerHype',
   default: 0,

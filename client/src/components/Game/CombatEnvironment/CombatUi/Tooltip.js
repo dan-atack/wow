@@ -7,7 +7,8 @@ const Tooltip = ({skill}) => {
     challengeType, 
     description, 
     id, 
-    maxHype, 
+    maxHype,
+    hypeCost, 
     name, 
     range, 
     shape, 
@@ -30,6 +31,7 @@ const Tooltip = ({skill}) => {
           <div>Range: {range}</div>
           <div>Type: {shape}</div>
           <div>Base Damage: {baseDmg}</div>
+          <div>HYPE COST: {hypeCost}</div>
           { special && <div>chance to {special}</div>}
         </InfoDiv>
       </FlexDiv>

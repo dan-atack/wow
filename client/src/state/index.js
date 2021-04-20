@@ -1,5 +1,6 @@
 import {
   playerAP,
+  playerAttacksInQueue,
   playerAttackRadius,
   playerCoords,
   playerOrientation,
@@ -22,6 +23,7 @@ import {
 
 export default {
   playerAP,
+  playerAttacksInQueue,
   playerAttackRadius,
   playerCoords,
   playerOrientation,

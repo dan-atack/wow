@@ -27,6 +27,8 @@ function ReflexCheck({ move, combo, numPrevMoves }) {
     const [successStatus, setSuccessStatus] = React.useState(false);
     // Baddie HP, to be set (reduced) by a successful completion of the reflex check:
     const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
+    // Player Hype is also affected by reflex check outcomes:
+    const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
     // Introducing sound effects:
     const [playUghSound] = useSound(ugh);
     // This function calculates the damage you inflict if you succeed:
@@ -39,6 +41,12 @@ function ReflexCheck({ move, combo, numPrevMoves }) {
         } else {
             return move.baseDmg;                    // Otherwise you just do the base dmg.
         }
+    }
+    // If you hit, Hype earned = (max hype plus combo length in letters) times time remaining.
+    const determineHype = () => {
+        const remainder = timeLeft / move.time;     // Just the fraction this time
+        const stringLength = move.combos[0].length  // Find how many keys were needed to complete the move
+        return Math.floor((move.maxHype + stringLength) * remainder);
     }
     // One Effect to handle all the keys:
     React.useEffect(() => {
@@ -73,7 +81,6 @@ function ReflexCheck({ move, combo, numPrevMoves }) {
                         // If the index of the event key is the current key, advance the sequence:
                         if (idx === currentKey) {
                             setCurrentKey(currentKey + 1);
-                            // Usedispatch?
                             setFailStatus(false);
                         }
                     }
@@ -85,13 +92,16 @@ function ReflexCheck({ move, combo, numPrevMoves }) {
                 setSuccessStatus(true);
                 playUghSound();
                 console.log(`Player hits baddie with ${move.name} for ${determineDamage()} damage!`);
+                console.log(`Player gains ${determineHype()} hype points!`);
                 setBaddieHP(baddieHP - determineDamage());
+                setPlayerHype(playerHype + determineHype());
                 dispatch(setCombatPhase('specialEvent'));
                 dispatch(stopReflexCheck());
             } 
             window.addEventListener('keydown', handleKeydown);
         
             return () => {
+            
             window.removeEventListener('keydown', handleKeydown);
             };
         }  
@@ -143,6 +153,7 @@ const Wrapper = styled.div`
     height: 200px;
     border: 2px solid black;
     position: absolute;
+    z-index: 1000;
     bottom: 20px;
     right: calc(50% - 100px);
 `;

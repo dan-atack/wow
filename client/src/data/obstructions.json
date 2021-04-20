@@ -1,0 +1,58 @@
+[
+    {
+        "name": "car",
+        "passable" : false,
+        "active" : ["slam_head"],
+        "passive" : "throw",
+        "color":"#3ebce4"
+    },
+    {
+        "name": "car_door",
+        "passable": false,
+        "active": ["slam_head", "slam_head_in_door", "drive_car"],
+        "passive": "throw",
+        "color":"#3ebce4"
+    },
+    {
+        "name": "store_wall",
+        "passable": false,
+        "active": [],
+        "passive": "throw",
+        "color":"#4F4F4F"
+    },
+    {
+        "name": "gas_pump",
+        "passable": false,
+        "active": [],
+        "passive": "gas_throw",
+        "color":"#3EE49E"
+    },
+    {
+        "name": "snack_shelf",
+        "passable":false,
+        "active":["shove"],
+        "passive":"throw",
+        "color":"#E43E3E"
+    },
+    {
+        "name": "freezer_door_vertical",
+        "passable":true,
+        "active":["slam head in door"],
+        "passive": "glass_vertical",
+        "color":"#4B3EE4"
+    },
+    {
+        "name": "freezer_door_horizontal",
+        "passable":true,
+        "active":["slam head in door"],
+        "passive": "glass_vertical",
+        "color":"#4B3EE4"
+    },
+    {
+        "name": "freezer_door_corner",
+        "passable":true,
+        "active":["slam head in door"],
+        "passive": "glass_corner",
+        "color":"#4B3EE4"
+    }
+]

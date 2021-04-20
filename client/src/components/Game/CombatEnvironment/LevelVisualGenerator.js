@@ -12,6 +12,7 @@ import SpriteTile from './SpriteTile';
 import OrientationPicker from './OrientationPicker';
 // Asset Imports
 import Tony from '../../../assets/combat/tony.gif';
+import ObstructionTile from './ObstructionTile/ObstructionTile';
 
 // generates the map based on the player position, enemy location, obstruction and seed
 // PROP TYPES
@@ -49,11 +50,11 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
           seed.obstructions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
           // This renders an obstacle if the map file contains an obstacle at the specified coords:
+          console.log(sq.x, sq.y);
           return (
-            <TerrainTile
+            <ObstructionTile
               key={Math.random() * 100000}
               obstacle={seed.obstructions.find((obs) => sq.x === obs.x && sq.y === obs.y).obstacle}
-              overlay={'none'}
               x={sq.x}
               y={sq.y}
             />

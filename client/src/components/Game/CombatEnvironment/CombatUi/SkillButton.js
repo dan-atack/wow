@@ -1,22 +1,38 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import Tooltip from './Tooltip';
-
+// Game constants:
+import { CONSTANTS } from '../../../../constants.js';
 
 const SkillButton = (props) => {
-  const {skill, handleClick} = props;
+  const { skill, handleClick, numPrevMoves, playerHype } = props;
   const [open, setOpen] = useState(false);
+  const costModifier = (numPrevMoves - 1) * CONSTANTS.BASELINE_HYPE_COST  // hype cost is increased by num of previous moves
+  const currentHypeCost = skill.hypeCost + costModifier;
+  const affordable = playerHype >= currentHypeCost; // If player hype equals or exceeds the current cost, you can afford this move.
 
-  return (
-    <Wrapper 
-      onClick={() => handleClick(skill)}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      {skill.icon && <img src={require(`../../../../assets/actionIcons/${skill.icon}`)} alt={skill.name}/> || skill.name}
-      {open && <Tooltip skill={skill}/>}
-    </Wrapper>
-  )
+  if (affordable) {
+    return (
+      // This returns the button representing an attack option for the player.
+      // Hype cost is equal to the baseline cost times the amount of attacks already selected (the first one is free though)
+      // E.G. 1st attack = 0 hype, 2nd attack = 10 hype, 3rd attack = 30 hype, etc.
+      <Wrapper 
+        onClick={() => handleClick(skill)}
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      >
+        {skill.icon && <img src={require(`../../../../assets/actionIcons/${skill.icon}`)} alt={skill.name}/> || skill.name}
+        {open && <Tooltip skill={skill} costModifier={costModifier}/>}
+      </Wrapper>
+    )
+  } else {
+    return (
+      <Wrapper>
+        Too expensive!
+      </Wrapper>
+    )
+  }
+  
 }
 
 const Wrapper = styled.div`

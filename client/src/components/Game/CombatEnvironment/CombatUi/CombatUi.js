@@ -21,9 +21,7 @@ import ResetButton from './ResetButton';
 import VictoryButton from './VictoryButton';
 // Data:
 import playerMoves from '../../../../data/playerMoves.json';
-// Placeholder temp stuff
-
-
+// Placeholder temp stuff ???
 
 const CombatUi = ({turn, setEnemyAttackRadius}) => {
   const [selectedSkill, setSelectedSkill] = useState(null);
@@ -43,8 +41,6 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   const combatPhase = useSelector((state) => state.game.combatPhase);
   // Determine a random combo to use for the selected move:
   const randomCombo = Math.floor(Math.random() * 3);
-  // Determine hype costs for the current move by reducing its base hype cost by this value:
-  const baseMoveHypeCost = 15; // The idea is that all moves costing this much hype are free if they're the first move.
 
   const seed = data.find(obj => obj.level === level);
   const encounter = baddieData.find(obj => obj.level === level);
@@ -81,15 +77,15 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
         <Bar type={'health'} fullness={playerHealth}>HEALTH</Bar>
         <Bar type={'hype'} fullness={playerHype}>HYPE</Bar>
       </Wrapper>
-      {/* <ButtonDiv>
-        <button onClick={() => setPlayerHealth(playerHealth - 10)}>lower health</button>
-        <button onClick={() => setPlayerHype(playerHype - 10)}>lower hype</button>
-        <button onClick={() => setPlayerHealth(playerHealth + 10)}>increase health</button>
-        <button onClick={() => setPlayerHype(playerHype + 10)}>increase hype</button>
-      </ButtonDiv> */}
       <SkillsDiv>
         {playerSkills.map(skill => {
-          return <SkillButton skill={skill} handleClick={handleClick} key={`player-move-${skill.id}`}/>
+          return <SkillButton
+            key={`player-move-${skill.id}`}
+            skill={skill}
+            handleClick={handleClick}
+            numPrevMoves={playerAttacksInQueue}
+            playerHype={playerHype}
+          />
         })}
       </SkillsDiv>
       <TurnDiv>{turn}</TurnDiv>

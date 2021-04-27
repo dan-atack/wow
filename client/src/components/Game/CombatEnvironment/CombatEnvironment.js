@@ -26,14 +26,17 @@ import LevelVisualGenerator from './LevelVisualGenerator';
 import Versus from '../VersusScreen/Versus';
 // Variable display element for dev-assistance purposes:
 import DevDisplay from './DevD';
+// Constants:
+import { CONSTANTS } from '../../../constants.js';
 
 const CombatEnvironment = () => {
   const dispatch = useDispatch();
-  const devMode = true;   // Boolean switch allows optional display of the 'Dev Mode' panel (shows all combat-related variables)
+  const devMode = CONSTANTS.DEV_MODE;   // Boolean switch allows optional display of the 'Dev Mode' panel
   // State-dependent combat values start here:
   const combatPhase = useSelector((state) => state.game.combatPhase);   // Redux is used for the combat phase.
   const level = useRecoilValue(globalState.level);                      // All other combat state is handled by recoil.
   // Player Related State Values:
+  const [playerAttacksInQueue, setPlayerAttacksInQueue] = useRecoilState(combatState.playerAttacksInQueue);
   const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
   const [playerAP, setPlayerAP] = useRecoilState(combatState.playerAP);
   const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
@@ -122,6 +125,7 @@ const CombatEnvironment = () => {
         }
         break;  // Await input from the attack selection inputs and no more.
       case 'specialEvent':
+        setPlayerAttacksInQueue(0);
         specialEventLogic(dispatch, setCombatPhase, level);
         break;
       case 'baddieMove':

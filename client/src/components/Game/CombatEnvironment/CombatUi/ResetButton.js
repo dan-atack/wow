@@ -8,6 +8,7 @@ import { setScene, setCombatPhase } from '../../../../actions';
 const ResetButton = () => {
     const dispatch = useDispatch();
     const scene = useSelector((state) => state.game.scene); // Use to rewind player to 1 scene before the fight they just lost.
+    const [playerAttacksInQueue, setPlayerAttacksInQueue] = useRecoilState(combatState.playerAttacksInQueue);
     const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
     const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
     const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
@@ -21,6 +22,7 @@ const ResetButton = () => {
     const handleClick = () => {
         // This is ugly AF and terribly not dry... but it *does* work!
         // TODO: Make default values object for greater flexibility if you ever wanna reset these hard-coded bastards.
+        setPlayerAttacksInQueue(0);
         setPlayerHealth(100);
         setPlayerAttackRadius([]);
         setPlayerHype(0);

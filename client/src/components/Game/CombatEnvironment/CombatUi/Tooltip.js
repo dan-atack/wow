@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Tooltip = ({skill}) => {
+const Tooltip = ({ skill, costModifier }) => {
   const {
     baseDmg, 
     challengeType, 
@@ -31,7 +31,7 @@ const Tooltip = ({skill}) => {
           <div>Range: {range}</div>
           <div>Type: {shape}</div>
           <div>Base Damage: {baseDmg}</div>
-          <div>HYPE COST: {hypeCost}</div>
+          <div>HYPE COST: {hypeCost + costModifier}</div>
           { special && <div>chance to {special}</div>}
         </InfoDiv>
       </FlexDiv>

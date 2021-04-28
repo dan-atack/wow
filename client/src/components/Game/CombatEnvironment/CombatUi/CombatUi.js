@@ -54,7 +54,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       setPlayerMoveOptions([])
       const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
       setPlayerAttackRadius(range);
-      setPlayerAttacksInQueue(playerAttacksInQueue + 1);
+      setPlayerAttacksInQueue(playerAttacksInQueue.push(skill));  // NOTE TO SELF: MAKE THE QUEUE AN ARRAY IN THE STATE FILE, then push the skill to it here! Then instead of using the number in other calculations (find all with ctrl + shift + h) use the length of the array. Reset button brings it to [] instead of zero.
     } 
   }
 
@@ -68,7 +68,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       <ReflexCheck
         move={playerMoves.find((move) => move.id === reflexCheckId)}
         combo={randomCombo}
-        numPrevMoves={playerAttacksInQueue}
+        numPrevMoves={playerAttacksInQueue.length}
         style={{ position: 'absolute', top: '0px', right: '50px' }}
       />}
       <HealthHud src={healthbar}/>
@@ -83,7 +83,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
             key={`player-move-${skill.id}`}
             skill={skill}
             handleClick={handleClick}
-            numPrevMoves={playerAttacksInQueue}
+            numPrevMoves={playerAttacksInQueue.length}
             playerHype={playerHype}
           />
         })}

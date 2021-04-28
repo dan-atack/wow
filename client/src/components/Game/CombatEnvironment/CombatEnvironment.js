@@ -125,7 +125,7 @@ const CombatEnvironment = () => {
         }
         break;  // Await input from the attack selection inputs and no more.
       case 'specialEvent':
-        setPlayerAttacksInQueue(0);
+        setPlayerAttacksInQueue([]);
         specialEventLogic(dispatch, setCombatPhase, level);
         break;
       case 'baddieMove':

@@ -22,7 +22,7 @@ const ResetButton = () => {
     const handleClick = () => {
         // This is ugly AF and terribly not dry... but it *does* work!
         // TODO: Make default values object for greater flexibility if you ever wanna reset these hard-coded bastards.
-        setPlayerAttacksInQueue(0);
+        setPlayerAttacksInQueue([]);
         setPlayerHealth(100);
         setPlayerAttackRadius([]);
         setPlayerHype(0);

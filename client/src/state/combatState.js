@@ -14,7 +14,7 @@ export const playerAP = atom({
 
 export const playerAttacksInQueue = atom({
   key: 'playerMovesInQueue',
-  default: 0, // this just counts how many moves you've made in a given combat round.
+  default: [], // every move in the queue increases hype cost; list is reset each combat round.
 })
 
 export const playerHype = atom({

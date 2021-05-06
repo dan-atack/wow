@@ -17,7 +17,7 @@ const SkillButton = (props) => {
       // Hype cost is equal to the baseline cost times the amount of attacks already selected (the first one is free though)
       // E.G. 1st attack = 0 hype, 2nd attack = 10 hype, 3rd attack = 30 hype, etc.
       <Wrapper 
-        onClick={() => handleClick(skill)}
+        onClick={() => handleClick(skill, currentHypeCost)}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
       >
@@ -27,8 +27,13 @@ const SkillButton = (props) => {
     )
   } else {
     return (
-      <Wrapper>
-        Too expensive!
+      <Wrapper
+      style={{ backgroundColor: 'gray' }}
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      >
+        {skill.icon && <img src={require(`../../../../assets/actionIcons/${skill.icon}`)} alt={skill.name}/> || skill.name}
+        {open && <Tooltip skill={skill} costModifier={costModifier}/>}
       </Wrapper>
     )
   }

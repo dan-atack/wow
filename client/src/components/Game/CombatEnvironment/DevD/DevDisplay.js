@@ -10,7 +10,8 @@ const DevDisplay = ({
         baddieHP,
         baddieCoords,
         baddieOrientation,
-        baddieDecision
+        baddieDecision,
+        playerAttacksInQueue,
     }) => {
     return (
         <Wrapper>
@@ -23,6 +24,7 @@ const DevDisplay = ({
             <p>Baddie Coords: ({baddieCoords.x}, {baddieCoords.y})</p>
             <p>Baddie Orientation: {baddieOrientation}</p>
             <p>Baddie Decision: {baddieDecision.name}</p>
+            <p>playerAttacksInQueue: {playerAttacksInQueue.length}</p>
         </Wrapper>
     )
 }

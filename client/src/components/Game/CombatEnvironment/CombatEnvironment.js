@@ -116,16 +116,14 @@ const CombatEnvironment = () => {
         });
         // If none of the player's moves is in range of the baddie, skip to the next phase:
         if (!(baddieInXRange && baddieInYRange)) {
-          // This code down here is from the combat ui for the attack button handlers: IT SHOULD BE IN A HELPER FUNCTION!
+          // This code down here is the same as that in the combat ui for the attack button handlers:
           setEnemyAttackRadius([]);
           setPlayerMoveOptions([]);
           dispatch(setCombatPhase('specialEvent'));
-        } else {
-          console.log(baddieInXRange, baddieInYRange, 'Baddie should be in range.')
         }
         break;  // Await input from the attack selection inputs and no more.
       case 'specialEvent':
-        setPlayerAttacksInQueue(0);
+        setPlayerAttacksInQueue([]);
         specialEventLogic(dispatch, setCombatPhase, level);
         break;
       case 'baddieMove':
@@ -195,6 +193,7 @@ const CombatEnvironment = () => {
         baddieCoords={baddieCoords}
         baddieOrientation={baddieOrientation}
         baddieDecision={baddieDecision}
+        playerAttacksInQueue={playerAttacksInQueue}
       />} 
       {/* <Versus/> */}
       <CombatUi

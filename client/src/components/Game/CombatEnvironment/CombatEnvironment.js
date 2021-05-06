@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCombatPhase, startReflexCheck } from '../../../actions';
@@ -17,6 +17,8 @@ import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 import data from '../../../data/mapSeed.json';
 import playerMoveData from '../../../data/playerMoves.json';  // 'Moves' here refers to wrestling moves, not movement options
 import baddieData from '../../../data/baddie.json';
+import contextualMoves from '../../../data/contextualActiveMoves.json';
+import obstructionData from '../../../data/obstructions.json';
 
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 
@@ -182,6 +184,74 @@ const CombatEnvironment = () => {
       dispatch(setCombatPhase('specialEvent'))
     }
   }
+
+  //every player action, check to see if the prerequisites are present for a contextual move
+  useEffect(() => {
+    if(combatPhase !== 'playerAction') return;
+
+    //queries the level for the contextual attacks
+
+    //gets the data of this specific map
+    let obstructions = seed.obstructions;
+    const obstructionList = []
+    const moveList = []
+
+    //inserts unique obstruction names into the obstructionList array
+    obstructions.forEach((obstruction) => {
+      if(!obstructionList.includes(obstruction.obstacle)) {
+        obstructionList.push(obstruction.obstacle)
+      }
+    })
+    
+    //check to see what contextual moves are associated with the level
+    obstructionList.forEach(obstruction => {
+      obstructionData.forEach(obstructionItem => {
+        if(
+            obstructionItem.name === obstruction &&
+            obstructionItem.active.length > 0 
+          ) {
+          obstructionItem.active.forEach(move => moveList.push(move));
+        }
+      })
+    })
+
+    //define which contextual moves exist to query for
+
+    let contextualActiveMoves = [];
+    
+    moveList.forEach(move=> {
+      contextualMoves.forEach(moveDefinition => {
+        if(move === moveDefinition.name) {
+          contextualActiveMoves.push(moveDefinition);
+        }
+      })
+    })
+    //now i check to see if the obstructions for the level activate
+
+    obstructions.forEach((obstruction) => {
+      let foundObstruction = obstructionData.find(datum => datum.name === obstruction.obstacle);
+      // console.log(foundObstruction)
+
+      if(foundObstruction.active.length>0) {
+        foundObstruction.active.forEach(activity => {
+          let context = contextualMoves.find(move => move.name === activity).context;
+          console.log(context);
+        })
+      }
+    })
+
+    //either the contextual moves needs to refer back to the obstructions, or the obstructions need to refer to the contextual moves
+
+    //i think i need to pull the obstruction library for the specific level
+    //then finally, every turn i can query the contextual move library
+    //to see what the context is.
+    //calculate the context
+
+    // console.log(obstructionList,'obstructionList');
+    // console.log(moveList,'moveList');
+    console.log(contextualActiveMoves);
+    // console.log(obstructions, 'obstructions')
+  }, [combatPhase])
 
   return (
     <>

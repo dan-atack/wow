@@ -50,7 +50,6 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
           seed.obstructions.find((obs) => sq.x === obs.x && sq.y === obs.y)
         ) {
           // This renders an obstacle if the map file contains an obstacle at the specified coords:
-          console.log(sq.x, sq.y);
           return (
             <ObstructionTile
               key={Math.random() * 100000}

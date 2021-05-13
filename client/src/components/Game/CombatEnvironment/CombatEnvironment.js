@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCombatPhase, startReflexCheck } from '../../../actions';
 import { setupPlayerMovePhase } from '../../../Helpers/playerMovePhase';
-// Redux-advancing helper functions:
+// Helper functions:
 import { baddieMoveLogic } from '../../../Helpers/baddieMoveLogic';
 import { baddieMakeDecision, baddieAction } from '../../../Helpers/baddieActionLogic'; 
 import { specialEventLogic } from '../../../Helpers/specialEventLogic';
+import { determineIfBaddieInRange } from '../../../Helpers/playerActionPhase';
 // Recoil state management:
 import combatState from '../../../state';
 import globalState from '../../../state';
@@ -96,32 +97,20 @@ const CombatEnvironment = () => {
         dangerZone.forEach((point) => {
           if (point.x === playerCoords.x && point.y === playerCoords.y) {
             setPlayerHealth(playerHealth - baddieDecision.damage);
-            console.log(`Player is hit by ${baddieDecision.name}, causing ${baddieDecision.damage} damage!`)
           }
         });
         dispatch(setCombatPhase('playerAction'));
         break;
       case 'playerAction':
-        // Get longest range player attack, and see if the baddie is in range:
-        let baddieInXRange = false;
-        let baddieInYRange = false;
-        playerMoveData.forEach((datum) => {
-          // See if baddie is within x or y range of each attack:
-          if (playerCoords.x < baddieCoords.x && playerCoords.x + datum.range >= baddieCoords.x) {
-            baddieInXRange = true;
-          }
-          if (playerCoords.x >= baddieCoords.x && playerCoords.x - datum.range <= baddieCoords.x) {
-            baddieInXRange = true;
-          }
-          if (playerCoords.y < baddieCoords.y && playerCoords.y + datum.range >= baddieCoords.y) {
-            baddieInYRange = true;
-          }
-          if (playerCoords.y >= baddieCoords.y && playerCoords.y - datum.range <= baddieCoords.y) {
-            baddieInYRange = true;
-          }
-        });
+        // Go through the player's list of attacks and see if the baddie is within range of any of them:
+        let inRange = false;
+        playerMoveData.forEach((attack) => {
+          if (determineIfBaddieInRange(attack.range, playerCoords, baddieCoords)) {
+            inRange = true;
+          };
+        })
         // If none of the player's moves is in range of the baddie, skip to the next phase:
-        if (!(baddieInXRange && baddieInYRange)) {
+        if (!inRange) {
           // This code down here is the same as that in the combat ui for the attack button handlers:
           setEnemyAttackRadius([]);
           setPlayerMoveOptions([]);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCombatPhase, startReflexCheck } from '../../../actions';
@@ -13,13 +13,18 @@ import combatState from '../../../state';
 import globalState from '../../../state';
 import { useRecoilValue, useRecoilState } from 'recoil';
 
-import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 
+// JSON DATA FILES
 import data from '../../../data/mapSeed.json';
 import playerMoveData from '../../../data/playerMoves.json';  // 'Moves' here refers to wrestling moves, not movement options
 import baddieData from '../../../data/baddie.json';
+import contextualMoves from '../../../data/contextualActiveMoves.json';
+import moveCombos from '../../../data/playerMoves.json';
 
+//HELPERS
+import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
+import { adjacent, opponent_adjacent_then_player } from '../../../Helpers/contextualMoveHelper';
 
 //components
 import CombatUi from './CombatUi/CombatUi';
@@ -47,6 +52,7 @@ const CombatEnvironment = () => {
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(combatState.playerMoveOptions);
   const [playerMovementDecision, setPlayerMovementDecision] = useRecoilState(combatState.playerMovementDecision);
   const [playerIsDead, setPlayerIsDead] = useRecoilState(combatState.playerIsDead);
+  const [playerSkills, setPlayerSkills] = useRecoilState(combatState.playerSkills);
   // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);
   const playerAttackData = playerMoveData.find((move) => move.id === reflexCheckId);  // Hacky but effective!
@@ -169,6 +175,32 @@ const CombatEnvironment = () => {
       dispatch(setCombatPhase('specialEvent'))
     }
   }
+
+  //every player action, check to see if the prerequisites are present for a contextual move
+  useEffect(() => {
+    if(combatPhase !== 'playerAction') setPlayerSkills(moveCombos);
+
+    //queries the level for the contextual attacks
+
+    //gets the data of this specific map
+    let obstructions = seed.obstructions;
+    
+
+    obstructions.forEach(obstruction => {
+      if(!obstruction.active) return;
+      
+      let foundMove = contextualMoves.find(move => move.name === obstruction.active);
+
+      if(foundMove.context === 'adjacent') {
+        adjacent(obstruction, playerCoords, setPlayerSkills, playerSkills, foundMove)
+      } else if (foundMove.context === 'opponent_adjacent_then_player') {
+        opponent_adjacent_then_player(obstruction, playerCoords, baddieCoords, setPlayerSkills, playerSkills, foundMove)
+      } else {
+        setPlayerSkills(moveCombos);
+      }
+    })
+
+  }, [combatPhase])
 
   return (
     <>

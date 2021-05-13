@@ -1,0 +1,98 @@
+[
+    {
+        "name": "slam_head",
+        "context": "adjacent",
+        "icon": "limitBreak.png",
+        "id": 1,
+        "baseDmg": 5,
+        "maxHype": 20,
+        "hypeCost": 15,
+        "special": null,
+        "challengeType": "combo",
+        "shape": "radial",
+        "range": 1,
+        "time": 5000,
+        "portrait" : {"name": "shark_angry", "color":"red"},
+        "description": "'Your favourite metal band is in town... SLAM!'",
+        "combos" : [
+            [
+                "A", "F", "A", "G", "A", "H"
+            ],
+            [
+                "A", "F", "A", "G", "A", "H"
+            ],
+            [
+                "A", "F", "A", "G", "A", "H"
+            ]
+        ]
+    },
+    {
+        "name": "slam_head_in_door",
+        "context": "adjacent",
+        "icon": "limitBreak.png",
+        "id": 2,
+        "baseDmg": 50,
+        "maxHype": 20,
+        "hypeCost": 15,
+        "special": null,
+        "challengeType": "combo",
+        "shape": "radial",
+        "range": 1,
+        "time": 5000,
+        "portrait" : {"name": "shark_angry", "color":"red"},
+        "description": "enter your opponents head into a make shift guillotine",
+        "combos" : [
+            [
+                "K","H","J","K","L","K","J","H"
+            ]
+        ]
+    },
+    {
+        "name": "drive_car",
+        "context": "adjacent",
+        "icon": "limitBreak.png",
+        "id": 3,
+        "baseDmg": 100,
+        "maxHype": 20,
+        "hypeCost": 15,
+        "special": null,
+        "challengeType": "combo",
+        "shape": "linear_2_wide",
+        "range": 10,
+        "time": 5000,
+        "portrait" : {"name": "shark_angry", "color":"red"},
+        "description": "It's getting late, you should drive them home, TO HELL",
+        "combos" : [
+            [
+                "J", "U", "I", "K", "B"
+            ]
+        ]
+    },
+    {
+        "name": "shove",
+        "context": "opponent_adjacent_then_player",
+        "icon": "limitBreak.png",
+        "id": 1,
+        "baseDmg": 5,
+        "maxHype": 20,
+        "hypeCost": 15,
+        "special": null,
+        "challengeType": "combo",
+        "shape": "radial",
+        "range": 1,
+        "time": 5000,
+        "portrait" : {"name": "shark_angry", "color":"red"},
+        "description": "When push comes...",
+        "combos" : [
+            [
+                "A", "S", "D", "F"
+            ],
+            [
+                "A", "S", "D", "F"
+            ],
+            [
+                "A", "S", "D", "F"
+            ]
+        ]
+    }
+]

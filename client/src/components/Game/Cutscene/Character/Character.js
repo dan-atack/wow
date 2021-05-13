@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 function Character({ avatar, characterPosition, background }) {
   // there has GOT to be a better way than this, but for now...
-  console.log(background);
   return (
     <Wrapper characterPosition={characterPosition} background={background}>
       <CharacterBorder>

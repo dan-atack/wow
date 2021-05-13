@@ -12,15 +12,18 @@ import combatState from '../../../state';
 import globalState from '../../../state';
 import { useRecoilValue, useRecoilState } from 'recoil';
 
-import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 
+// JSON DATA FILES
 import data from '../../../data/mapSeed.json';
 import playerMoveData from '../../../data/playerMoves.json';  // 'Moves' here refers to wrestling moves, not movement options
 import baddieData from '../../../data/baddie.json';
 import contextualMoves from '../../../data/contextualActiveMoves.json';
-import obstructionData from '../../../data/obstructions.json';
+import moveCombos from '../../../data/playerMoves.json';
 
+//HELPERS
+import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
+import { adjacent, opponent_adjacent_then_player } from '../../../Helpers/contextualMoveHelper';
 
 //components
 import CombatUi from './CombatUi/CombatUi';
@@ -48,6 +51,7 @@ const CombatEnvironment = () => {
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(combatState.playerMoveOptions);
   const [playerMovementDecision, setPlayerMovementDecision] = useRecoilState(combatState.playerMovementDecision);
   const [playerIsDead, setPlayerIsDead] = useRecoilState(combatState.playerIsDead);
+  const [playerSkills, setPlayerSkills] = useRecoilState(combatState.playerSkills);
   // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);
   const playerAttackData = playerMoveData.find((move) => move.id === reflexCheckId);  // Hacky but effective!
@@ -185,70 +189,28 @@ const CombatEnvironment = () => {
 
   //every player action, check to see if the prerequisites are present for a contextual move
   useEffect(() => {
-    if(combatPhase !== 'playerAction') return;
+    if(combatPhase !== 'playerAction') setPlayerSkills(moveCombos);
 
     //queries the level for the contextual attacks
 
     //gets the data of this specific map
     let obstructions = seed.obstructions;
-    const obstructionList = []
-    const moveList = []
-
-    //inserts unique obstruction names into the obstructionList array
-    obstructions.forEach((obstruction) => {
-      if(!obstructionList.includes(obstruction.obstacle)) {
-        obstructionList.push(obstruction.obstacle)
-      }
-    })
     
-    //check to see what contextual moves are associated with the level
-    obstructionList.forEach(obstruction => {
-      obstructionData.forEach(obstructionItem => {
-        if(
-            obstructionItem.name === obstruction &&
-            obstructionItem.active.length > 0 
-          ) {
-          obstructionItem.active.forEach(move => moveList.push(move));
-        }
-      })
-    })
 
-    //define which contextual moves exist to query for
+    obstructions.forEach(obstruction => {
+      if(!obstruction.active) return;
+      
+      let foundMove = contextualMoves.find(move => move.name === obstruction.active);
 
-    let contextualActiveMoves = [];
-    
-    moveList.forEach(move=> {
-      contextualMoves.forEach(moveDefinition => {
-        if(move === moveDefinition.name) {
-          contextualActiveMoves.push(moveDefinition);
-        }
-      })
-    })
-    //now i check to see if the obstructions for the level activate
-
-    obstructions.forEach((obstruction) => {
-      let foundObstruction = obstructionData.find(datum => datum.name === obstruction.obstacle);
-      // console.log(foundObstruction)
-
-      if(foundObstruction.active.length>0) {
-        foundObstruction.active.forEach(activity => {
-          let context = contextualMoves.find(move => move.name === activity).context;
-          console.log(context);
-        })
+      if(foundMove.context === 'adjacent') {
+        adjacent(obstruction, playerCoords, setPlayerSkills, playerSkills, foundMove)
+      } else if (foundMove.context === 'opponent_adjacent_then_player') {
+        opponent_adjacent_then_player(obstruction, playerCoords, baddieCoords, setPlayerSkills, playerSkills, foundMove)
+      } else {
+        setPlayerSkills(moveCombos);
       }
     })
 
-    //either the contextual moves needs to refer back to the obstructions, or the obstructions need to refer to the contextual moves
-
-    //i think i need to pull the obstruction library for the specific level
-    //then finally, every turn i can query the contextual move library
-    //to see what the context is.
-    //calculate the context
-
-    // console.log(obstructionList,'obstructionList');
-    // console.log(moveList,'moveList');
-    console.log(contextualActiveMoves);
-    // console.log(obstructions, 'obstructions')
   }, [combatPhase])
 
   return (

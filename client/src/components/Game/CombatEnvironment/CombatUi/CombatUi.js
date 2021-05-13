@@ -5,6 +5,7 @@ import skillborder from '../../../../assets/skillborder.png';
 import menuButton from '../../../../assets/menuButton.png';
 
 import { attackRange } from '../../../../Helpers/playerCombatHelpers';
+import { determineIfBaddieInRange } from '../../../../Helpers/playerActionPhase';
 import data from '../../../../data/mapSeed.json';
 import baddieData from '../../../../data/baddie.json';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +22,8 @@ import ResetButton from './ResetButton';
 import VictoryButton from './VictoryButton';
 // Data:
 import playerMoves from '../../../../data/playerMoves.json';
+import { baddieCoords } from '../../../../state/combatState';
+import { bindActionCreators } from 'redux';
 // Placeholder temp stuff ???
 
 const CombatUi = ({turn, setEnemyAttackRadius}) => {
@@ -33,6 +36,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(combatState.playerMoveOptions);
   const playerSkills = useRecoilValue(combatState.playerSkills);
   const playerCoords = useRecoilValue(combatState.playerCoords);
+  const baddieCoords = useRecoilValue(combatState.baddieCoords);
   const playerIsDead = useRecoilValue(combatState.playerIsDead);  // Flag for the reset button
   const level = useRecoilValue(globalState.level)
   // Conditionally render reflex check based on this value (and falsilly don't render on a zero!):
@@ -78,13 +82,15 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       </Wrapper>
       <SkillsDiv>
         {playerSkills.map(skill => {
-          return <SkillButton
+          if (determineIfBaddieInRange(skill.range, playerCoords, baddieCoords)) {
+            return <SkillButton
             key={`player-move-${skill.id}`}
             skill={skill}
             handleClick={handleClick}
             numPrevMoves={playerAttacksInQueue.length}
             playerHype={playerHype}
           />
+          }
         })}
       </SkillsDiv>
       <TurnDiv>{turn}</TurnDiv>

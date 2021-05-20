@@ -38,9 +38,11 @@ import { CONSTANTS } from '../../../constants.js';
 const CombatEnvironment = () => {
   const dispatch = useDispatch();
   const devMode = CONSTANTS.DEV_MODE;   // Boolean switch allows optional display of the 'Dev Mode' panel
+
   // State-dependent combat values start here:
   const combatPhase = useSelector((state) => state.game.combatPhase);   // Redux is used for the combat phase.
   const level = useRecoilValue(globalState.level);                      // All other combat state is handled by recoil.
+
   // Player Related State Values:
   const [playerAttacksInQueue, setPlayerAttacksInQueue] = useRecoilState(combatState.playerAttacksInQueue);
   const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
@@ -53,15 +55,19 @@ const CombatEnvironment = () => {
   const [playerMovementDecision, setPlayerMovementDecision] = useRecoilState(combatState.playerMovementDecision);
   const [playerIsDead, setPlayerIsDead] = useRecoilState(combatState.playerIsDead);
   const [playerSkills, setPlayerSkills] = useRecoilState(combatState.playerSkills);
+  const [playerStatus, setPlayerStatus] = useState(combatState.playerStatus);
+
   // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);
   const playerAttackData = playerMoveData.find((move) => move.id === reflexCheckId);  // Hacky but effective!
+
   // Baddie Related State Values:
   const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
   const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
   const [baddieOrientation, setBaddieOrientation] = useRecoilState(combatState.baddieOrientation);
   const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
   const [enemyAttackRadius, setEnemyAttackRadius] = useState([]);
+  const [baddieStatus, setBaddieStatus] = useState(combatState.baddieStatus);
 
   // temporary character state//
   const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
@@ -178,7 +184,10 @@ const CombatEnvironment = () => {
 
   //every player action, check to see if the prerequisites are present for a contextual move
   useEffect(() => {
-    if(combatPhase !== 'playerAction') setPlayerSkills(moveCombos);
+    if(combatPhase !== 'playerAction') {
+      setPlayerSkills(moveCombos);
+      return;
+    };
 
     //queries the level for the contextual attacks
 
@@ -200,6 +209,11 @@ const CombatEnvironment = () => {
       }
     })
 
+  }, [combatPhase])
+
+  useEffect(() => {
+    console.log(playerStatus);
+    console.log(baddieStatus);
   }, [combatPhase])
 
   return (

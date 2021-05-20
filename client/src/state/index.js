@@ -10,11 +10,13 @@ import {
   playerMoveOptions,
   playerMovementDecision,
   playerSkills,
+  playerStatus,
   mapGrid,
   baddieHP,
   baddieCoords,
   baddieOrientation,
   baddieDecision,
+  baddieStatus
 } from './combatState';
 
 import {
@@ -33,10 +35,12 @@ export default {
   playerMoveOptions,
   playerMovementDecision,
   playerSkills,
+  playerStatus,
   mapGrid,
   baddieHP,
   baddieCoords,
   baddieOrientation,
   baddieDecision,
   level,
+  baddieStatus
 }

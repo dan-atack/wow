@@ -57,6 +57,11 @@ export const playerIsDead = atom({
   default: false,
 })
 
+export const playerStatus = atom({
+  key: 'playerStatus',
+  default: 'standing'
+})
+
 // Baddie-Related Variables:
 
 export const baddieHP = atom({
@@ -83,6 +88,11 @@ export const baddieDecision = atom({
       shape: '',
       threshold: 0
   },
+})
+
+export const baddieStatus = atom({
+  key: 'baddieStatus',
+  default: 'standing'
 })
 
 export const mapGrid = atom({

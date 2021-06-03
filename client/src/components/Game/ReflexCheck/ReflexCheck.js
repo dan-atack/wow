@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import combatState from '../../../state';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { setCombatPhase, stopReflexCheck } from '../../../actions';
+import { determineObstacle } from '../../../Helpers/generalCombatHelpers';
 
 // Combo = integer for which of the 3 possible key combos to use for the reflex check:
 function ReflexCheck({ combo }) {
@@ -53,6 +54,21 @@ function ReflexCheck({ combo }) {
         return Math.floor((playerMovesInQueue[attackQueueIndexPosition].maxHype + stringLength) * remainder);
     }
 
+    // Determine how far to throw the baddie if the attack succeeds:
+    const determineThrow = () => {
+        let distance = 0;
+        const remainder = timeLeft / playerMovesInQueue[attackQueueIndexPosition].time * 100;
+        // Every attack has three possible ranges; fast reflexes throw the farthest (first index position = largest possible distance):
+        if (remainder > 67) {
+            distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[0];
+        } else if (remainder > 33) {
+            distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[1];
+        } else {
+            distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[2];
+        }
+        determineObstacle(distance);
+    }
+
     // What happens if you complete the LAST combo in the queue:
     const finalAttackSuccess = () => {
         setSuccessStatus(true);
@@ -74,6 +90,8 @@ function ReflexCheck({ combo }) {
         playUghSound();
         console.log(`Player hits baddie with ${playerMovesInQueue[attackQueueIndexPosition].name} for ${determineDamage()} damage!`);
         console.log(`Player gains ${determineHype()} hype points!`);
+        // Determine if baddie should be moved, and set his coords if so.
+        determineThrow();
         setBaddieHP(baddieHP - determineDamage());
         setPlayerHype(playerHype + determineHype());
         // If there are multiple attacks queued and you didn't just do the last one, setup the next move:

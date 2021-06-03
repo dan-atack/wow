@@ -7,7 +7,9 @@
     "skills" : [
       {
         "name" : "Crisis of Faith", 
-        "damage" : 20, "effect" : "none", 
+        "damage" : 20,
+        "effect" : "none", 
+        "throwDistances": [ 1, 1, 1 ],
         "shape" : "cross", 
         "threshold" : 0,
         "portrait" : {
@@ -19,7 +21,8 @@
       {
         "name" : "Stigmata", 
         "damage" : 50, 
-        "effect" : "none", 
+        "effect" : "none",
+        "throwDistances": [ 2, 2, 2 ],
         "shape" : "cross", 
         "threshold" : 30,
         "portrait" : {
@@ -30,7 +33,9 @@
       },
       {
         "name" : "Holy Man",
-        "damage" : 80, "effect" : "none", 
+        "damage" : 80,
+        "effect" : "none",
+        "throwDistances": [ 3, 3, 3 ],
         "shape" : "cross", 
         "threshold" : 60,
         "portrait" : {
@@ -42,7 +47,8 @@
       {
         "name" : "Revelations", 
         "damage" : 99, 
-        "effect" : "none", 
+        "effect" : "none",
+        "throwDistances": [ 4, 4, 4 ],
         "shape" : "cross", 
         "threshold" : 80,
         "portrait" : {

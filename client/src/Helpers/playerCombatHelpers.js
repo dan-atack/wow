@@ -1,5 +1,7 @@
 //what I'm trying to do here is pass the range, effect, position, and damage of each skill in an area
 
+import { baddieCoords } from "../state/combatState"
+
 export const attackRange = (skill, PLAYER_POS, width, height, obstructions) => { // i need attack to return it's range, and then   
   let range = skill.range
   if(skill.shape === 'radial') { //checks skill pathing and calls pathing function

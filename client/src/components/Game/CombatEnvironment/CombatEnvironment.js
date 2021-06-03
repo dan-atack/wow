@@ -25,6 +25,7 @@ import moveCombos from '../../../data/playerMoves.json';
 import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 import { adjacent, opponent_adjacent_then_player } from '../../../Helpers/contextualMoveHelper';
+import { determineObstacle } from '../../../Helpers/generalCombatHelpers';
 
 //components
 import CombatUi from './CombatUi/CombatUi';
@@ -103,6 +104,9 @@ const CombatEnvironment = () => {
         dangerZone.forEach((point) => {
           if (point.x === playerCoords.x && point.y === playerCoords.y) {
             setPlayerHealth(playerHealth - baddieDecision.damage);
+            // Baddie throw logic goes here!
+            const obstructions = seed.obstructions;
+            determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, playerCoords, obstructions);
           }
         });
         dispatch(setCombatPhase('playerAction'));

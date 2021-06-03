@@ -5,8 +5,11 @@ import ugh from '../../../assets/sounds/ugh-01.mp3';
 import { useTime } from '../../../hooks/useTime';
 import { useDispatch } from 'react-redux';
 import combatState from '../../../state';
+import globalState from '../../../state';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { setCombatPhase, stopReflexCheck } from '../../../actions';
+import { determineObstacle } from '../../../Helpers/generalCombatHelpers';
+import data from '../../../data/mapSeed.json';
 
 // Combo = integer for which of the 3 possible key combos to use for the reflex check:
 function ReflexCheck({ combo }) {
@@ -20,12 +23,18 @@ function ReflexCheck({ combo }) {
     // Local state determines when the Reflex Check is over:
     const [failStatus, setFailStatus] = React.useState(false);
     const [successStatus, setSuccessStatus] = React.useState(false);
-    // Baddie HP, to be set (reduced) by a successful completion of the reflex check:
+    // We need to know the level to get the obstacles for the throw calculator. Jesus Christ.
+    const level = useRecoilValue(globalState.level);
+    const obstructions = data.find((obj) => obj.level === level).obstructions;
+    // Baddie HP and position to be set (reduced and shifted, respectively) by a successful completion of the reflex check:
     const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
+    const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
     // Player Hype is also affected by reflex check outcomes:
     const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
     // Now using state to pass all move data:
     const playerMovesInQueue = useRecoilValue(combatState.playerAttacksInQueue);
+    // Player Orientation can determine the throw direction of successful attacks:
+    const playerOrientation = useRecoilValue(combatState.playerOrientation);
     // Keep track of where we're at in the attack queue:
     const [attackQueueIndexPosition, setAttackQueueIndexPosition] = React.useState(0);
     // Set initial time to execute the first combo:
@@ -53,6 +62,21 @@ function ReflexCheck({ combo }) {
         return Math.floor((playerMovesInQueue[attackQueueIndexPosition].maxHype + stringLength) * remainder);
     }
 
+    // Determine how far to throw the baddie if the attack succeeds:
+    const determineThrow = () => {
+        let distance = 0;
+        const remainder = timeLeft / playerMovesInQueue[attackQueueIndexPosition].time * 100;
+        // Every attack has three possible ranges; fast reflexes throw the farthest (first index position = largest possible distance):
+        if (remainder > 67) {
+            distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[0];
+        } else if (remainder > 33) {
+            distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[1];
+        } else {
+            distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[2];
+        }
+        determineObstacle(distance, playerOrientation, baddieCoords, obstructions);
+    }
+
     // What happens if you complete the LAST combo in the queue:
     const finalAttackSuccess = () => {
         setSuccessStatus(true);
@@ -74,6 +98,8 @@ function ReflexCheck({ combo }) {
         playUghSound();
         console.log(`Player hits baddie with ${playerMovesInQueue[attackQueueIndexPosition].name} for ${determineDamage()} damage!`);
         console.log(`Player gains ${determineHype()} hype points!`);
+        // Determine if baddie should be moved, and set his coords if so.
+        determineThrow();
         setBaddieHP(baddieHP - determineDamage());
         setPlayerHype(playerHype + determineHype());
         // If there are multiple attacks queued and you didn't just do the last one, setup the next move:

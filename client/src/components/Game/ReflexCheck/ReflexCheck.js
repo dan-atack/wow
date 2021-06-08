@@ -74,7 +74,8 @@ function ReflexCheck({ combo }) {
         } else {
             distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[2];
         }
-        determineObstacle(distance, playerOrientation, baddieCoords, obstructions);
+        const destination = determineObstacle(distance, playerOrientation, baddieCoords, obstructions);
+        console.log(`DESTINATION: ${destination}`);
     }
 
     // What happens if you complete the LAST combo in the queue:

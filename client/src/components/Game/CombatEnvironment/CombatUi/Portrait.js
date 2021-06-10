@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import {useSelector} from 'react-redux';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import combatState from '../../../../state'
 
 
@@ -11,6 +11,7 @@ const Portrait = ({playerPortrait, selectedSkill, base}) => {
     
     const combatPhase = useSelector((state) => state.game.combatPhase);
     const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
+    const status = useRecoilValue(combatState.playerStatus); // when baddie is complete this will include baddie as well
 
     let baddiePortraitHandler = () => {
         if (baddieDecision.name !== "") {
@@ -42,8 +43,37 @@ const Portrait = ({playerPortrait, selectedSkill, base}) => {
         }
     }
 
+    console.log(status);
+
     return (
         <Wrapper backgroundColor={backgroundColorHandler() || 'orange'}>
+            <IconWrapper>
+                {
+                    status.positional.name !== 'standing' && 
+                        <StatusIcon isPlayer={playerPortrait} type={'positional'}>
+                            <div>{status.positional.name}</div>
+                            <div>{status.positional.duration}</div>
+                        </StatusIcon>
+                }
+                {
+                    status.elemental.name !== 'dry' &&
+                        <StatusIcon isPlayer={playerPortrait} type={'elemental'}>
+                            <div>{status.elemental.name}</div>
+                            <div>{status.elemental.duration}</div>
+                        </StatusIcon>
+                }
+                {
+                    status.physical.length > 0 &&
+                        status.physical.map(effect => {
+                            return (
+                                <StatusIcon isPlayer={playerPortrait} type={'physical'}>
+                                    <div>{effect.name}</div>
+                                    <div>{effect.duration}</div>
+                                </StatusIcon>
+                            )
+                        })
+                }
+            </IconWrapper>
             <Image 
                 playerPortrait={playerPortrait}
                 src={ playerPortrait ? 
@@ -61,6 +91,25 @@ const Portrait = ({playerPortrait, selectedSkill, base}) => {
 }
 
 export default Portrait
+
+const IconWrapper = styled.div`
+    display: flex;
+    width: 200px;
+`
+
+const StatusIcon = styled.div`
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    background: ${props => props.type === 'elemental' ? 'red' : props.type === 'physical' ? 'chartreuse' : 'salmon'};
+    position: relative;
+    top:${props => props.isPlayer ? '270px' : '-70px'};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+`
 
 const ChatBubble = styled.div`
     position: relative;

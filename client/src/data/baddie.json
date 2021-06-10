@@ -7,8 +7,9 @@
     "skills" : [
       {
         "name" : "Crisis of Faith", 
-        "damage" : 20,
-        "effect" : "none", 
+        "damage" : 1,
+        "effect" : {"name" : "fear", "type" : "physical"}, 
+        "duration": 3,
         "throwDistances": [ 1, 1, 1 ],
         "shape" : "cross", 
         "threshold" : 0,
@@ -20,8 +21,9 @@
       },
       {
         "name" : "Stigmata", 
-        "damage" : 50, 
-        "effect" : "none",
+        "damage" : 1, 
+        "effect" : {"name" : "knocked down", "type" : "positional"},
+        "duration": 3,
         "throwDistances": [ 2, 2, 2 ],
         "shape" : "cross", 
         "threshold" : 30,
@@ -33,8 +35,9 @@
       },
       {
         "name" : "Holy Man",
-        "damage" : 80,
-        "effect" : "none",
+        "damage" : 1,
+        "effect" : {"name" : "gas soaked", "type" : "elemental"},
+        "duration": 3,
         "throwDistances": [ 3, 3, 3 ],
         "shape" : "cross", 
         "threshold" : 60,
@@ -46,7 +49,7 @@
       },
       {
         "name" : "Revelations", 
-        "damage" : 99, 
+        "damage" : 1, 
         "effect" : "none",
         "throwDistances": [ 4, 4, 4 ],
         "shape" : "cross", 

@@ -59,7 +59,11 @@ export const playerIsDead = atom({
 
 export const playerStatus = atom({
   key: 'playerStatus',
-  default: 'standing'
+  default: {
+    physical: [],
+    elemental: {name: 'dry', duration: null},
+    positional: {name: 'standing', duration: null},
+  }
 })
 
 // Baddie-Related Variables:
@@ -92,7 +96,10 @@ export const baddieDecision = atom({
 
 export const baddieStatus = atom({
   key: 'baddieStatus',
-  default: 'standing'
+  default: {
+    state: 'standing',
+    duration: null
+  }
 })
 
 export const mapGrid = atom({

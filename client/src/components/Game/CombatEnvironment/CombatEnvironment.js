@@ -56,7 +56,7 @@ const CombatEnvironment = () => {
   const [playerMovementDecision, setPlayerMovementDecision] = useRecoilState(combatState.playerMovementDecision);
   const [playerIsDead, setPlayerIsDead] = useRecoilState(combatState.playerIsDead);
   const [playerSkills, setPlayerSkills] = useRecoilState(combatState.playerSkills);
-  const [playerStatus, setPlayerStatus] = useState(combatState.playerStatus);
+  const [playerStatus, setPlayerStatus] = useRecoilState(combatState.playerStatus);
 
   // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);
@@ -68,7 +68,7 @@ const CombatEnvironment = () => {
   const [baddieOrientation, setBaddieOrientation] = useRecoilState(combatState.baddieOrientation);
   const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
   const [enemyAttackRadius, setEnemyAttackRadius] = useState([]);
-  const [baddieStatus, setBaddieStatus] = useState(combatState.baddieStatus);
+  const [baddieStatus, setBaddieStatus] = useRecoilState(combatState.baddieStatus);
 
   // temporary character state//
   const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
@@ -77,7 +77,7 @@ const CombatEnvironment = () => {
 
   // Switch case acts as the game's Engine, calling helper functions and then managing state with their outputs.
   // One Effect to Call Them All:
-  React.useEffect(() => {
+  useEffect(() => {
     switch (combatPhase) {
       case 'noCombat':
         // On initial round of combat, generate map from seed:
@@ -104,6 +104,25 @@ const CombatEnvironment = () => {
         dangerZone.forEach((point) => {
           if (point.x === playerCoords.x && point.y === playerCoords.y) {
             setPlayerHealth(playerHealth - baddieDecision.damage);
+            // if the move has an effect then it attaches the effect here
+            if(baddieDecision.effect) {
+              const {effect, duration} = baddieDecision;
+
+
+              console.log(effect);
+
+              if(effect.type === 'positional') {
+                setPlayerStatus({...playerStatus, positional: {duration: duration, name: effect.name}})
+              } else if (effect.type === 'elemental') {
+                setPlayerStatus({...playerStatus, elemental: {name: effect.name, duration: duration}})
+              } else if (effect.type === 'physical') {
+                let tempArray = [...playerStatus.physical];
+                tempArray.push({name: effect.name, duration: duration});
+                setPlayerStatus({...playerStatus, physical: tempArray});
+              }
+
+              console.log(playerStatus);
+            }
             // Baddie throw logic goes here!
             const obstructions = seed.obstructions;
             determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, playerCoords, obstructions);
@@ -154,7 +173,7 @@ const CombatEnvironment = () => {
   }, [combatPhase]);
 
   // Check for player death:
-  React.useEffect(() => {
+  useEffect(() => {
     if (playerHealth <= 0 ){
       setPlayerIsDead(true);
       dispatch(setCombatPhase('gameOver'));
@@ -162,7 +181,7 @@ const CombatEnvironment = () => {
   }, [playerHealth])
 
   // Check for baddie death:
-  React.useEffect(() => {
+  useEffect(() => {
     if (baddieHP <= 0) {
       console.log('Victory! We have victory!')
       dispatch(setCombatPhase('victory'));
@@ -216,8 +235,23 @@ const CombatEnvironment = () => {
   }, [combatPhase])
 
   useEffect(() => {
-    console.log(playerStatus);
-    console.log(baddieStatus);
+    // if(combatPhase !== 'playerMove') return;  
+
+    // if(baddieStatus.state !== 'standing') {
+    //   setBaddieStatus({...baddieStatus, duration: baddieStatus.duration - 1});
+    // }
+    // if(playerStatus.state !== 'standing') {
+    //   setPlayerStatus({...playerStatus, duration: playerStatus.duration - 1});
+    // }
+
+    // if(baddieStatus.duration === 1 && baddieStatus.state !== 'standing') {
+    //   setBaddieStatus({state: 'standing', duration: null});
+    // }
+    
+    // if(playerStatus.duration === 1 && playerStatus.state !== 'standing') {
+    //   console.log('ping');
+    //   setPlayerStatus({state: 'standing', duration: null});
+    // }
   }, [combatPhase])
 
   return (

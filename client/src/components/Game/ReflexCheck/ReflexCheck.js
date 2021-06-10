@@ -25,7 +25,7 @@ function ReflexCheck({ combo }) {
     const [successStatus, setSuccessStatus] = React.useState(false);
     // We need to know the level to get the obstacles for the throw calculator. Jesus Christ.
     const level = useRecoilValue(globalState.level);
-    const obstructions = data.find((obj) => obj.level === level).obstructions;
+    const seed = data.find((obj) => obj.level === level);
     // Baddie HP and position to be set (reduced and shifted, respectively) by a successful completion of the reflex check:
     const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
     const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
@@ -74,7 +74,9 @@ function ReflexCheck({ combo }) {
         } else {
             distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[2];
         }
-        determineObstacle(distance, playerOrientation, baddieCoords, obstructions);
+        const destination = determineObstacle(distance, playerOrientation, baddieCoords, seed);
+        console.log(`DESTINATION: ${destination}`);
+        setBaddieCoords(destination);
     }
 
     // What happens if you complete the LAST combo in the queue:

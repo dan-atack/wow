@@ -202,12 +202,13 @@ const determineBaddieOrientation = (relativePosition, distanceToPlayer) => {
   if (relativePosition.length === 1) {
     facing = relativePosition[0];
   } else {  // If the player is offset along the X and Y dimensions from the baddie, choose the dominant vector:
-    // If delta X is bigger than delta Y (using absolute values), take whichever X-oriented direction is in the RP array:
+    // If delta X is bigger than delta Y (using absolute values), take whichever X-oriented direction is in the RP array,
+    // Also, ensure that the object returned is ALWAYS A STRING!
     if (Math.abs(distanceToPlayer.x) > Math.abs(distanceToPlayer.y)) {
-      facing = relativePosition.filter((direction) => direction === 'west' || direction === 'east');
+      facing = relativePosition.filter((direction) => direction === 'west' || direction === 'east')[0];
     } else if (Math.abs(distanceToPlayer.y) > Math.abs(distanceToPlayer.x)) {
       // Conversely, if delta Y is bigger, use whichever north/south string is in the Relative Positions array:
-      facing = relativePosition.filter((direction) => direction === 'north' || direction === 'south');
+      facing = relativePosition.filter((direction) => direction === 'north' || direction === 'south')[0];
     } else {
       // More complex logic needed here for 45% angles? For now we pick an arbitrary direction from the RP array:
       facing = relativePosition[Math.floor(Math.random() * relativePosition.length)]

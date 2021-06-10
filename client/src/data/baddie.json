@@ -9,7 +9,7 @@
         "name" : "Crisis of Faith", 
         "damage" : 20,
         "effect" : "none", 
-        "throwDistances": [ 1, 1, 1 ],
+        "throwDistances": [ 2, 2, 2 ],
         "shape" : "cross", 
         "threshold" : 0,
         "portrait" : {

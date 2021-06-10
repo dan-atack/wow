@@ -106,7 +106,9 @@ const CombatEnvironment = () => {
             setPlayerHealth(playerHealth - baddieDecision.damage);
             // Baddie throw logic goes here!
             const obstructions = seed.obstructions;
-            determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, playerCoords, obstructions);
+            const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, playerCoords, seed);
+            console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
+            setPlayerCoords(destination);
           }
         });
         dispatch(setCombatPhase('playerAction'));
@@ -216,8 +218,8 @@ const CombatEnvironment = () => {
   }, [combatPhase])
 
   useEffect(() => {
-    console.log(playerStatus);
-    console.log(baddieStatus);
+    // console.log(playerStatus);
+    // console.log(baddieStatus);
   }, [combatPhase])
 
   return (

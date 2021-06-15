@@ -237,14 +237,39 @@ const CombatEnvironment = () => {
   }, [combatPhase])
 
   useEffect(() => {
-    // if(combatPhase !== 'playerMove') return;  
+    if(combatPhase !== 'playerMove') return;  
 
     // if(baddieStatus.state !== 'standing') {
     //   setBaddieStatus({...baddieStatus, duration: baddieStatus.duration - 1});
     // }
-    // if(playerStatus.state !== 'standing') {
-    //   setPlayerStatus({...playerStatus, duration: playerStatus.duration - 1});
-    // }
+
+    console.log(playerStatus);
+
+    if(playerStatus.physical.length > 0) {
+      let tempArray = []
+      playerStatus.physical.forEach(effect => {
+        if(effect.duration - 1 !== 0) {
+          tempArray.push({name: effect.name, duration: effect.duration - 1});
+        }
+      })
+      setPlayerStatus({...playerStatus, physical: tempArray});
+    }
+
+    if(playerStatus.elemental?.name) {
+      if( playerStatus.elemental.duration - 1 !== 0 ) {
+        setPlayerStatus({...playerStatus, elemental: {name: playerStatus.elemental.name, duration: playerStatus.elemental.duration - 1}})
+      } else {
+        setPlayerStatus({...playerStatus, elemental: {}})
+      }
+    }
+
+    if(playerStatus.positional?.name) {
+      if(playerStatus.positional.duration - 1 !== 0) {
+        setPlayerStatus({...playerStatus, positional: {name: playerStatus.positional.name, duration: playerStatus.positional.duration - 1}})        
+      } else {
+        setPlayerStatus({...playerStatus, positional: {}});
+      }
+    }
 
     // if(baddieStatus.duration === 1 && baddieStatus.state !== 'standing') {
     //   setBaddieStatus({state: 'standing', duration: null});

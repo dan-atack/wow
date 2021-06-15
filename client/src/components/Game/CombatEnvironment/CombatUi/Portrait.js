@@ -49,14 +49,14 @@ const Portrait = ({playerPortrait, selectedSkill, base}) => {
         <Wrapper backgroundColor={backgroundColorHandler() || 'orange'}>
             <IconWrapper>
                 {
-                    status.positional.name !== 'standing' && 
+                    status.positional?.name && 
                         <StatusIcon isPlayer={playerPortrait} type={'positional'}>
                             <div>{status.positional.name}</div>
                             <div>{status.positional.duration}</div>
                         </StatusIcon>
                 }
                 {
-                    status.elemental.name !== 'dry' &&
+                    status.elemental?.name &&
                         <StatusIcon isPlayer={playerPortrait} type={'elemental'}>
                             <div>{status.elemental.name}</div>
                             <div>{status.elemental.duration}</div>

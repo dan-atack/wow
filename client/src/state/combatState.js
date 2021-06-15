@@ -61,8 +61,8 @@ export const playerStatus = atom({
   key: 'playerStatus',
   default: {
     physical: [],
-    elemental: {name: 'dry', duration: null},
-    positional: {name: 'standing', duration: null},
+    elemental: {},
+    positional: {},
   }
 })
 

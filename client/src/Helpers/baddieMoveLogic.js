@@ -38,15 +38,15 @@ export const baddieMoveLogic = (
   setBaddiePosition({x: baddiePosition.x + randomMove.x, y: baddiePosition.y + randomMove.y})
   setBaddieOrientation(determineBaddieOrientation(relativePosition, distanceToPlayerAfterMove));
 
-  console.log(
-    'DEBUG LOG',
-    {
-      'baddie orientation': baddieOrientation,
-      'player orientation': playerOrientation,
-      'baddie previous position': baddiePosition,
-      'baddie position': {x: baddiePosition.x + randomMove.x, y: baddiePosition.y + randomMove.y},
-      'move that baddie decided to take' : {x: randomMove.x, y: randomMove.y},
-    })
+  // console.log(
+  //   'DEBUG LOG',
+  //   {
+  //     'baddie orientation': baddieOrientation,
+  //     'player orientation': playerOrientation,
+  //     'baddie previous position': baddiePosition,
+  //     'baddie position': {x: baddiePosition.x + randomMove.x, y: baddiePosition.y + randomMove.y},
+  //     'move that baddie decided to take' : {x: randomMove.x, y: randomMove.y},
+  //   })
 };
 
 const moveFinder = (baddiePosition, baddie, seed, relativePosition, possibleArray, playerPosition) => { // this is what i need to fix
@@ -71,13 +71,13 @@ const moveFinder = (baddiePosition, baddie, seed, relativePosition, possibleArra
       (tempEndpointX > seed.width || tempEndpointX < 1) ||
       (tempEndpointY > seed.height || tempEndpointY < 1)
     ) {
-      console.log(move, 'out of bound splice');
+      // console.log(move, 'out of bound splice');
       possibleMoves.splice(index, 1);
     }
 
     seed.obstructions.forEach(obst => {
       if(obst.x === tempEndpointX && obst.y === tempEndpointY) {
-        console.log(move, 'obstruction splice')
+        // console.log(move, 'obstruction splice')
         possibleMoves.splice(index, 1)
       }
     })
@@ -86,7 +86,7 @@ const moveFinder = (baddiePosition, baddie, seed, relativePosition, possibleArra
       tempEndpointX === playerPosition.x &&
       tempEndpointY === playerPosition.y
     ) {
-      console.log(move, 'player intersection splice')
+      // console.log(move, 'player intersection splice')
       possibleMoves.splice(index, 1)
     }
   })
@@ -102,7 +102,7 @@ const moveChecker = (possibleMoves, possibleArray, baddiePosition) => {
   possibleMoves.forEach((move, index) => {
     let tempEndpoint = {x:baddiePosition.x + move.x, y:baddiePosition.y + move.y}
     if(!possibleArray.find(obj => obj.x === tempEndpoint.x && obj.y === tempEndpoint.y)) {
-      console.log('impossible move splice')
+      // console.log('impossible move splice')
       possibleMoves.splice(index, 1)
     }
   })

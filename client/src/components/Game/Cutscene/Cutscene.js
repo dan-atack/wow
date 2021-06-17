@@ -28,7 +28,7 @@ function CutscenePrototype({ scene }) {
         duration: 10000,
       };
   const now = useTime(frameData.duration ? frameData.duration : null);
-  console.log(frameData);
+  // console.log(frameData);
   React.useEffect(() => {
     if (!frameData.last) dispatch(setFrame(currentFrame + 1));
   }, [now]);

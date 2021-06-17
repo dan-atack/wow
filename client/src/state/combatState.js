@@ -97,8 +97,11 @@ export const baddieDecision = atom({
 export const baddieStatus = atom({
   key: 'baddieStatus',
   default: {
-    state: 'standing',
-    duration: null
+    default: {
+      physical: [],
+      elemental: {},
+      positional: {},
+    }
   }
 })
 

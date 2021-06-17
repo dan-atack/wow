@@ -11,7 +11,7 @@ const Portrait = ({playerPortrait, selectedSkill, base}) => {
     
     const combatPhase = useSelector((state) => state.game.combatPhase);
     const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
-    const status = useRecoilValue(combatState.playerStatus); // when baddie is complete this will include baddie as well
+    const status = useRecoilValue(playerPortrait ? combatState.playerStatus : combatState.baddieStatus); // when baddie is complete this will include baddie as well
 
     let baddiePortraitHandler = () => {
         if (baddieDecision.name !== "") {
@@ -43,8 +43,6 @@ const Portrait = ({playerPortrait, selectedSkill, base}) => {
         }
     }
 
-    console.log(status);
-
     return (
         <Wrapper backgroundColor={backgroundColorHandler() || 'orange'}>
             <IconWrapper>
@@ -63,7 +61,7 @@ const Portrait = ({playerPortrait, selectedSkill, base}) => {
                         </StatusIcon>
                 }
                 {
-                    status.physical.length > 0 &&
+                    status.physical?.length > 0 &&
                         status.physical.map(effect => {
                             return (
                                 <StatusIcon isPlayer={playerPortrait} type={'physical'}>

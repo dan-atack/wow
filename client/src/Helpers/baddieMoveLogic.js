@@ -28,7 +28,7 @@ export const baddieMoveLogic = (
 
   // In the future our chosen move will not be a random one:
   const chosenMove = randomMove;
-
+  
   const distanceToPlayerAfterMove = {
     x: playerPosition.x - (baddiePosition.x + chosenMove.x), // positive value = player is to the EAST (RIGHT) of the baddie
     y: playerPosition.y - (baddiePosition.y + chosenMove.y) // positive value = player is to the NORTH of the baddie

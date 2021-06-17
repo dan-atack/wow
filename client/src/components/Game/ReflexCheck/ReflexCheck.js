@@ -33,7 +33,8 @@ function ReflexCheck({ combo }) {
     const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
     // Now using state to pass all move data:
     const playerMovesInQueue = useRecoilValue(combatState.playerAttacksInQueue);
-    // Player Orientation can determine the throw direction of successful attacks:
+    // Player Orientation and position can determine the throw direction of successful attacks:
+    const playerCoords = useRecoilValue(combatState.playerCoords);
     const playerOrientation = useRecoilValue(combatState.playerOrientation);
     // Keep track of where we're at in the attack queue:
     const [attackQueueIndexPosition, setAttackQueueIndexPosition] = React.useState(0);
@@ -74,8 +75,8 @@ function ReflexCheck({ combo }) {
         } else {
             distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[2];
         }
-        const destination = determineObstacle(distance, playerOrientation, baddieCoords, seed);
-        console.log(`DESTINATION: ${destination}`);
+        const destination = determineObstacle(distance, playerOrientation, playerCoords, baddieCoords, seed);
+        console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
         setBaddieCoords(destination);
     }
 
@@ -98,12 +99,12 @@ function ReflexCheck({ combo }) {
     // What happens when you complete a combo (regardless of how many attacks are queued):
     const attackSuccess = () => {
         playUghSound();
-        console.log(`Player hits baddie with ${playerMovesInQueue[attackQueueIndexPosition].name} for ${determineDamage()} damage!`);
-        console.log(`Player gains ${determineHype()} hype points!`);
+        // console.log(`Player hits baddie with ${playerMovesInQueue[attackQueueIndexPosition].name} for ${determineDamage()} damage!`);
+        // console.log(`Player gains ${determineHype()} hype points!`);
         // Determine if baddie should be moved, and set his coords if so.
         determineThrow();
         setBaddieHP(baddieHP - determineDamage());
-        setPlayerHype(playerHype + determineHype());
+        setPlayerHype(Math.min(playerHype + determineHype(), 100));
         // If there are multiple attacks queued and you didn't just do the last one, setup the next move:
         if (playerMovesInQueue.length > 1 && attackQueueIndexPosition < playerMovesInQueue.length - 1) {
             setAttackQueueIndexPosition(attackQueueIndexPosition + 1);

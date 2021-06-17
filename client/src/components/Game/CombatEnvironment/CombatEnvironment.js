@@ -124,7 +124,7 @@ const CombatEnvironment = () => {
               console.log(playerStatus);
             }
             // Baddie throw logic goes here!
-            const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, playerCoords, seed);
+            const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, baddieCoords, playerCoords, seed);
             console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
             setPlayerCoords(destination);
           }

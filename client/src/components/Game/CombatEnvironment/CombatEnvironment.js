@@ -108,9 +108,6 @@ const CombatEnvironment = () => {
             if(baddieDecision.effect) {
               const {effect, duration} = baddieDecision;
 
-
-              console.log(effect);
-
               if(effect.type === 'positional') {
                 setPlayerStatus({...playerStatus, positional: {duration: duration, name: effect.name}})
               } else if (effect.type === 'elemental') {
@@ -120,12 +117,10 @@ const CombatEnvironment = () => {
                 tempArray.push({name: effect.name, duration: duration});
                 setPlayerStatus({...playerStatus, physical: tempArray});
               }
-
-              console.log(playerStatus);
             }
             // Baddie throw logic goes here!
-            const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, baddieCoords, playerCoords, seed);
-            console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
+            const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, playerCoords, seed);
+            // console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
             setPlayerCoords(destination);
           }
         });
@@ -238,13 +233,8 @@ const CombatEnvironment = () => {
   useEffect(() => {
     if(combatPhase !== 'playerMove') return;  
 
-    // if(baddieStatus.state !== 'standing') {
-    //   setBaddieStatus({...baddieStatus, duration: baddieStatus.duration - 1});
-    // }
-
-    console.log(playerStatus);
-
-    if(playerStatus.physical.length > 0) {
+    //Checks players status' elapses those elapsed, and ticks duration down by 1
+    if(playerStatus.physical?.length > 0) {
       let tempArray = []
       playerStatus.physical.forEach(effect => {
         if(effect.duration - 1 !== 0) {
@@ -270,14 +260,33 @@ const CombatEnvironment = () => {
       }
     }
 
-    // if(baddieStatus.duration === 1 && baddieStatus.state !== 'standing') {
-    //   setBaddieStatus({state: 'standing', duration: null});
-    // }
-    
-    // if(playerStatus.duration === 1 && playerStatus.state !== 'standing') {
-    //   console.log('ping');
-    //   setPlayerStatus({state: 'standing', duration: null});
-    // }
+    //Checks players status' elapses those elapsed, and ticks duration down by 1
+    if(baddieStatus.physical?.length > 0) {
+      let tempArray = []
+      baddieStatus.physical.forEach(effect => {
+        if(effect.duration - 1 !== 0) {
+          tempArray.push({name: effect.name, duration: effect.duration - 1});
+        }
+      })
+      setBaddieStatus({...baddieStatus, physical: tempArray});
+    }
+
+    if(baddieStatus.elemental?.name) {
+      if( baddieStatus.elemental.duration - 1 !== 0 ) {
+        setBaddieStatus({...baddieStatus, elemental: {name: baddieStatus.elemental.name, duration: baddieStatus.elemental.duration - 1}})
+      } else {
+        setBaddieStatus({...baddieStatus, elemental: {}})
+      }
+    }
+
+    if(baddieStatus.positional?.name) {
+      if(baddieStatus.positional.duration - 1 !== 0) {
+        setBaddieStatus({...baddieStatus, positional: {name: baddieStatus.positional.name, duration: baddieStatus.positional.duration - 1}})        
+      } else {
+        setBaddieStatus({...baddieStatus, positional: {}});
+      }
+    }
+
   }, [combatPhase])
 
   return (

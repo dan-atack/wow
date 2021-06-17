@@ -29,6 +29,7 @@ function ReflexCheck({ combo }) {
     // Baddie HP and position to be set (reduced and shifted, respectively) by a successful completion of the reflex check:
     const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
     const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
+    const [baddieStatus, setBaddieStatus] = useRecoilState(combatState.baddieStatus);
     // Player Hype is also affected by reflex check outcomes:
     const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
     // Now using state to pass all move data:
@@ -75,8 +76,13 @@ function ReflexCheck({ combo }) {
         } else {
             distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[2];
         }
+<<<<<<< HEAD
         const destination = determineObstacle(distance, playerOrientation, playerCoords, baddieCoords, seed);
         console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
+=======
+        const destination = determineObstacle(distance, playerOrientation, baddieCoords, seed);
+        // console.log(`DESTINATION: ${destination}`);
+>>>>>>> master
         setBaddieCoords(destination);
     }
 
@@ -101,6 +107,21 @@ function ReflexCheck({ combo }) {
         playUghSound();
         // console.log(`Player hits baddie with ${playerMovesInQueue[attackQueueIndexPosition].name} for ${determineDamage()} damage!`);
         // console.log(`Player gains ${determineHype()} hype points!`);
+
+        if(playerMovesInQueue[attackQueueIndexPosition].effect) {
+            const {effect, duration} = playerMovesInQueue[attackQueueIndexPosition];
+            
+            if(effect.type === 'positional') {
+                setBaddieStatus({...baddieStatus, positional: {duration: duration, name: effect.name}})
+              } else if (effect.type === 'elemental') {
+                setBaddieStatus({...baddieStatus, elemental: {name: effect.name, duration: duration}})
+              } else if (effect.type === 'physical') {
+                let tempArray = [...baddieStatus.physical];
+                tempArray.push({name: effect.name, duration: duration});
+                setBaddieStatus({...baddieStatus, physical: tempArray});
+              }
+        }
+
         // Determine if baddie should be moved, and set his coords if so.
         determineThrow();
         setBaddieHP(baddieHP - determineDamage());

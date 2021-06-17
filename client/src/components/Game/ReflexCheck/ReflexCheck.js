@@ -76,13 +76,8 @@ function ReflexCheck({ combo }) {
         } else {
             distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[2];
         }
-<<<<<<< HEAD
         const destination = determineObstacle(distance, playerOrientation, playerCoords, baddieCoords, seed);
         console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
-=======
-        const destination = determineObstacle(distance, playerOrientation, baddieCoords, seed);
-        // console.log(`DESTINATION: ${destination}`);
->>>>>>> master
         setBaddieCoords(destination);
     }
 

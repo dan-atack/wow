@@ -52,7 +52,7 @@ export const determineObstacle = (distance, direction, victimCoords, seed) => {
       default:
         // If the direction given doesn't match, return original coords and display a message (this is an exception):
         if (potentialPositions.length === 0 && distance > 0) {
-          console.log(`Unexpected value given for attack throw direction: ${direction}`);
+          // console.log(`Unexpected value given for attack throw direction: ${direction}`);
           return victimCoords;
         }
     }

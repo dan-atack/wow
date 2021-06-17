@@ -4,9 +4,9 @@
 // For now we'll just print that the baddie has acted and then set state to the next phase of the combat cycle:
 export const specialEventLogic = (dispatch, setCombatPhase, fight_context) => {
   if (fight_context) {
-    console.log('end of combat round');
+    // console.log('end of combat round');
   } else {
-    console.log('end of combat round - no special event context this round.');
+    // console.log('end of combat round - no special event context this round.');
   }
   dispatch(setCombatPhase('baddieMove')); 
 };

@@ -28,7 +28,7 @@ export const baddieAction = (baddieCoords, seed, baddieDecision) => {
         // they're all crosses! get it? ahahahaha
         return cross(baddieCoords, seed);
       default:
-        console.log('error', baddieDecision);
+        // console.log('error', baddieDecision);
         break;
     }
   }

@@ -25,7 +25,7 @@ import moveCombos from '../../../data/playerMoves.json';
 import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 import { adjacent, opponent_adjacent_then_player } from '../../../Helpers/contextualMoveHelper';
-import { determineObstacle } from '../../../Helpers/generalCombatHelpers';
+import { determineObstacle, advanceCombatSequence } from '../../../Helpers/generalCombatHelpers';
 
 //components
 import CombatUi from './CombatUi/CombatUi';
@@ -39,7 +39,6 @@ import { CONSTANTS } from '../../../constants.js';
 const CombatEnvironment = () => {
   const dispatch = useDispatch();
   const devMode = CONSTANTS.DEV_MODE;   // Boolean switch allows optional display of the 'Dev Mode' panel
-
   // State-dependent combat values start here:
   const combatPhase = useSelector((state) => state.game.combatPhase);   // Redux is used for the combat phase.
   const level = useRecoilValue(globalState.level);                      // All other combat state is handled by recoil.
@@ -87,7 +86,8 @@ const CombatEnvironment = () => {
         // Helper function contains the logic to determine which move is made:
         const decision = baddieMakeDecision(baddieCoords, baddieOrientation, playerCoords, playerOrientation, baddie);
         setBaddieDecision(decision);    // Pass baddie's move data to recoil
-        dispatch(setCombatPhase('playerMove'));                       // Advance to next combat phase with redux
+        // Helper function advances to next phase AFTER a given time delay:
+        advanceCombatSequence(2000, 'playerMove', dispatch, setCombatPhase);
         // IDEA: Use time hook to make this phase last 1 - 2 seconds; use that time to show a GIF that telegraphs the move!
         break;
       case 'playerMove':
@@ -95,6 +95,7 @@ const CombatEnvironment = () => {
         const possibleMoves = setupPlayerMovePhase(playerAP, playerCoords, level);
         setPlayerMoveOptions(possibleMoves);
         // No dispatch here; the phase advances when the player picks their move.
+        // NOTE: To allow for combat animations, we'll need to add the combat sequence timeout to the player movement helper function
         break;
       case 'baddieAction':
         const dangerZone = baddieAction(baddieCoords, seed, baddieDecision);
@@ -121,10 +122,12 @@ const CombatEnvironment = () => {
             // Baddie throw logic goes here!
             const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, baddieCoords, playerCoords, seed);
             // console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
+            
             setPlayerCoords(destination);
           }
         });
-        dispatch(setCombatPhase('playerAction'));
+        advanceCombatSequence(1000, 'playerAction', dispatch, setCombatPhase);
+        // dispatch(setCombatPhase('playerAction'));
         break;
       case 'playerAction':
         // Go through the player's list of attacks and see if the baddie is within range of any of them:
@@ -139,6 +142,7 @@ const CombatEnvironment = () => {
           // This code down here is the same as that in the combat ui for the attack button handlers:
           setEnemyAttackRadius([]);
           setPlayerMoveOptions([]);
+          // No need to waste time on a delay if no attack is possible. If an attack is possible, delay should be added to player action/combat helper...
           dispatch(setCombatPhase('specialEvent'));
         }
         break;  // Await input from the attack selection inputs and no more.

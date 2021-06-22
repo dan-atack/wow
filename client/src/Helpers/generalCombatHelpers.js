@@ -117,3 +117,12 @@ export const determineObstacle = (distance, direction, attackerCoords, victimCoo
     // If no obstacle is detected, return the farthest destination OR the original coords if there are no potential positions:
     return potentialPositions[potentialPositions.length - 1] || victimCoords;
   }
+
+// This is an experimental helper function that will set a one-time timeout that delays the advance to the next combat phase.
+// Time = number of milliseconds delay; nextPhase = string name of a combat phase; setNextPhase = dispatcher, passed as a function.
+export const advanceCombatSequence = (time, nextPhase, dispatch, setNextPhase) => {
+  console.log(`Initiating ${time/1000} second countdown to next phase.`);
+  setTimeout(() => {
+    dispatch(setNextPhase(nextPhase));
+  }, time)
+}

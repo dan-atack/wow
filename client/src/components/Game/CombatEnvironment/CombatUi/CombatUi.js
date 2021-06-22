@@ -20,6 +20,7 @@ import ReflexCheck from '../../ReflexCheck';
 import SkillButton from './SkillButton';
 import ResetButton from './ResetButton';
 import VictoryButton from './VictoryButton';
+import AttackQueue from './AttackQueue';
 // Data:
 import playerMoves from '../../../../data/playerMoves.json';
 import { baddieCoords } from '../../../../state/combatState';
@@ -65,6 +66,8 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
 
   const dispatch = useDispatch();
 
+  console.log(playerAttacksInQueue);
+
   return(
     <div className="Combat-UI">
       {playerIsDead && <ResetButton />}
@@ -93,6 +96,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
           }
         })}
       </SkillsDiv>
+      <AttackQueue attacks={playerAttacksInQueue}/>
       <TurnDiv>{turn}</TurnDiv>
       <PortraitWrapper>
         {/* query the data for the base portraits */}

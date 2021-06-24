@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setCombatPhase } from '../../../../actions';
 import combatState from '../../../../state';
 import { useRecoilState } from 'recoil';
+import { advanceCombatSequence } from '../../../../Helpers/generalCombatHelpers';
 
 const OrientationPicker = () => {
     const dispatch = useDispatch();
@@ -14,8 +15,9 @@ const OrientationPicker = () => {
     const selectionHandler = (direction) => {
         setPlayerOrientation(direction);
         setPlayerCoords({ x: playerMovementDecision.x, y: playerMovementDecision.y }); // this will happen after orientation is chosen.
-        setPlayerMovementDecision({x:-1, y:-1}) // set a position outside the possible render area?
-        dispatch(setCombatPhase('baddieAction'));
+        setPlayerMovementDecision({ x: -1, y: -1 }) // set a position outside the possible render area?
+        // TODO: Make delay until next phase dependent on distance (quick delta x + delta y calculation - make another helper).
+        advanceCombatSequence(1000, 'baddieAction', dispatch, setCombatPhase);
     }
     return (
         <Wrapper>
@@ -33,7 +35,7 @@ const OrientationPicker = () => {
             ></Option>
             <Option
                 style={{ top: 17, left: 0, backgroundColor: 'blue' }}
-                onClick={() => selectionHandler('west')}    
+                onClick={() => selectionHandler('west')}
             ></Option>
         </Wrapper>
     );

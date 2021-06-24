@@ -16,12 +16,12 @@ import ObstructionTile from './ObstructionTile/ObstructionTile';
 
 // generates the map based on the player position, enemy location, obstruction and seed
 // PROP TYPES
-// row: array of 3-part tuples {x, y, obstacle},  <---- obstacle is optional string
+// row: object {x, y, obstacle},  <---- obstacle is optional string
 // baddieCoords: {x, y},
 // playerMove: Handler function to be mapped to each tile in the player's move radius
 // playerAttack: Handler function to be mapped to each tile in the player's ATTACK radius
 // enemyAttackRadius: Array of 2-part coordinates {x, y} representing the baddie's "danger zone"
-const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enemyAttackRadius}) => { 
+const LevelVisualGenerator = ({ row, baddieCoords, playerMove, playerAttack, enemyAttackRadius }) => {
   const level = useRecoilValue(globalState.level);
   const playerCoords = useRecoilValue(combatState.playerCoords);
   const playerMoveOptions = useRecoilValue(combatState.playerMoveOptions);
@@ -65,45 +65,45 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
         ) {
           if (baddieIsAttackable) {
             // If you can attack the enemy, we render him as an attackable enemy:
-              return (
-                <SpriteTile 
-                  key={Math.random() * 100000}
-                  level={seed.level}
-                  onClick={() => playerAttack(sq.x, sq.y)}
-                />
-              )
-            } else {
+            return (
+              <SpriteTile
+                key={Math.random() * 100000}
+                level={seed.level}
+                onClick={() => playerAttack(sq.x, sq.y)}
+              />
+            )
+          } else {
             // Otherwise we render them as a non-clickable image:
             return (
-              <SpriteTile 
-              key={Math.random() * 100000}
-              level={seed.level}
-            />
+              <SpriteTile
+                key={Math.random() * 100000}
+                level={seed.level}
+              />
             )
           }
         } else if (
           enemyAttackRadius.find((obs) => sq.x === obs.x && sq.y === obs.y)) {
-            if(sq.x === playerCoords.x && sq.y === playerCoords.y) {
-              // If, within the enemy's danger zone, we find the player's coords, render the Player with a POW animation:
-              return (
-                <SpriteTile key={Math.random() * 1000000} isPlayer={true}>
-                  <Pow />
-                </SpriteTile>
-              )
-            } else {
-              // Otherwise, within the enemy's danger zone, render the 'attack radius' tile to indicate danger:
-              return (
-                <TerrainTile
-                  key={Math.random() * 100000000}
-                  overlay={'baddieAttack'}
-                  x={sq.x}
-                  y={sq.y}
-                />
-              )
-            }
+          if (sq.x === playerCoords.x && sq.y === playerCoords.y) {
+            // If, within the enemy's danger zone, we find the player's coords, render the Player with a POW animation:
+            return (
+              <SpriteTile key={Math.random() * 1000000} isPlayer={true}>
+                <Pow />
+              </SpriteTile>
+            )
+          } else {
+            // Otherwise, within the enemy's danger zone, render the 'attack radius' tile to indicate danger:
+            return (
+              <TerrainTile
+                key={Math.random() * 100000000}
+                overlay={'baddieAttack'}
+                x={sq.x}
+                y={sq.y}
+              />
+            )
+          }
         } else if (
           sq.x === playerCoords.x && sq.y === playerCoords.y
-          ) {
+        ) {
           // If we've run through the enemy's danger zone and not found the Player, render the Player, sans pow:
           return (
             <SpriteTile key={Math.random() * 100000} isPlayer={true} />
@@ -115,7 +115,7 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
           return (
             <TerrainTile
               key={Math.random() * 100000}
-              onClick = {() => playerAttack(sq.x, sq.y)}
+              onClick={() => playerAttack(sq.x, sq.y)}
               overlay={'playerAttack'}
               x={sq.x}
               y={sq.y}
@@ -138,13 +138,14 @@ const LevelVisualGenerator = ({row, baddieCoords, playerMove, playerAttack, enem
           // Finally, render whatever coordinates are left with the generic 'empty tile':
           return (
             <TerrainTile
-            key={Math.random() * 100000}
-            level={level} // e.g. 'parkingLot', 'wrestlingRing', etc.
-            overlay={'none'}  // Possible overlays: 'none', 'playerAttack', 'baddieAttack', 'playerMove'
-            x={sq.x}
-            y={sq.y}
-          />
-          )}
+              key={Math.random() * 100000}
+              level={level} // e.g. 'parkingLot', 'wrestlingRing', etc.
+              overlay={'none'}  // Possible overlays: 'none', 'playerAttack', 'baddieAttack', 'playerMove'
+              x={sq.x}
+              y={sq.y}
+            />
+          )
+        }
         ;
       })}
     </div>

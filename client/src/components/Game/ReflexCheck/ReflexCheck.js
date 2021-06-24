@@ -8,7 +8,7 @@ import combatState from '../../../state';
 import globalState from '../../../state';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { setCombatPhase, stopReflexCheck } from '../../../actions';
-import { determineObstacle } from '../../../Helpers/generalCombatHelpers';
+import { determineObstacle, advanceCombatSequence } from '../../../Helpers/generalCombatHelpers';
 import data from '../../../data/mapSeed.json';
 
 // Combo = integer for which of the 3 possible key combos to use for the reflex check:
@@ -84,7 +84,8 @@ function ReflexCheck({ combo }) {
     // What happens if you complete the LAST combo in the queue:
     const finalAttackSuccess = () => {
         setSuccessStatus(true);
-        dispatch(setCombatPhase('specialEvent'));
+        const attackAnimationDelay = playerMovesInQueue.length * 1000;  // Delay for 1 second per attack
+        advanceCombatSequence(attackAnimationDelay, 'specialEvent', dispatch, setCombatPhase);
         dispatch(stopReflexCheck());
     }
 
@@ -103,18 +104,18 @@ function ReflexCheck({ combo }) {
         // console.log(`Player hits baddie with ${playerMovesInQueue[attackQueueIndexPosition].name} for ${determineDamage()} damage!`);
         // console.log(`Player gains ${determineHype()} hype points!`);
 
-        if(playerMovesInQueue[attackQueueIndexPosition].effect) {
-            const {effect, duration} = playerMovesInQueue[attackQueueIndexPosition];
-            
-            if(effect.type === 'positional') {
-                setBaddieStatus({...baddieStatus, positional: {duration: duration, name: effect.name}})
-              } else if (effect.type === 'elemental') {
-                setBaddieStatus({...baddieStatus, elemental: {name: effect.name, duration: duration}})
-              } else if (effect.type === 'physical') {
+        if (playerMovesInQueue[attackQueueIndexPosition].effect) {
+            const { effect, duration } = playerMovesInQueue[attackQueueIndexPosition];
+
+            if (effect.type === 'positional') {
+                setBaddieStatus({ ...baddieStatus, positional: { duration: duration, name: effect.name } })
+            } else if (effect.type === 'elemental') {
+                setBaddieStatus({ ...baddieStatus, elemental: { name: effect.name, duration: duration } })
+            } else if (effect.type === 'physical') {
                 let tempArray = [...baddieStatus.physical];
-                tempArray.push({name: effect.name, duration: duration});
-                setBaddieStatus({...baddieStatus, physical: tempArray});
-              }
+                tempArray.push({ name: effect.name, duration: duration });
+                setBaddieStatus({ ...baddieStatus, physical: tempArray });
+            }
         }
 
         // Determine if baddie should be moved, and set his coords if so.
@@ -146,9 +147,9 @@ function ReflexCheck({ combo }) {
             setTimeLeft(timeLeft - deltaT);
             // How to display the time string, using a method that seemed clever circa 1970:
             if (timeLeft > 10000) {
-                setTimeString(`00:${(timeLeft/1000).toFixed(2)}`)
+                setTimeString(`00:${(timeLeft / 1000).toFixed(2)}`)
             } else {
-                setTimeString(`00:0${(timeLeft/1000).toFixed(2)}`)
+                setTimeString(`00:0${(timeLeft / 1000).toFixed(2)}`)
             }
             // Set failure status to true if time runs out:
             if (timeLeft <= 0) {
@@ -159,35 +160,35 @@ function ReflexCheck({ combo }) {
                     setFailStatus(true);
                     // Check each key in the combo against the keydown event:
                     playerMovesInQueue[attackQueueIndexPosition].combos[combo].forEach((key, idx) => {
-                    if (ev.code === `Key${key}`) {
-                        // If the index of the event key is the current key, advance the sequence:
-                        if (idx === currentKey) {
-                            setCurrentKey(currentKey + 1);
-                            setFailStatus(false);
+                        if (ev.code === `Key${key}`) {
+                            // If the index of the event key is the current key, advance the sequence:
+                            if (idx === currentKey) {
+                                setCurrentKey(currentKey + 1);
+                                setFailStatus(false);
+                            }
                         }
-                    }
-                })
-                setKeystrokes(keystrokes + 1);
+                    })
+                    setKeystrokes(keystrokes + 1);
                 }
             };  // IF COMBO IS EXECUTED SUCCESSFULLY:
             if (playerMovesInQueue[attackQueueIndexPosition].combos[combo].length === currentKey && !failStatus) {
                 attackSuccess();
-            } 
+            }
             window.addEventListener('keydown', handleKeydown);
-        
+
             return () => {
-            window.removeEventListener('keydown', handleKeydown);
+                window.removeEventListener('keydown', handleKeydown);
             };
-        }  
+        }
     }, [now]);
     return (
         <Wrapper failure={failStatus} success={successStatus}>
-            <Ticker progress={timeLeft/timeToPerform * 100}/>
+            <Ticker progress={timeLeft / timeToPerform * 100} />
             <MoveHeader><i>MOVE: {playerMovesInQueue[attackQueueIndexPosition].name.toUpperCase()}</i></MoveHeader>
             <FlexDiv>
-            <h4>KEYS:</h4>
+                <h4>KEYS:</h4>
                 {playerMovesInQueue[attackQueueIndexPosition].combos[combo].map((key, idx) => {
-                    return(
+                    return (
                         <KeyPad key={Math.random() * 10000000} done={idx < currentKey}>{key}</KeyPad>
                     )
                 })}

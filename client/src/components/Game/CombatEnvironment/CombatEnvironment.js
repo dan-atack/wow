@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCombatPhase, startReflexCheck } from '../../../actions';
 import { setupPlayerMovePhase } from '../../../Helpers/playerMovePhase';
 // Helper functions:
 import { baddieMoveLogic } from '../../../Helpers/baddieMoveLogic';
-import { baddieMakeDecision, baddieAction } from '../../../Helpers/baddieActionLogic'; 
+import { baddieMakeDecision, baddieAction } from '../../../Helpers/baddieActionLogic';
 import { specialEventLogic } from '../../../Helpers/specialEventLogic';
 import { determineIfBaddieInRange } from '../../../Helpers/playerActionPhase';
 // Recoil state management:
@@ -25,7 +25,7 @@ import moveCombos from '../../../data/playerMoves.json';
 import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 import { adjacent, opponent_adjacent_then_player } from '../../../Helpers/contextualMoveHelper';
-import { determineObstacle } from '../../../Helpers/generalCombatHelpers';
+import { determineObstacle, advanceCombatSequence } from '../../../Helpers/generalCombatHelpers';
 
 //components
 import CombatUi from './CombatUi/CombatUi';
@@ -39,7 +39,6 @@ import { CONSTANTS } from '../../../constants.js';
 const CombatEnvironment = () => {
   const dispatch = useDispatch();
   const devMode = CONSTANTS.DEV_MODE;   // Boolean switch allows optional display of the 'Dev Mode' panel
-
   // State-dependent combat values start here:
   const combatPhase = useSelector((state) => state.game.combatPhase);   // Redux is used for the combat phase.
   const level = useRecoilValue(globalState.level);                      // All other combat state is handled by recoil.
@@ -82,12 +81,14 @@ const CombatEnvironment = () => {
       case 'noCombat':
         // On initial round of combat, generate map from seed:
         setMapGrid(mapGenerate(seed));
-        // Then fall straight through to the baddie decision phase:
+      // Then fall straight through to the baddie decision phase:
       case 'baddieDecision':
         // Helper function contains the logic to determine which move is made:
         const decision = baddieMakeDecision(baddieCoords, baddieOrientation, playerCoords, playerOrientation, baddie);
         setBaddieDecision(decision);    // Pass baddie's move data to recoil
-        dispatch(setCombatPhase('playerMove'));                       // Advance to next combat phase with redux
+        // Helper function advances to next phase AFTER a given time delay, to allow for an animation 'telegraphing' the decision:
+        console.log(`Baddie move choice: ${decision.name}`);
+        advanceCombatSequence(1500, 'playerMove', dispatch, setCombatPhase);
         // IDEA: Use time hook to make this phase last 1 - 2 seconds; use that time to show a GIF that telegraphs the move!
         break;
       case 'playerMove':
@@ -95,6 +96,7 @@ const CombatEnvironment = () => {
         const possibleMoves = setupPlayerMovePhase(playerAP, playerCoords, level);
         setPlayerMoveOptions(possibleMoves);
         // No dispatch here; the phase advances when the player picks their move.
+        // NOTE: To allow for combat animations, we'll need to add the combat sequence timeout to the player movement helper function
         break;
       case 'baddieAction':
         const dangerZone = baddieAction(baddieCoords, seed, baddieDecision);
@@ -102,20 +104,20 @@ const CombatEnvironment = () => {
         setEnemyAttackRadius(dangerZone);
         // Determine here if the player gets hit:
         dangerZone.forEach((point) => {
-          if (point.x === playerCoords.x && point.y === playerCoords.y) {
+          if (point.x === playerCoords.x && point.y === playerCoords.y) { // Baddie attack success effects begin here:
             setPlayerHealth(playerHealth - baddieDecision.damage);
             // if the move has an effect then it attaches the effect here
-            if(baddieDecision.effect) {
-              const {effect, duration} = baddieDecision;
+            if (baddieDecision.effect) {
+              const { effect, duration } = baddieDecision;
 
-              if(effect.type === 'positional') {
-                setPlayerStatus({...playerStatus, positional: {duration: duration, name: effect.name}})
+              if (effect.type === 'positional') {
+                setPlayerStatus({ ...playerStatus, positional: { duration: duration, name: effect.name } })
               } else if (effect.type === 'elemental') {
-                setPlayerStatus({...playerStatus, elemental: {name: effect.name, duration: duration}})
+                setPlayerStatus({ ...playerStatus, elemental: { name: effect.name, duration: duration } })
               } else if (effect.type === 'physical') {
                 let tempArray = [...playerStatus.physical];
-                tempArray.push({name: effect.name, duration: duration});
-                setPlayerStatus({...playerStatus, physical: tempArray});
+                tempArray.push({ name: effect.name, duration: duration });
+                setPlayerStatus({ ...playerStatus, physical: tempArray });
               }
             }
             // Baddie throw logic goes here!
@@ -124,7 +126,8 @@ const CombatEnvironment = () => {
             setPlayerCoords(destination);
           }
         });
-        dispatch(setCombatPhase('playerAction'));
+        advanceCombatSequence(1000, 'playerAction', dispatch, setCombatPhase);
+        // dispatch(setCombatPhase('playerAction'));
         break;
       case 'playerAction':
         // Go through the player's list of attacks and see if the baddie is within range of any of them:
@@ -139,12 +142,13 @@ const CombatEnvironment = () => {
           // This code down here is the same as that in the combat ui for the attack button handlers:
           setEnemyAttackRadius([]);
           setPlayerMoveOptions([]);
+          // No need to waste time on a delay if no attack is possible. If an attack is possible, delay should be added to player action/combat helper...
           dispatch(setCombatPhase('specialEvent'));
         }
         break;  // Await input from the attack selection inputs and no more.
       case 'specialEvent':
         setPlayerAttacksInQueue([]);
-        specialEventLogic(dispatch, setCombatPhase, level);
+        specialEventLogic(dispatch, setCombatPhase, level, advanceCombatSequence);
         break;
       case 'baddieMove':
         baddieMoveLogic(
@@ -170,7 +174,7 @@ const CombatEnvironment = () => {
 
   // Check for player death:
   useEffect(() => {
-    if (playerHealth <= 0 ){
+    if (playerHealth <= 0) {
       setPlayerIsDead(true);
       dispatch(setCombatPhase('gameOver'));
     }
@@ -196,14 +200,14 @@ const CombatEnvironment = () => {
     setPlayerAttackRadius([]);       // Clear player attack radius once attack is selected.
     if (baddieCoords.x === x && baddieCoords.y === y) {
       dispatch(startReflexCheck());    // If the player hits the baddie, begin a reflex check but don't advance combat round.
-    } else {                           // Otherwise, do advance the combat round:
+    } else {                           // Otherwise, advance the combat round:
       dispatch(setCombatPhase('specialEvent'))
     }
   }
 
   //every player action, check to see if the prerequisites are present for a contextual move
   useEffect(() => {
-    if(combatPhase !== 'playerAction') {
+    if (combatPhase !== 'playerAction') {
       setPlayerSkills(moveCombos);
       return;
     };
@@ -212,14 +216,14 @@ const CombatEnvironment = () => {
 
     //gets the data of this specific map
     let obstructions = seed.obstructions;
-    
+
 
     obstructions.forEach(obstruction => {
-      if(!obstruction.active) return;
-      
+      if (!obstruction.active) return;
+
       let foundMove = contextualMoves.find(move => move.name === obstruction.active);
 
-      if(foundMove.context === 'adjacent') {
+      if (foundMove.context === 'adjacent') {
         adjacent(obstruction, playerCoords, setPlayerSkills, playerSkills, foundMove)
       } else if (foundMove.context === 'opponent_adjacent_then_player') {
         opponent_adjacent_then_player(obstruction, playerCoords, baddieCoords, setPlayerSkills, playerSkills, foundMove)
@@ -231,59 +235,59 @@ const CombatEnvironment = () => {
   }, [combatPhase])
 
   useEffect(() => {
-    if(combatPhase !== 'playerMove') return;  
+    if (combatPhase !== 'playerMove') return;
 
     //Checks players status' elapses those elapsed, and ticks duration down by 1
-    if(playerStatus.physical?.length > 0) {
+    if (playerStatus.physical?.length > 0) {
       let tempArray = []
       playerStatus.physical.forEach(effect => {
-        if(effect.duration - 1 !== 0) {
-          tempArray.push({name: effect.name, duration: effect.duration - 1});
+        if (effect.duration - 1 !== 0) {
+          tempArray.push({ name: effect.name, duration: effect.duration - 1 });
         }
       })
-      setPlayerStatus({...playerStatus, physical: tempArray});
+      setPlayerStatus({ ...playerStatus, physical: tempArray });
     }
 
-    if(playerStatus.elemental?.name) {
-      if( playerStatus.elemental.duration - 1 !== 0 ) {
-        setPlayerStatus({...playerStatus, elemental: {name: playerStatus.elemental.name, duration: playerStatus.elemental.duration - 1}})
+    if (playerStatus.elemental?.name) {
+      if (playerStatus.elemental.duration - 1 !== 0) {
+        setPlayerStatus({ ...playerStatus, elemental: { name: playerStatus.elemental.name, duration: playerStatus.elemental.duration - 1 } })
       } else {
-        setPlayerStatus({...playerStatus, elemental: {}})
+        setPlayerStatus({ ...playerStatus, elemental: {} })
       }
     }
 
-    if(playerStatus.positional?.name) {
-      if(playerStatus.positional.duration - 1 !== 0) {
-        setPlayerStatus({...playerStatus, positional: {name: playerStatus.positional.name, duration: playerStatus.positional.duration - 1}})        
+    if (playerStatus.positional?.name) {
+      if (playerStatus.positional.duration - 1 !== 0) {
+        setPlayerStatus({ ...playerStatus, positional: { name: playerStatus.positional.name, duration: playerStatus.positional.duration - 1 } })
       } else {
-        setPlayerStatus({...playerStatus, positional: {}});
+        setPlayerStatus({ ...playerStatus, positional: {} });
       }
     }
 
     //Checks players status' elapses those elapsed, and ticks duration down by 1
-    if(baddieStatus.physical?.length > 0) {
+    if (baddieStatus.physical?.length > 0) {
       let tempArray = []
       baddieStatus.physical.forEach(effect => {
-        if(effect.duration - 1 !== 0) {
-          tempArray.push({name: effect.name, duration: effect.duration - 1});
+        if (effect.duration - 1 !== 0) {
+          tempArray.push({ name: effect.name, duration: effect.duration - 1 });
         }
       })
-      setBaddieStatus({...baddieStatus, physical: tempArray});
+      setBaddieStatus({ ...baddieStatus, physical: tempArray });
     }
 
-    if(baddieStatus.elemental?.name) {
-      if( baddieStatus.elemental.duration - 1 !== 0 ) {
-        setBaddieStatus({...baddieStatus, elemental: {name: baddieStatus.elemental.name, duration: baddieStatus.elemental.duration - 1}})
+    if (baddieStatus.elemental?.name) {
+      if (baddieStatus.elemental.duration - 1 !== 0) {
+        setBaddieStatus({ ...baddieStatus, elemental: { name: baddieStatus.elemental.name, duration: baddieStatus.elemental.duration - 1 } })
       } else {
-        setBaddieStatus({...baddieStatus, elemental: {}})
+        setBaddieStatus({ ...baddieStatus, elemental: {} })
       }
     }
 
-    if(baddieStatus.positional?.name) {
-      if(baddieStatus.positional.duration - 1 !== 0) {
-        setBaddieStatus({...baddieStatus, positional: {name: baddieStatus.positional.name, duration: baddieStatus.positional.duration - 1}})        
+    if (baddieStatus.positional?.name) {
+      if (baddieStatus.positional.duration - 1 !== 0) {
+        setBaddieStatus({ ...baddieStatus, positional: { name: baddieStatus.positional.name, duration: baddieStatus.positional.duration - 1 } })
       } else {
-        setBaddieStatus({...baddieStatus, positional: {}});
+        setBaddieStatus({ ...baddieStatus, positional: {} });
       }
     }
 
@@ -302,7 +306,7 @@ const CombatEnvironment = () => {
         baddieOrientation={baddieOrientation}
         baddieDecision={baddieDecision}
         playerAttacksInQueue={playerAttacksInQueue}
-      />} 
+      />}
       {/* <Versus/> */}
       <CombatUi
         turn={combatPhase}

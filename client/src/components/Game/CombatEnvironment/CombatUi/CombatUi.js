@@ -59,14 +59,12 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       setPlayerMoveOptions([])
       const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
       setPlayerAttackRadius(range);
-      setPlayerAttacksInQueue([...playerAttacksInQueue, skill]);
+      setPlayerAttacksInQueue([...playerAttacksInQueue, {...skill, cost: cost}]);
       setPlayerHype(playerHype - cost);
     } 
   }
 
   const dispatch = useDispatch();
-
-  console.log(playerAttacksInQueue);
 
   return(
     <div className="Combat-UI">
@@ -87,11 +85,11 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
         {playerSkills.map(skill => {
           if (determineIfBaddieInRange(skill.range, playerCoords, baddieCoords)) {
             return <SkillButton
-            key={`player-move-${skill.id}`}
-            skill={skill}
-            handleClick={handleClick}
-            numPrevMoves={playerAttacksInQueue.length}
-            playerHype={playerHype}
+              key={`player-move-${skill.id}`}
+              skill={skill}
+              handleClick={handleClick}
+              numPrevMoves={playerAttacksInQueue.length}
+              playerHype={playerHype}
           />
           }
         })}

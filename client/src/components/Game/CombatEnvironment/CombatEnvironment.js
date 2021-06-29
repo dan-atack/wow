@@ -25,7 +25,7 @@ import moveCombos from '../../../data/playerMoves.json';
 import { possiblePaths, pathfinder } from '../../../Helpers/playerMoveHelper';
 import { mapGenerate } from '../../../Helpers/MapGeneratorHelper';
 import { adjacent, opponent_adjacent_then_player } from '../../../Helpers/contextualMoveHelper';
-import { determineObstacle, advanceCombatSequence } from '../../../Helpers/generalCombatHelpers';
+import { determineObstacle, advanceCombatSequence, advanceCombatWithMovement } from '../../../Helpers/generalCombatHelpers';
 
 //components
 import CombatUi from './CombatUi/CombatUi';
@@ -151,16 +151,19 @@ const CombatEnvironment = () => {
         specialEventLogic(dispatch, setCombatPhase, level, advanceCombatSequence);
         break;
       case 'baddieMove':
-        baddieMoveLogic(
+        // Instead of having the logic helper function implement the result of the baddie's move choice, it should return that value.
+        // Then, we can pass the result (coords) and the baddie position setter to the advanceCombatWithMovement helper.
+        const coords = baddieMoveLogic(
           baddieCoords,
           baddieOrientation,
-          setBaddieCoords,
           setBaddieOrientation,
           playerCoords,
           playerOrientation,
           baddie,
           seed
         );
+        // TODO: Set time delay to phase advance based on distance travelled.
+        advanceCombatWithMovement(1000, 'baddieDecision', dispatch, setCombatPhase, setBaddieCoords, coords);
         dispatch(setCombatPhase('baddieDecision'));
         break;
       case 'gameOver':

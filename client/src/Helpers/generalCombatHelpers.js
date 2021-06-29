@@ -121,8 +121,17 @@ export const determineObstacle = (distance, direction, attackerCoords, victimCoo
 // This is an experimental helper function that will set a one-time timeout that delays the advance to the next combat phase.
 // Time = number of milliseconds delay; nextPhase = string name of a combat phase; setNextPhase = dispatcher, passed as a function.
 export const advanceCombatSequence = (time, nextPhase, dispatch, setNextPhase) => {
-  console.log(`Initiating ${time / 1000} second countdown to next phase: ${nextPhase}`);
+  // console.log(`Initiating ${time / 1000} second countdown to next phase: ${nextPhase}`);
   setTimeout(() => {
     dispatch(setNextPhase(nextPhase));
-  }, time)
+  }, time);
+}
+
+// This function implements a one-time timeout to delay between the start of a MOVEMENT combat phase and its outcome (e.g. between when you click on a tile (or when a baddie 'decides' where to go), and when your character's sprite actually arrives there):
+export const advanceCombatWithMovement = async (time, nextPhase, dispatch, setNextPhase, setPosition, coords) => {
+  console.log(`delaying for ${time/1000} seconds for movement animation`);
+  setTimeout(() => {
+    setPosition(coords);
+    dispatch(setNextPhase(nextPhase));
+  }, time);
 }

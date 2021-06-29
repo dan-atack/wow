@@ -129,6 +129,7 @@ export const advanceCombatSequence = (time, nextPhase, dispatch, setNextPhase) =
 
 // This function implements a one-time timeout to delay between the start of a MOVEMENT combat phase and its outcome (e.g. between when you click on a tile (or when a baddie 'decides' where to go), and when your character's sprite actually arrives there):
 export const advanceCombatWithMovement = async (time, nextPhase, dispatch, setNextPhase, setPosition, coords) => {
+  console.log(`delaying for ${time/1000} seconds for movement animation`);
   setTimeout(() => {
     setPosition(coords);
     dispatch(setNextPhase(nextPhase));

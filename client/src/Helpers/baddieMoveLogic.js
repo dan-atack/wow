@@ -3,7 +3,6 @@
 export const baddieMoveLogic = (
     baddiePosition,
     baddieOrientation,
-    setBaddiePosition,
     setBaddieOrientation,
     playerPosition,
     playerOrientation,
@@ -34,9 +33,11 @@ export const baddieMoveLogic = (
     y: playerPosition.y - (baddiePosition.y + chosenMove.y) // positive value = player is to the NORTH of the baddie
   }
 
-  // set bad guy position and orientation (orientation is set after movement):
-  setBaddiePosition({x: baddiePosition.x + randomMove.x, y: baddiePosition.y + randomMove.y})
+  // Determine bad guy position and orientation.
+  // NOTE: Outcomes for the baddie's move logic should be carried out separately from decision process, but we can keep this for now:
   setBaddieOrientation(determineBaddieOrientation(relativePosition, distanceToPlayerAfterMove));
+  // Ideally we'd return BOTH the coords and orientation to allow the implementation of those state changes to occur by a dedicated 'movement decision outcome' handler:
+  return {x: baddiePosition.x + randomMove.x, y: baddiePosition.y + randomMove.y}
 
   // console.log(
   //   'DEBUG LOG',

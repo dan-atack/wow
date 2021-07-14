@@ -7,8 +7,8 @@ import { useDispatch } from 'react-redux';
 import combatState from '../../../state';
 import globalState from '../../../state';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { setCombatPhase, stopReflexCheck } from '../../../actions';
-import { determineObstacle, advanceCombatSequence } from '../../../Helpers/generalCombatHelpers';
+import { setCombatPhase, setPlayerCoords, stopReflexCheck } from '../../../actions';
+import { determineObstacle, advanceCombatSequence, advanceCombatWithMovement } from '../../../Helpers/generalCombatHelpers';
 import data from '../../../data/mapSeed.json';
 
 // Combo = integer for which of the 3 possible key combos to use for the reflex check:
@@ -78,13 +78,14 @@ function ReflexCheck({ combo }) {
         }
         const destination = determineObstacle(distance, playerOrientation, playerCoords, baddieCoords, seed);
         console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
-        setBaddieCoords(destination);
+        return destination;
     }
 
     // What happens if you complete the LAST combo in the queue:
     const finalAttackSuccess = () => {
         setSuccessStatus(true);
-        const attackAnimationDelay = playerMovesInQueue.length * 1000;  // Delay for 1 second per attack
+        const attackAnimationDelay = playerMovesInQueue.length * 1000;  // TODO: consider making this depend on what the last attack in the queue was, to allow for more time for a more dramatic animation for the final move or for specific 'ultimate' moves.
+        // Firing alongside the regular attackSuccess function, this function introduces a longer delay and then advances the combat phase:
         advanceCombatSequence(attackAnimationDelay, 'specialEvent', dispatch, setCombatPhase);
         dispatch(stopReflexCheck());
     }
@@ -119,9 +120,11 @@ function ReflexCheck({ combo }) {
         }
 
         // Determine if baddie should be moved, and set his coords if so.
-        determineThrow();
+        const destination = determineThrow();
         setBaddieHP(baddieHP - determineDamage());
         setPlayerHype(Math.min(playerHype + determineHype(), 100));
+        // Introduce a short delay before updating baddie position:
+        advanceCombatWithMovement(250, null, dispatch, setCombatPhase, setBaddieCoords, destination);
         // If there are multiple attacks queued and you didn't just do the last one, setup the next move:
         if (playerMovesInQueue.length > 1 && attackQueueIndexPosition < playerMovesInQueue.length - 1) {
             setAttackQueueIndexPosition(attackQueueIndexPosition + 1);

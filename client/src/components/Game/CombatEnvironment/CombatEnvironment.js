@@ -122,12 +122,12 @@ const CombatEnvironment = () => {
             }
             // Baddie throw logic goes here!
             const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, baddieCoords, playerCoords, seed);
-            // console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
-            setPlayerCoords(destination);
+            console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
+            advanceCombatWithMovement(1000, 'playerAction', dispatch, setCombatPhase, setPlayerCoords, destination);
           }
+          // If no collision occurs on the baddie's attack phase, advance the combat sequence without delay:
+          dispatch(setCombatPhase('playerAction'));
         });
-        advanceCombatSequence(1000, 'playerAction', dispatch, setCombatPhase);
-        // dispatch(setCombatPhase('playerAction'));
         break;
       case 'playerAction':
         // Go through the player's list of attacks and see if the baddie is within range of any of them:

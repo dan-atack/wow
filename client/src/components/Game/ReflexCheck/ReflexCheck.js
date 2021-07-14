@@ -124,7 +124,7 @@ function ReflexCheck({ combo }) {
         setBaddieHP(baddieHP - determineDamage());
         setPlayerHype(Math.min(playerHype + determineHype(), 100));
         // Introduce a short delay before updating baddie position:
-        advanceCombatWithMovement(250, null, dispatch, setCombatPhase, setBaddieCoords, destination);
+        advanceCombatWithMovement(500, null, dispatch, setCombatPhase, setBaddieCoords, destination);
         // If there are multiple attacks queued and you didn't just do the last one, setup the next move:
         if (playerMovesInQueue.length > 1 && attackQueueIndexPosition < playerMovesInQueue.length - 1) {
             setAttackQueueIndexPosition(attackQueueIndexPosition + 1);

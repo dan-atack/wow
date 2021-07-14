@@ -87,7 +87,7 @@ const CombatEnvironment = () => {
         const decision = baddieMakeDecision(baddieCoords, baddieOrientation, playerCoords, playerOrientation, baddie);
         setBaddieDecision(decision);    // Pass baddie's move data to recoil
         // Helper function advances to next phase AFTER a given time delay, to allow for an animation 'telegraphing' the decision:
-        console.log(`Baddie move choice: ${decision.name}`);
+        // console.log(`Baddie move choice: ${decision.name}`);
         advanceCombatSequence(1500, 'playerMove', dispatch, setCombatPhase);
         // IDEA: Use time hook to make this phase last 1 - 2 seconds; use that time to show a GIF that telegraphs the move!
         break;
@@ -103,9 +103,9 @@ const CombatEnvironment = () => {
         // This will change the Level Visual Generator's props, causing it to reload:
         setEnemyAttackRadius(dangerZone);
         // Determine here if the player gets hit:
-        dangerZone.forEach((point) => {
-          if (point.x === playerCoords.x && point.y === playerCoords.y) { // Baddie attack success effects begin here:
-            setPlayerHealth(playerHealth - baddieDecision.damage);
+        const point = dangerZone.filter(point => point.x === playerCoords.x && point.y === playerCoords.y);
+        if (point.length === 1) { // If there is a hit, it will be the only member of this list
+          setPlayerHealth(playerHealth - baddieDecision.damage);
             // if the move has an effect then it attaches the effect here
             if (baddieDecision.effect) {
               const { effect, duration } = baddieDecision;
@@ -123,11 +123,11 @@ const CombatEnvironment = () => {
             // Baddie throw logic goes here!
             const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, baddieCoords, playerCoords, seed);
             // console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
-            setPlayerCoords(destination);
+            advanceCombatWithMovement(1000, 'playerAction', dispatch, setCombatPhase, setPlayerCoords, destination);
+          } else {
+            // console.log('no hit on player');
+            dispatch(setCombatPhase('playerAction'));
           }
-        });
-        advanceCombatSequence(1000, 'playerAction', dispatch, setCombatPhase);
-        // dispatch(setCombatPhase('playerAction'));
         break;
       case 'playerAction':
         // Go through the player's list of attacks and see if the baddie is within range of any of them:
@@ -137,6 +137,10 @@ const CombatEnvironment = () => {
             inRange = true;
           };
         })
+        // Uncomment for help troubleshooting:
+        // console.log(inRange);
+        // console.log(playerCoords);
+        // console.log(baddieCoords);
         // If none of the player's moves is in range of the baddie, skip to the next phase:
         if (!inRange) {
           // This code down here is the same as that in the combat ui for the attack button handlers:

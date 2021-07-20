@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled,  { keyframes } from 'styled-components';
 import baddieData from '../../../../data/baddie.json';
 // Asset Imports
 import PlayerSprite from '../../../../assets/combat/player.png';
@@ -16,21 +16,38 @@ import combatState from '../../../../state';
 const SpriteTile = ({ level, onClick, isPlayer, children }) => {
 
   const animation = useRecoilValue(combatState.combatAnimation);
-  // If there is an animation (defined by having a non-zero value for the duration property), take it and pass it as props:
-  const isAnimated = animation.duration > 0 ? animation : null;
-  console.log(isAnimated);
+  // console.log(animation);
 
   const baddie = baddieData.find((baddie) => baddie.level === level)
     return (
         <Wrapper onClick={onClick} clickable={onClick ? true : false}>
             {isPlayer ?
-            <Sprite src={PlayerSprite} animated={isAnimated ? isAnimated : false} /> :
-            <Sprite src={Tony} />
+            <Sprite src={PlayerSprite} animation={animation.duration > 0 ? animation : {
+              isPlayer: false,
+              xOffset: 0,
+              yOffset: 0,
+              duration: 0
+            }} /> :
+            <Sprite src={Tony} animation={animation.duration > 0 ? animation : {
+              isPlayer: false,
+              xOffset: 0,
+              yOffset: 0,
+              duration: 0
+            }}/>
             }
             {children}
         </Wrapper>
     );
 };
+
+const Throw = (x, y) => keyframes`
+  0% {
+    transform: translate(0,0);
+  }
+  100% {
+    transform: translate(${x * 50}, ${y * 50});
+  }
+`;
 
 const Wrapper = styled.div`
   width: 50px;
@@ -41,12 +58,14 @@ const Wrapper = styled.div`
 `;
 
 const Sprite = styled.img`
+
   object-fit: contain;
   width: 50px;
   height: 50px;
   position: absolute;
   left: 0;
-  background-color: ${props => props.animated ? 'green' : 'red'};
+  background-color: green;
+  animation: ${props => Throw(props.animation.xOffset, props.animation.yOffset)} ${props => props.animation.duration} ms linear;
 `;
 
 export default SpriteTile;

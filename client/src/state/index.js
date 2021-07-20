@@ -16,7 +16,8 @@ import {
   baddieCoords,
   baddieOrientation,
   baddieDecision,
-  baddieStatus
+  baddieStatus,
+  combatAnimation,
 } from './combatState';
 
 import {
@@ -42,5 +43,6 @@ export default {
   baddieOrientation,
   baddieDecision,
   level,
-  baddieStatus
+  baddieStatus,
+  combatAnimation
 }

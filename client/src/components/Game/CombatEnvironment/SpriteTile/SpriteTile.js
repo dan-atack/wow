@@ -4,6 +4,9 @@ import baddieData from '../../../../data/baddie.json';
 // Asset Imports
 import PlayerSprite from '../../../../assets/combat/player.png';
 import Tony from '../../../../assets/combat/tony.gif';
+// Connect to Recoil state to update animation property:
+import { useRecoilValue } from 'recoil';
+import combatState from '../../../../state';
 
 // The Sprite Tile will be the component for rendering the Player and Baddie in the Combat Environment.
 
@@ -11,11 +14,17 @@ import Tony from '../../../../assets/combat/tony.gif';
 // onClick (handler function for a clickable baddie), isPlayer (boolean: is this the Player? If yes, show the Player's img)
 // Children can be other React components, such as the notorious POW effect that is shown when the Player takes damage.
 const SpriteTile = ({ level, onClick, isPlayer, children }) => {
+
+  const animation = useRecoilValue(combatState.combatAnimation);
+  // If there is an animation (defined by having a non-zero value for the duration property), take it and pass it as props:
+  const isAnimated = animation.duration > 0 ? animation : null;
+  console.log(isAnimated);
+
   const baddie = baddieData.find((baddie) => baddie.level === level)
     return (
         <Wrapper onClick={onClick} clickable={onClick ? true : false}>
             {isPlayer ?
-            <Sprite src={PlayerSprite} /> :
+            <Sprite src={PlayerSprite} animated={isAnimated ? isAnimated : false} /> :
             <Sprite src={Tony} />
             }
             {children}
@@ -37,7 +46,7 @@ const Sprite = styled.img`
   height: 50px;
   position: absolute;
   left: 0;
-  background-color: red;
+  background-color: ${props => props.animated ? 'green' : 'red'};
 `;
 
 export default SpriteTile;

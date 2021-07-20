@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import useSound from 'use-sound';
 import ugh from '../../../assets/sounds/ugh-01.mp3';
@@ -39,6 +39,8 @@ function ReflexCheck({ combo }) {
     const playerOrientation = useRecoilValue(combatState.playerOrientation);
     // Keep track of where we're at in the attack queue:
     const [attackQueueIndexPosition, setAttackQueueIndexPosition] = React.useState(0);
+    // Enable resetting attack animations:
+    const [combatAnimation, setCombatAnimation] = useRecoilState(combatState.combatAnimation);
     // Set initial time to execute the first combo:
     const timeToPerform = playerMovesInQueue[0].time * (1 - playerMovesInQueue.length * 0.1);
     // Then keep track of the time remaining in state (these can be reset in the event of a multi-attack):
@@ -124,7 +126,7 @@ function ReflexCheck({ combo }) {
         setBaddieHP(baddieHP - determineDamage());
         setPlayerHype(Math.min(playerHype + determineHype(), 100));
         // Introduce a short delay before updating baddie position:
-        advanceCombatWithMovement(500, null, dispatch, setCombatPhase, setBaddieCoords, destination);
+        advanceCombatWithMovement(500, null, dispatch, setCombatPhase, setBaddieCoords, destination, setCombatAnimation);
         // If there are multiple attacks queued and you didn't just do the last one, setup the next move:
         if (playerMovesInQueue.length > 1 && attackQueueIndexPosition < playerMovesInQueue.length - 1) {
             setAttackQueueIndexPosition(attackQueueIndexPosition + 1);

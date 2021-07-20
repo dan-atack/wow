@@ -69,6 +69,9 @@ const CombatEnvironment = () => {
   const [enemyAttackRadius, setEnemyAttackRadius] = useState([]);
   const [baddieStatus, setBaddieStatus] = useRecoilState(combatState.baddieStatus);
 
+  // Animation State: Signals the sprites to move their asses!
+  const [combatAnimation, setCombatAnimation] = useRecoilState(combatState.combatAnimation);
+
   // temporary character state//
   const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
   const baddie = baddieData.find((obj) => obj.level === level);
@@ -120,10 +123,17 @@ const CombatEnvironment = () => {
                 setPlayerStatus({ ...playerStatus, physical: tempArray });
               }
             }
-            // Baddie throw logic goes here!
+            // Baddie throw logic goes here:
             const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, baddieCoords, playerCoords, seed);
             // console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
-            advanceCombatWithMovement(1000, 'playerAction', dispatch, setCombatPhase, setPlayerCoords, destination);
+            advanceCombatWithMovement(1500, 'playerAction', dispatch, setCombatPhase, setPlayerCoords, destination, setCombatAnimation);
+            // Initiate animation for player if they are hit:
+            setCombatAnimation({
+              isPlayer: true,
+              xOffset: destination.x,
+              yOffset: destination.y,
+              duration: 1000,
+            });
           } else {
             // console.log('no hit on player');
             dispatch(setCombatPhase('playerAction'));
@@ -167,7 +177,7 @@ const CombatEnvironment = () => {
           seed
         );
         // TODO: Set time delay to phase advance based on distance travelled.
-        advanceCombatWithMovement(1000, 'baddieDecision', dispatch, setCombatPhase, setBaddieCoords, coords);
+        advanceCombatWithMovement(1000, 'baddieDecision', dispatch, setCombatPhase, setBaddieCoords, coords, setCombatAnimation);
         dispatch(setCombatPhase('baddieDecision'));
         break;
       case 'gameOver':

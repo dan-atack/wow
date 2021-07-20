@@ -11,13 +11,14 @@ const OrientationPicker = () => {
     const [playerCoords, setPlayerCoords] = useRecoilState(combatState.playerCoords);
     const [playerMovementDecision, setPlayerMovementDecision] = useRecoilState(combatState.playerMovementDecision);
     const [playerOrientation, setPlayerOrientation] = useRecoilState(combatState.playerOrientation);
+    const [combatAnimation, setCombatAnimation] = useRecoilState(combatState.combatAnimation);
     // Handler for the various buttons:
     const selectionHandler = (direction) => {
         setPlayerOrientation(direction);
         const coords = { x: playerMovementDecision.x, y: playerMovementDecision.y }
         setPlayerMovementDecision({ x: -1, y: -1 }) // set a position outside the possible render area?
         // TODO: Make delay until next phase dependent on distance (quick delta x + delta y calculation - make another helper?)
-        advanceCombatWithMovement(1000, 'baddieAction', dispatch, setCombatPhase, setPlayerCoords, coords);
+        advanceCombatWithMovement(1000, 'baddieAction', dispatch, setCombatPhase, setPlayerCoords, coords, setCombatAnimation);
     }
     return (
         <Wrapper>

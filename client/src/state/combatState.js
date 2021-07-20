@@ -109,3 +109,13 @@ export const mapGrid = atom({
   key: 'mapGrid',
   default: [],
 })
+
+export const combatAnimation = atom({
+  key: 'combatAnimation',
+  default: {
+    isPlayer: false,
+    xOffset: 0,
+    yOffset: 0,
+    duration: 0   // Duration = zero? will also be the 'is happening' check that will cue a sprite component to initiate an animation.
+  }
+})

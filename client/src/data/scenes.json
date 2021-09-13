@@ -1,15 +1,11 @@
 {
     "scenes": {
-        "scene_0": { "name": "parkingLot", "type": "cutscene" },
-        "scene_1": { "name": "parkingLot", "type": "minigame" },
+        "scene_0": { "name": "Cutscene", "type": "cutscene" },
+        "scene_1": { "name": "Minigame", "type": "minigame" },
         "scene_2": {
-          "name": "parkingLot",
-          "type": "customizer",
-          "chapter": 1
+          "name": "Character Selector",
+          "type": "characterSelector"
         },
-        "scene_3": { "name": "parkingLot", "type": "fight" },
-        "scene_4": { "name": "parkingLot", "type": "customizer" },
-        "scene_5": { "name": "parkingLot", "type": "cutscene" },
-        "scene_6": { "name": "buffetTable", "type": "minigame" }
+        "scene_3": { "name": "Fight", "type": "fight" }
     } 
 }

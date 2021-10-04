@@ -73,7 +73,7 @@
           "frame_7": {
             "character": "phone_neutral",
             "background": "livingRoom",
-            "characterPosition": "right",
+            "characterPosition": "right", 
             "text":
               "response",
             "duration": 5000,

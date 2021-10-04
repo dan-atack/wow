@@ -1,11 +1,6 @@
-{
-    "scenes": {
-        "scene_0": { "name": "Cutscene", "type": "cutscene" },
-        "scene_1": { "name": "Minigame", "type": "minigame" },
-        "scene_2": {
-          "name": "Character Selector",
-          "type": "characterSelector"
-        },
-        "scene_3": { "name": "Fight", "type": "fight" }
-    } 
-}
+[
+  "characterSelect",
+  "cutscene",
+  "minigame",
+  "fight"
+]

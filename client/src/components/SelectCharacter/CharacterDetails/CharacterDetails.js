@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setPlayerStats } from '../../../actions';
 
+// TO BE DEPRECATED
+
 // In this preliminary character customization screen, we'll experiment with the idea of having a single currency
 // that can either be spent on improving numerical stats, or buying new moves.
 function CharacterDetails() {

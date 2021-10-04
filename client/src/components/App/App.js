@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Game from '../Game';
 import MainMenu from '../MainMenu';
-import SelectCharacter from '../SelectCharacter';
 import './App.css';
 import styled from 'styled-components';
 
@@ -13,9 +12,6 @@ function App() {
         <Switch>
           <Route exact path='/'>
             <MainMenu />
-          </Route>
-          <Route path='/select-character'>
-            <SelectCharacter />
           </Route>
           <Route path='/game'>
             <Game />

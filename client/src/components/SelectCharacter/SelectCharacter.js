@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CharacterDetails from './CharacterDetails';
-import { useDispatch } from 'react-redux';
-import { selectCharacterType } from '../../actions';
 
-function SelectCharacter() {
-  const dispatch = useDispatch();
+import characterState from '../../state'
+
+import {useRecoilState} from 'recoil';
+
+function SelectCharacter({setScene, scene}) {
   const [localCharacterType, setLocalCharacterType] = useState(null)
-
-  let [isSelected, setSelected] = useState(false);
+  const [isSelected, setSelected] = useState(false);
+  
+  const [characterStats, setCharacterStats] = useRecoilState(characterState.characterSheet);
 
   const renderDescription = () => {
     switch (localCharacterType) {
@@ -28,10 +30,11 @@ function SelectCharacter() {
   };
 
   const handleConfirm = () => {
-    dispatch(selectCharacterType(localCharacterType))
+    setCharacterStats({...characterStats, characterType: localCharacterType})
     setSelected(true);
+    setScene(scene + 1);
   }
-
+  
   return (
     <Wrapper>
         <Header>Select Your Character Expertise!</Header>

@@ -7,7 +7,7 @@ function MainMenu() {
   return (
     <Wrapper>
       <Header>World Of Wrestling!!!</Header>
-      <Link to='/select-character'>
+      <Link to='/game'>
         <Start>Start New Game</Start>
       </Link>
       <BackgroundImage src={livingRoom} alt='picture of a living room'/>

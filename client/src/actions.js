@@ -42,12 +42,6 @@ export const addToPlayerMovesList = (move) => ({
   move,
 });
 
-// Game Script Scene-Advancing Actions:
-export const setScene = (scene) => ({
-  type: 'SET_SCENE',
-  scene,
-});
-
 export const setFrame = (frame) => ({
   type: 'SET_FRAME',
   frame,

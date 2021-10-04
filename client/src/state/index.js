@@ -20,7 +20,14 @@ import {
 } from './combatState';
 
 import {
-  level
+  characterSheet,
+} from './characterState';
+
+import {
+  level,
+  scene,
+  frame,
+
 } from './globalState'
 
 export default {
@@ -42,5 +49,8 @@ export default {
   baddieOrientation,
   baddieDecision,
   level,
-  baddieStatus
+  baddieStatus,
+  characterSheet,
+  scene,
+  frame
 }

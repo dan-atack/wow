@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useTime } from '../../../hooks/useTime';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setMinigameRound, setScene } from '../../../actions';
+import { setMinigameRound } from '../../../actions';
 import MinigameButton from './MinigameButton';
 import Karmameter from './Karmameter';
 import dialogueOptions from '../../../data/dialogueOptions.json';
@@ -11,10 +11,9 @@ import dialogueOptions from '../../../data/dialogueOptions.json';
 import interview from '../../../assets/promo_bg.png';
 import bubbleTick from '../../../assets/bubble_tick.png';
 
-function MinigamePrototype() {
+function MinigamePrototype({scene, setScene}) {
   const dispatch = useDispatch();
   // Bring in player's karma and showmanship global state values:
-  const scene = useSelector((state) => state.game.scene);
   const karma = useSelector((state) => state.player.karma);
   const showmanship = useSelector((state) => state.player.showmanship);
   // Global game state also controls the minigame round (and starts at round 0):
@@ -42,7 +41,7 @@ function MinigamePrototype() {
   };
   const handleGameOver = () => {
     dispatch(setMinigameRound(0, false));
-    dispatch(setScene(scene + 1));
+    setScene(3);
   }
   // UseEffect is like the engine; advancing the ticker and updating the buttons each round:
   React.useEffect(() => {

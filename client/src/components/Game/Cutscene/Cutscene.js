@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Character from './Character';
 import Dialogue from './Dialogue';
 import { useTime } from '../../../hooks/useTime';
 import { frames } from '../../../data/frames.json';
-import { useDispatch, useSelector } from 'react-redux';
-import { setFrame, setScene } from '../../../actions';
+import globalState from '../../../state';
 
-function CutscenePrototype({ scene }) {
+import { useRecoilState } from 'recoil';
+
+function CutscenePrototype({scene, setScene}) {
   const [ response, setResponse ] = useState('')
+  const [frame, setFrame] = useState(0);
 
-  const dispatch = useDispatch();
-  const currentFrame = useSelector((state) => state.game.frame);
-  const currentScene = useSelector((state) => state.game.scene);
+  const [ level, setLevel ] = useRecoilState(globalState.level)
 
-  const frameData = frames[scene]
-    ? frames[scene][`frame_${currentFrame}`] || {
+  const frameData = frames[level]
+    ? frames[level][`frame_${frame}`] || {
         character: null,
         background: null,
         text: 'end of cutscene',
@@ -28,23 +28,25 @@ function CutscenePrototype({ scene }) {
         duration: 10000,
       };
   const now = useTime(frameData.duration ? frameData.duration : null);
-  // console.log(frameData);
-  React.useEffect(() => {
-    if (!frameData.last) dispatch(setFrame(currentFrame + 1));
+
+  useEffect(() => {
+    if (!frameData.last) setFrame(frame + 1);
   }, [now]);
+
+  useEffect(() => {
+    if(frameData.last === true) {
+      setScene(scene + 1);
+    }
+  }, [frame])
 
   const advanceScene = () => {
     if(frameData.last) return;
-    dispatch(setFrame(currentFrame + 1));
+    setFrame(frame + 1);
   };
 
   const advanceSceneOnClick = () => {
     if(frameData.last || frameData.option) return;
-    dispatch(setFrame(currentFrame + 1));
-  }
-
-  if(frameData.last === true) {
-    dispatch(setScene(currentScene + 1))
+    setFrame(frame + 1);
   }
 
   const responseHandler = (textData) => {

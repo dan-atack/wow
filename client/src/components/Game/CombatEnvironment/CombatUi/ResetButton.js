@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import combatState from '../../../../state';
-import { setScene, setCombatPhase } from '../../../../actions';
+import globalState from '../../../../state';
+import { setCombatPhase } from '../../../../actions';
 
 const ResetButton = () => {
     const dispatch = useDispatch();
-    const scene = useSelector((state) => state.game.scene); // Use to rewind player to 1 scene before the fight they just lost.
     const [playerAttacksInQueue, setPlayerAttacksInQueue] = useRecoilState(combatState.playerAttacksInQueue);
     const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
     const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
@@ -19,6 +19,7 @@ const ResetButton = () => {
     const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
     const [baddieOrientation, setBaddieOrientation] = useRecoilState(combatState.baddieOrientation);
     const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
+    const [scene, setScene] = useRecoilState(globalState.scene)
     const handleClick = () => {
         // This is ugly AF and terribly not dry... but it *does* work!
         // TODO: Make default values object for greater flexibility if you ever wanna reset these hard-coded bastards.

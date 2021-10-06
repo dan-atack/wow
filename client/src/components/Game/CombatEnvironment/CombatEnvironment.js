@@ -56,6 +56,7 @@ const CombatEnvironment = () => {
   const [playerIsDead, setPlayerIsDead] = useRecoilState(combatState.playerIsDead);
   const [playerSkills, setPlayerSkills] = useRecoilState(combatState.playerSkills);
   const [playerStatus, setPlayerStatus] = useRecoilState(combatState.playerStatus);
+  const [playerAttackSelecting, setPlayerAttackSelecting] = useRecoilState(combatState.playerAttackSelecting);
 
   // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
   const reflexCheckId = useSelector((state) => state.game.reflexCheck);

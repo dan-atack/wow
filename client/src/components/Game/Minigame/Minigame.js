@@ -8,6 +8,9 @@ import dialogueOptions from '../../../data/dialogueOptions.json';
 import interview from '../../../assets/promo_bg.png';
 import bubbleTick from '../../../assets/bubble_tick.png';
 
+import minigameState from '../../../state'
+import { useRecoilState } from 'recoil';
+
 function MinigamePrototype({scene, setScene}) {
   // Bring in player's karma and showmanship global state values:
   const [karma, setKarma] = useRecoilState(minigameState.karma);

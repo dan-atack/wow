@@ -35,7 +35,7 @@ import {
   minigameRound,
   updateRound,
   currentRound,
-} from './minigameState';
+} from './minigameState'
 
 export default {
   playerAP,

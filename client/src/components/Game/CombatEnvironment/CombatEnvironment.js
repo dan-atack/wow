@@ -121,7 +121,7 @@ const CombatEnvironment = () => {
               }
             }
             // Baddie throw logic goes here!
-            const destination = determineObstacle(baddieDecision.throwDistances[0], baddieOrientation, baddieCoords, playerCoords, seed);
+            const destination = determineObstacle(baddieDecision.throwDistance, baddieOrientation, baddieCoords, playerCoords, seed);
             // console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
             advanceCombatWithMovement(1000, 'playerAction', dispatch, setCombatPhase, setPlayerCoords, destination);
           } else {

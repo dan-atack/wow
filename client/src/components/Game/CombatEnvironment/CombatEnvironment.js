@@ -180,6 +180,11 @@ const CombatEnvironment = () => {
     }
   }, [combatPhase]);
 
+  // Check for Player Attack Selection phase:
+  useEffect(() => {
+    console.log(`player attack selection target updated to ${playerAttackSelecting}`);
+  }, [playerAttackSelecting]);
+
   // Check for player death:
   useEffect(() => {
     if (playerHealth <= 0) {

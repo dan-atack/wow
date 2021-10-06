@@ -11,7 +11,9 @@
         "effect" : {"name" : "fear", "type" : "physical"}, 
         "duration": 3,
         "throwDistance": 2,
-        "shape" : "cross", 
+        "shape" : "cross",
+        "travelShape": "radial",
+        "throwShape": "radial", 
         "threshold" : 0,
         "portrait" : {
           "color" : "orange", 
@@ -26,6 +28,8 @@
         "duration": 3,
         "throwDistance": 2,
         "shape" : "cross", 
+        "travelShape": "radial",
+        "throwShape": "radial",
         "threshold" : 30,
         "portrait" : {
           "color" : "pink", 
@@ -40,6 +44,8 @@
         "duration": 3,
         "throwDistance": 3,
         "shape" : "cross", 
+        "travelShape": "radial",
+        "throwShape": "radial",
         "threshold" : 60,
         "portrait" : {
           "color" : "yellow", 
@@ -53,6 +59,8 @@
         "effect" : "none",
         "throwDistance": 1,
         "shape" : "cross", 
+        "travelShape": "radial",
+        "throwShape": "radial",
         "threshold" : 80,
         "portrait" : {
           "color" : "salmon", 

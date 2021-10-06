@@ -66,16 +66,7 @@ function ReflexCheck({ combo }) {
 
     // Determine how far to throw the baddie if the attack succeeds:
     const determineThrow = () => {
-        let distance = 0;
-        const remainder = timeLeft / playerMovesInQueue[attackQueueIndexPosition].time * 100;
-        // Every attack has three possible ranges; fast reflexes throw the farthest (first index position = largest possible distance):
-        if (remainder > 67) {
-            distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[0];
-        } else if (remainder > 33) {
-            distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[1];
-        } else {
-            distance = playerMovesInQueue[attackQueueIndexPosition].throwDistances[2];
-        }
+        const distance = playerMovesInQueue[attackQueueIndexPosition].throwDistance;
         const destination = determineObstacle(distance, playerOrientation, playerCoords, baddieCoords, seed);
         console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
         return destination;

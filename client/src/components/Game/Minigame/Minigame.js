@@ -1,9 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { useTime } from '../../../hooks/useTime';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { setMinigameRound } from '../../../actions';
 import MinigameButton from './MinigameButton';
 import Karmameter from './Karmameter';
 import dialogueOptions from '../../../data/dialogueOptions.json';
@@ -12,13 +9,14 @@ import interview from '../../../assets/promo_bg.png';
 import bubbleTick from '../../../assets/bubble_tick.png';
 
 function MinigamePrototype({scene, setScene}) {
-  const dispatch = useDispatch();
   // Bring in player's karma and showmanship global state values:
-  const karma = useSelector((state) => state.player.karma);
-  const showmanship = useSelector((state) => state.player.showmanship);
+  const [karma, setKarma] = useRecoilState(minigameState.karma);
+  const [showmanship, setShowmanship] = useRecoilState(minigameState.showmanship)
+
   // Global game state also controls the minigame round (and starts at round 0):
-  const minigameRound = useSelector((state) => state.game.minigameRound);
-  const updateRound = useSelector((state) => state.game.newMinigameRound);
+  const [minigameRound, setMinigameRound] = useRecoilState(minigameState.minigameRound)
+  const [updateRound, setUpdateRound] = useRecoilState(minigameState.updateRound)
+
   // Rounds last 3 seconds by default:
   const ROUND_DURATION = 3;
   // Define max rounds to avoid an error when you run out of dialogue options:
@@ -26,25 +24,28 @@ function MinigamePrototype({scene, setScene}) {
   // Trigger a re-render every 0.2 seconds:
   const now = useTime(200);
   // Tick off time:
-  const [ticker, setTicker] = React.useState(0);
+  const [ticker, setTicker] = useState(0);
   // Buttons' values will be set initially as 1 and 2; these match the first 2 serial id's in the dialogue options dictionary.
-  const [currentButtons, setCurrentButtons] = React.useState(0);
+  const [currentButtons, setCurrentButtons] = useState(0);
   // Track if the game is still going on:
-  const [gameover, setGameover] = React.useState(false);
+  const [gameover, setGameover] = useState(false);
   // Button update handler function:
   const advanceRound = () => {
     // Remember to add whatever the number of buttons is to prevent duplicate calls from the dialogtionary.
     setCurrentButtons(currentButtons + 4);
     setTicker(0);
     // When this function runs it increments the minigame round, and sets the 'update minigame' flag to false:
-    dispatch(setMinigameRound(minigameRound + 1, false));
+    setMinigameRound(minigameRound + 1);
+    setUpdateRound(false);
   };
+
   const handleGameOver = () => {
-    dispatch(setMinigameRound(0, false));
-    setScene(3);
+    setMinigameRound(0);
+    setUpdateRound(false);
+    setScene(scene + 1);
   }
   // UseEffect is like the engine; advancing the ticker and updating the buttons each round:
-  React.useEffect(() => {
+  useEffect(() => {
     setTicker(ticker + 1);
     if (updateRound || ticker > (ROUND_DURATION * 15)) {
       if (!gameover && minigameRound < MAX_ROUNDS) {

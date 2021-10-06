@@ -1,22 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { setKarma, setShowmanship, setMinigameRound } from '../../../../actions';
+import { useRecoilState } from 'recoil';
+import minigameState from '../../../../state'
 
 // buttons in the minigame will be fed a data object containing info such as text for the button, and the buttons' karma value.
 function MinigameButton({ buttonData }) {
-  const currentRound = useSelector((state) => state.game.minigameRound);
+  const [karma, setKarma] = useRecoilState(minigameState.karma);
+  const [showmanship, setShowmanship] = useRecoilState(minigameState.showmanship);
+  const [updateRound, setUpdateround] = useRecoilState(minigameState.updateRound)
+
   const { id, axes, value, text } = buttonData;
-  const dispatch = useDispatch();
   const handleClick = () => {
     if (axes.includes('karmic')) {
-      dispatch(setKarma(value));
+      setKarma(karma + value);
     }
     if (axes.includes('showmanship')) {
-      dispatch(setShowmanship(value));
+      setShowmanship(showmanship + value);
     }
     // When this function runs it doesn't increment the current round; it just sets the 'update minigame' flag to true:
-    dispatch(setMinigameRound(currentRound, true));
+    setUpdateround(true);
   };
   return (
     <Clicker onMouseUp={() => handleClick()}>

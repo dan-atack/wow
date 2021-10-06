@@ -28,8 +28,15 @@ import {
   level,
   scene,
   frame,
+} from './globalState';
 
-} from './globalState'
+import {
+  karma,
+  showmanship,
+  minigameRound,
+  updateRound,
+  currentRound,
+} from './minigameState'
 
 export default {
   playerAP,
@@ -54,5 +61,10 @@ export default {
   baddieStatus,
   characterSheet,
   scene,
-  frame
+  frame,
+  karma,
+  showmanship,
+  minigameRound,
+  updateRound,
+  currentRound
 }

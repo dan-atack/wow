@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import combatState from '../../../../state';
 import globalState from '../../../../state';
-import { setCombatPhase } from '../../../../actions';
 
 const ResetButton = () => {
-    const dispatch = useDispatch();
+    const [combatPhase, setCombatPhase] = useRecoilState(combatState.combatPhase);
     const [playerAttacksInQueue, setPlayerAttacksInQueue] = useRecoilState(combatState.playerAttacksInQueue);
     const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);
     const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
@@ -40,8 +38,8 @@ const ResetButton = () => {
             shape: '',
             threshold: 0
         })
-        dispatch(setScene(scene - 1))
-        dispatch(setCombatPhase('noCombat'));
+        setScene(scene - 1)
+        setCombatPhase('noCombat');
     }
     return (
         <Wrapper>

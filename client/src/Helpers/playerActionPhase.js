@@ -23,3 +23,12 @@ export const determineIfBaddieInRange = (range, playerCoords, baddieCoords) => {
   })
   return inRange;
 };
+
+export const determineThrowOrTravel = (skill) => {
+  // See Recoil Combat State for all the options of what strings to return!
+  if (skill.travelDistance > 0) {
+    return "travelDestination";
+  } else {
+    return "attackTarget"
+  }
+}

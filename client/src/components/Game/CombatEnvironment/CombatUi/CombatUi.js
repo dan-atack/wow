@@ -5,7 +5,7 @@ import skillborder from '../../../../assets/skillborder.png';
 import menuButton from '../../../../assets/menuButton.png';
 
 import { attackRange } from '../../../../Helpers/playerCombatHelpers';
-import { determineIfBaddieInRange } from '../../../../Helpers/playerActionPhase';
+import { determineIfBaddieInRange, determineThrowOrTravel } from '../../../../Helpers/playerActionPhase';
 import data from '../../../../data/mapSeed.json';
 import baddieData from '../../../../data/baddie.json';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,6 +35,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
   const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(combatState.playerMoveOptions);
+  const [playerAttackSelecting, setPlayerAttackSelecting] = useRecoilState(combatState.playerAttackSelecting);
   const playerSkills = useRecoilValue(combatState.playerSkills);
   const playerCoords = useRecoilValue(combatState.playerCoords);
   const baddieCoords = useRecoilValue(combatState.baddieCoords);
@@ -56,6 +57,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
       dispatch(setReflexCheck(skill.id))
       setSelectedSkill(skill);
       setEnemyAttackRadius([])
+      setPlayerAttackSelecting(determineThrowOrTravel(skill))
       setPlayerMoveOptions([])
       const range = await attackRange(skill, playerCoords, seed.width, seed.height, seed.obstructions);
       setPlayerAttackRadius(range);

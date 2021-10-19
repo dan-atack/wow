@@ -12,7 +12,6 @@ const SkillButton = (props) => {
   const costModifier = (numPrevMoves - 1) * CONSTANTS.BASELINE_HYPE_COST  // hype cost is increased by num of previous moves
   const currentHypeCost = skill.hypeCost + costModifier;
   const affordable = playerHype >= currentHypeCost; // If player hype equals or exceeds the current cost, you can afford this move.
-  const [playerAttackSelecting, setPlayerAttackSelecting] = useRecoilValue(combatState.playerAttackSelecting);
 
   if (affordable) {
     return (

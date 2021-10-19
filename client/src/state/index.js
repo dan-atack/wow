@@ -17,7 +17,8 @@ import {
   baddieCoords,
   baddieOrientation,
   baddieDecision,
-  baddieStatus
+  baddieStatus,
+  combatPhase
 } from './combatState';
 
 import {
@@ -66,5 +67,6 @@ export default {
   showmanship,
   minigameRound,
   updateRound,
-  currentRound
+  currentRound,
+  combatPhase
 }

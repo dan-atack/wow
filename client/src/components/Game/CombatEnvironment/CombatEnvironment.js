@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCombatPhase, startReflexCheck } from '../../../actions';
+import { startReflexCheck } from '../../../actions';
 import { setupPlayerMovePhase } from '../../../Helpers/playerMovePhase';
 // Helper functions:
 import { baddieMoveLogic } from '../../../Helpers/baddieMoveLogic';
@@ -40,8 +40,8 @@ const CombatEnvironment = () => {
   const dispatch = useDispatch();
   const devMode = CONSTANTS.DEV_MODE;   // Boolean switch allows optional display of the 'Dev Mode' panel
   // State-dependent combat values start here:
-  const combatPhase = useSelector((state) => state.game.combatPhase);   // Redux is used for the combat phase.
-  const level = useRecoilValue(globalState.level);                      // All other combat state is handled by recoil.
+  const [combatPhase, setCombatPhase] = useRecoilState(combatState.combatPhase);   // recoil is used for the combat phase.
+  const level = useRecoilValue(globalState.level);                      // All combat state is handled by recoil.
 
   // Player Related State Values:
   const [playerAttacksInQueue, setPlayerAttacksInQueue] = useRecoilState(combatState.playerAttacksInQueue);
@@ -75,6 +75,8 @@ const CombatEnvironment = () => {
   const baddie = baddieData.find((obj) => obj.level === level);
   const seed = data.find((obj) => obj.level === level);
 
+  console.log(combatPhase)
+
   // Switch case acts as the game's Engine, calling helper functions and then managing state with their outputs.
   // One Effect to Call Them All:
   useEffect(() => {
@@ -89,7 +91,7 @@ const CombatEnvironment = () => {
         setBaddieDecision(decision);    // Pass baddie's move data to recoil
         // Helper function advances to next phase AFTER a given time delay, to allow for an animation 'telegraphing' the decision:
         // console.log(`Baddie move choice: ${decision.name}`);
-        advanceCombatSequence(1500, 'playerMove', dispatch, setCombatPhase);
+        advanceCombatSequence(1500, 'playerMove', setCombatPhase);
         // IDEA: Use time hook to make this phase last 1 - 2 seconds; use that time to show a GIF that telegraphs the move!
         break;
       case 'playerMove':
@@ -124,10 +126,10 @@ const CombatEnvironment = () => {
             // Baddie throw logic goes here!
             const destination = determineObstacle(baddieDecision.throwDistance, baddieOrientation, baddieCoords, playerCoords, seed);
             // console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
-            advanceCombatWithMovement(1000, 'playerAction', dispatch, setCombatPhase, setPlayerCoords, destination);
+            advanceCombatWithMovement(1000, 'playerAction', setCombatPhase, setPlayerCoords, destination);
           } else {
             // console.log('no hit on player');
-            dispatch(setCombatPhase('playerAction'));
+            setCombatPhase('playerAction');
           }
         break;
       case 'playerAction':
@@ -148,12 +150,12 @@ const CombatEnvironment = () => {
           setEnemyAttackRadius([]);
           setPlayerMoveOptions([]);
           // No need to waste time on a delay if no attack is possible. If an attack is possible, delay should be added to player action/combat helper...
-          dispatch(setCombatPhase('specialEvent'));
+          setCombatPhase('specialEvent');
         }
         break;  // Await input from the attack selection inputs and no more.
       case 'specialEvent':
         setPlayerAttacksInQueue([]);
-        specialEventLogic(dispatch, setCombatPhase, level, advanceCombatSequence);
+        specialEventLogic(setCombatPhase, level, advanceCombatSequence);
         break;
       case 'baddieMove':
         // Instead of having the logic helper function implement the result of the baddie's move choice, it should return that value.
@@ -168,8 +170,8 @@ const CombatEnvironment = () => {
           seed
         );
         // TODO: Set time delay to phase advance based on distance travelled.
-        advanceCombatWithMovement(1000, 'baddieDecision', dispatch, setCombatPhase, setBaddieCoords, coords);
-        dispatch(setCombatPhase('baddieDecision'));
+        advanceCombatWithMovement(1000, 'baddieDecision', setCombatPhase, setBaddieCoords, coords);
+        setCombatPhase('baddieDecision');
         break;
       case 'gameOver':
         break;  // Just hang and wait for the player to hit the reset button.
@@ -189,7 +191,7 @@ const CombatEnvironment = () => {
   useEffect(() => {
     if (playerHealth <= 0) {
       setPlayerIsDead(true);
-      dispatch(setCombatPhase('gameOver'));
+      setCombatPhase('gameOver');
     }
   }, [playerHealth])
 
@@ -197,7 +199,7 @@ const CombatEnvironment = () => {
   useEffect(() => {
     if (baddieHP <= 0) {
       console.log('Victory! We have victory!')
-      dispatch(setCombatPhase('victory'));
+      setCombatPhase('victory');
     }
   }, [baddieHP])
 
@@ -214,7 +216,7 @@ const CombatEnvironment = () => {
     if (baddieCoords.x === x && baddieCoords.y === y) {
       dispatch(startReflexCheck());    // If the player hits the baddie, begin a reflex check but don't advance combat round.
     } else {                           // Otherwise, advance the combat round:
-      dispatch(setCombatPhase('specialEvent'))
+      setCombatPhase('specialEvent')
     }
   }
 

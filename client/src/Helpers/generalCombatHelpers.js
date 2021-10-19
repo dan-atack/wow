@@ -122,22 +122,25 @@ export const determineObstacle = (distance, direction, attackerCoords, victimCoo
 
 // This is an experimental helper function that will set a one-time timeout that delays the advance to the next combat phase.
 // Time = number of milliseconds delay; nextPhase = string name of a combat phase; setNextPhase = dispatcher, passed as a function.
-export const advanceCombatSequence = (time, nextPhase, dispatch, setNextPhase) => {
+export const advanceCombatSequence = (time, nextPhase, setNextPhase) => {
   // console.log(`Initiating ${time / 1000} second countdown to next phase: ${nextPhase}`);
   setTimeout(() => {
-    dispatch(setNextPhase(nextPhase));
+    setNextPhase(nextPhase);
   }, time);
 }
 
 // This function implements a one-time timeout to delay between the start of a MOVEMENT or ATTACK combat phase and its outcome (e.g. between when you click on a tile or hit the baddie, or he moves/hits you, and when the character's sprite actually arrives there).
 // PROPS: time = delay in milliseconds, nextPhase = string name of combat phase OR NULL (in the case that a phase advance is actually NOT required, such as the first hit in a queue of attacks), dispatch = literally the redux dispatcher (ew), setNextPhase = REDUX setPhase action, setPosition = RECOIL position setter for either the player or the baddie, and coords = {x:number, y:number}
-export const advanceCombatWithMovement = async (time, nextPhase, dispatch, setNextPhase, setPosition, coords) => {
+export const advanceCombatWithMovement = async (time, nextPhase, setNextPhase, setPosition, coords) => {
   // console.log(`delaying for ${time/1000} seconds before ${nextPhase}`);
+
+  console.log(nextPhase);
+
   setTimeout(() => {
     // console.log(`time to move to ${coords.x}, ${coords.y}`);
     setPosition(coords);
     if (nextPhase) {
-      dispatch(setNextPhase(nextPhase));
+      setNextPhase(nextPhase);
     }
   }, time);
 }

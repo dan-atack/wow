@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { setCombatPhase } from '../../../../actions';
 import combatState from '../../../../state';
 import { useRecoilState } from 'recoil';
 import { advanceCombatWithMovement } from '../../../../Helpers/generalCombatHelpers';
 
 const OrientationPicker = () => {
-    const dispatch = useDispatch();
     const [playerCoords, setPlayerCoords] = useRecoilState(combatState.playerCoords);
+    const [combatPhase, setCombatPhase] = useRecoilState(combatState.combatPhase);
     const [playerMovementDecision, setPlayerMovementDecision] = useRecoilState(combatState.playerMovementDecision);
     const [playerOrientation, setPlayerOrientation] = useRecoilState(combatState.playerOrientation);
     // Handler for the various buttons:
@@ -17,7 +16,7 @@ const OrientationPicker = () => {
         const coords = { x: playerMovementDecision.x, y: playerMovementDecision.y }
         setPlayerMovementDecision({ x: -1, y: -1 }) // set a position outside the possible render area?
         // TODO: Make delay until next phase dependent on distance (quick delta x + delta y calculation - make another helper?)
-        advanceCombatWithMovement(1000, 'baddieAction', dispatch, setCombatPhase, setPlayerCoords, coords);
+        advanceCombatWithMovement(1000, 'baddieAction', setCombatPhase, setPlayerCoords, coords);
     }
     return (
         <Wrapper>

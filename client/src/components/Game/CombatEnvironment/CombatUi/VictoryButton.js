@@ -1,13 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
 import { useRecoilState } from 'recoil';
 import combatState from '../../../../state';
 import globalState from '../../../../state';
-import { setCombatPhase } from '../../../../actions';
 
 const VictoryButton = () => {
-    const dispatch = useDispatch();
     const [playerHealth, setPlayerHealth] = useRecoilState(combatState.playerHealth);   // tidy up all of the combat state values.
     const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
     const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
@@ -16,6 +13,8 @@ const VictoryButton = () => {
     const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
     const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
     const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
+
+    const [combatPhase, setCombatPhase] = useRecoilState(combatState.combatPhase);
     const [scene, setScene] = useRecoilState(globalState.scene)
     const handleClick = () => {
         setPlayerHealth(100);
@@ -32,8 +31,8 @@ const VictoryButton = () => {
             shape: '',
             threshold: 0
         })
-        dispatch(setScene(scene + 1))
-        dispatch(setCombatPhase('noCombat'));
+        setScene(scene + 1);
+        setCombatPhase('noCombat');
     }
     return (
         <Wrapper>

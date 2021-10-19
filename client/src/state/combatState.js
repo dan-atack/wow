@@ -115,3 +115,8 @@ export const mapGrid = atom({
   key: 'mapGrid',
   default: [],
 })
+
+export const combatPhase = atom({
+  key: 'combat phase',
+  default: 'noCombat'
+})

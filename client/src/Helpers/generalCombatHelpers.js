@@ -134,8 +134,6 @@ export const advanceCombatSequence = (time, nextPhase, setNextPhase) => {
 export const advanceCombatWithMovement = async (time, nextPhase, setNextPhase, setPosition, coords) => {
   // console.log(`delaying for ${time/1000} seconds before ${nextPhase}`);
 
-  console.log(nextPhase);
-
   setTimeout(() => {
     // console.log(`time to move to ${coords.x}, ${coords.y}`);
     setPosition(coords);

@@ -17,7 +17,8 @@ import {
   baddieOrientation,
   baddieDecision,
   baddieStatus,
-  combatPhase
+  combatPhase,
+  reflexCheck
 } from './combatState';
 
 import {
@@ -66,5 +67,6 @@ export default {
   minigameRound,
   updateRound,
   currentRound,
-  combatPhase
+  combatPhase,
+  reflexCheck
 }

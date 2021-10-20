@@ -18,10 +18,8 @@ function Game() {
   const handleAdvance = () => {
     // If there is a scene,
 
-    if (scenes[`scene_${scene}`]) {
       // Move to the next scene:
       setScene(scene + 1);
-    }
   };
 
   const renderScene = (sceneName) => {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import CharacterDetails from './CharacterDetails';
 
 import characterState from '../../state'
 
@@ -63,7 +62,6 @@ function SelectCharacter({setScene, scene}) {
             </ConfirmButton>
           </FooterWrapper>    
         }
-        {isSelected && <CharacterDetails />}
     </Wrapper>
   );
 }

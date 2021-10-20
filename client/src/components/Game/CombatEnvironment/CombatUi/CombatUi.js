@@ -21,6 +21,7 @@ import SkillButton from './SkillButton';
 import ResetButton from './ResetButton';
 import VictoryButton from './VictoryButton';
 import AttackQueue from './AttackQueue';
+import AttackAddMove from './AttackAddMove/AttackAddMove';
 // Data:
 import playerMoves from '../../../../data/playerMoves.json';
 import { baddieCoords } from '../../../../state/combatState';
@@ -77,6 +78,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
         combo={randomCombo}
         style={{ position: 'absolute', top: '0px', right: '50px' }}
       />}
+      <AttackAddMove/>
       <HealthHud src={healthbar}/>
       <SkillHud src={skillborder}/> 
       <Wrapper>

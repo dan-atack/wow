@@ -69,7 +69,7 @@ export const playerStatus = atom({
 export const playerAttackSelecting = atom({
   // Answers the question 'which part of their attack is the player configuring?'
   key: 'playerAttackSelecting',
-  default: 'notSelected' // Other EXPECTED values are: 'travelDestination', 'attackTarget', 'throwDestination' and 'additionalAttack' which refers to the time that the 'Attack/Add Move' popup is present.
+  default: 'notSelecting' // Other EXPECTED values are: 'travelDestination', 'attackTarget', 'throwDestination' and 'selectingAttack' which represents the very start of the player action phase, as well as when the player has chosen to add an additional attack.
 })
 
 // Baddie-Related Variables:

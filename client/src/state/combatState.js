@@ -103,11 +103,9 @@ export const baddieDecision = atom({
 export const baddieStatus = atom({
   key: 'baddieStatus',
   default: {
-    default: {
-      physical: [],
-      elemental: {},
-      positional: {},
-    }
+    physical: [],
+    elemental: {},
+    positional: {},
   }
 })
 
@@ -119,4 +117,12 @@ export const mapGrid = atom({
 export const combatPhase = atom({
   key: 'combat phase',
   default: 'noCombat'
+})
+
+export const reflexCheck = atom ({
+  key: '',
+  default: {
+    isReflexCheck: false,
+    reflexCheckId: null,
+  },
 })

@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import combatState from '../../../state';
 import globalState from '../../../state';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { setCombatPhase, setPlayerCoords, stopReflexCheck } from '../../../actions';
 import { determineObstacle, advanceCombatSequence, advanceCombatWithMovement } from '../../../Helpers/generalCombatHelpers';
 import data from '../../../data/mapSeed.json';
 
@@ -30,6 +29,8 @@ function ReflexCheck({ combo }) {
     const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
     const [baddieCoords, setBaddieCoords] = useRecoilState(combatState.baddieCoords);
     const [baddieStatus, setBaddieStatus] = useRecoilState(combatState.baddieStatus);
+    const [reflexCheck, setReflexCheck] = useRecoilState(combatState.reflexCheck);
+    const [combatPhase, setCombatPhase] = useRecoilState(combatState.combatPhase);
     // Player Hype is also affected by reflex check outcomes:
     const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
     // Now using state to pass all move data:
@@ -68,7 +69,6 @@ function ReflexCheck({ combo }) {
     const determineThrow = () => {
         const distance = playerMovesInQueue[attackQueueIndexPosition].throwDistance;
         const destination = determineObstacle(distance, playerOrientation, playerCoords, baddieCoords, seed);
-        console.log(`DESTINATION: ${destination.x}, ${destination.y}`);
         return destination;
     }
 
@@ -77,8 +77,8 @@ function ReflexCheck({ combo }) {
         setSuccessStatus(true);
         const attackAnimationDelay = playerMovesInQueue.length * 1000;  // TODO: consider making this depend on what the last attack in the queue was, to allow for more time for a more dramatic animation for the final move or for specific 'ultimate' moves.
         // Firing alongside the regular attackSuccess function, this function introduces a longer delay and then advances the combat phase:
-        advanceCombatSequence(attackAnimationDelay, 'specialEvent', dispatch, setCombatPhase);
-        dispatch(stopReflexCheck());
+        advanceCombatSequence(attackAnimationDelay, 'specialEvent', setCombatPhase);
+        setReflexCheck({...reflexCheck, isReflexCheck: false})
     }
 
     // What happens if you are NOT on the last combo in the queue:
@@ -115,14 +115,15 @@ function ReflexCheck({ combo }) {
         setBaddieHP(baddieHP - determineDamage());
         setPlayerHype(Math.min(playerHype + determineHype(), 100));
         // Introduce a short delay before updating baddie position:
-        advanceCombatWithMovement(500, null, dispatch, setCombatPhase, setBaddieCoords, destination);
-        // If there are multiple attacks queued and you didn't just do the last one, setup the next move:
-        if (playerMovesInQueue.length > 1 && attackQueueIndexPosition < playerMovesInQueue.length - 1) {
-            setAttackQueueIndexPosition(attackQueueIndexPosition + 1);
-            setupNextAttack();
-        } else {
-            finalAttackSuccess();
-        }
+        advanceCombatWithMovement(500, null, setCombatPhase, setBaddieCoords, destination).then(res => {
+            // If there are multiple attacks queued and you didn't just do the last one, setup the next move:
+            if (playerMovesInQueue.length > 1 && attackQueueIndexPosition < playerMovesInQueue.length - 1) {
+                setAttackQueueIndexPosition(attackQueueIndexPosition + 1);
+                setupNextAttack();
+            } else {
+                finalAttackSuccess();
+            }
+        })
     }
 
     // One Effect to handle all the keys:
@@ -130,8 +131,8 @@ function ReflexCheck({ combo }) {
         // If you've failed, ensure the string is exactly zero, and dispatch to advance state AND declare an end to the reflex check):
         if (failStatus) {
             setTimeString('00:00.00');
-            dispatch(setCombatPhase('specialEvent'));
-            dispatch(stopReflexCheck());
+            setCombatPhase('specialEvent');
+            setReflexCheck({...reflexCheck, isReflexCheck: false})
         }
         // This whole effect will only fire until you have either failed or succeeded:
         if (!failStatus && !successStatus) {

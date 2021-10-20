@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { startReflexCheck } from '../../../actions';
 import { setupPlayerMovePhase } from '../../../Helpers/playerMovePhase';
 // Helper functions:
 import { baddieMoveLogic } from '../../../Helpers/baddieMoveLogic';
@@ -37,7 +35,6 @@ import DevDisplay from './DevD';
 import { CONSTANTS } from '../../../constants.js';
 
 const CombatEnvironment = () => {
-  const dispatch = useDispatch();
   const devMode = CONSTANTS.DEV_MODE;   // Boolean switch allows optional display of the 'Dev Mode' panel
   // State-dependent combat values start here:
   const [combatPhase, setCombatPhase] = useRecoilState(combatState.combatPhase);   // recoil is used for the combat phase.
@@ -59,8 +56,8 @@ const CombatEnvironment = () => {
   const [playerAttackSelecting, setPlayerAttackSelecting] = useRecoilState(combatState.playerAttackSelecting);
 
   // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
-  const reflexCheckId = useSelector((state) => state.game.reflexCheck);
-  const playerAttackData = playerMoveData.find((move) => move.id === reflexCheckId);  // Hacky but effective!
+  const [reflexCheck, setReflexCheck] = useRecoilState(combatState.reflexCheck);
+  const playerAttackData = playerMoveData.find((move) => move.id === reflexCheck.reflexCheckId);  // Hacky but effective!
 
   // Baddie Related State Values:
   const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
@@ -74,8 +71,6 @@ const CombatEnvironment = () => {
   const [mapGrid, setMapGrid] = useRecoilState(combatState.mapGrid);
   const baddie = baddieData.find((obj) => obj.level === level);
   const seed = data.find((obj) => obj.level === level);
-
-  console.log(combatPhase)
 
   // Switch case acts as the game's Engine, calling helper functions and then managing state with their outputs.
   // One Effect to Call Them All:
@@ -214,7 +209,7 @@ const CombatEnvironment = () => {
   const playerAttack = (x, y) => {
     setPlayerAttackRadius([]);       // Clear player attack radius once attack is selected.
     if (baddieCoords.x === x && baddieCoords.y === y) {
-      dispatch(startReflexCheck());    // If the player hits the baddie, begin a reflex check but don't advance combat round.
+      setReflexCheck({...reflexCheck, isReflexCheck: true});  // If the player hits the baddie, begin a reflex check but don't advance combat round.
     } else {                           // Otherwise, advance the combat round:
       setCombatPhase('specialEvent')
     }

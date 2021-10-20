@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import useSound from 'use-sound';
 import ugh from '../../../assets/sounds/ugh-01.mp3';
 import { useTime } from '../../../hooks/useTime';
-import { useDispatch } from 'react-redux';
 import combatState from '../../../state';
 import globalState from '../../../state';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -12,7 +11,6 @@ import data from '../../../data/mapSeed.json';
 
 // Combo = integer for which of the 3 possible key combos to use for the reflex check:
 function ReflexCheck({ combo }) {
-    const dispatch = useDispatch();
     // Update time at very short interval to 'sample' for updates at high frequency:
     let now = useTime(20);
     const [then, setThen] = React.useState(0);

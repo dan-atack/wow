@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {useSelector} from 'react-redux';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import combatState from '../../../../state'
 
@@ -9,7 +8,7 @@ import combatState from '../../../../state'
 const Portrait = ({playerPortrait, selectedSkill, base}) => {
     // for this component to work, the naming convention of the baddie json must be, non capitalized.
     
-    const combatPhase = useSelector((state) => state.game.combatPhase);
+    const combatPhase = useRecoilValue(combatState.combatPhase);
     const [baddieDecision, setBaddieDecision] = useRecoilState(combatState.baddieDecision);
     const status = useRecoilValue(playerPortrait ? combatState.playerStatus : combatState.baddieStatus); // when baddie is complete this will include baddie as well
 

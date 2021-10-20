@@ -37,6 +37,7 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   const [playerHype, setPlayerHype] = useRecoilState(combatState.playerHype);
   const [playerAttackRadius, setPlayerAttackRadius] = useRecoilState(combatState.playerAttackRadius);
   const [playerMoveOptions, setPlayerMoveOptions] = useRecoilState(combatState.playerMoveOptions);
+  const [playerAttackSelecting, setPlayerAttackSelecting] = useRecoilState(combatState.playerAttackSelecting);
   const playerSkills = useRecoilValue(combatState.playerSkills);
   const playerCoords = useRecoilValue(combatState.playerCoords);
   const baddieCoords = useRecoilValue(combatState.baddieCoords);

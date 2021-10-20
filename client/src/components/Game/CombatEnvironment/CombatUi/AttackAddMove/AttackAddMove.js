@@ -20,8 +20,8 @@ const AttackAddMove = () => {
 
     return (
         <Wrapper>
-            <button onClick={() => attackButtonHandler}>ATTACK</button>
-            <button onClick={() => addMoveButtonHandler}>ADD MOVE</button>
+            <button onClick={() => attackButtonHandler()}>ATTACK</button>
+            <button onClick={() => addMoveButtonHandler()}>ADD MOVE</button>
         </Wrapper>
     )
 };
@@ -33,6 +33,7 @@ const Wrapper = styled.div`
     width: 256px;
     border: 1px solid black;
     border-radius: 8px;
+    z-index: 1000;
 `
 
 export default AttackAddMove;

@@ -8,12 +8,10 @@ import { attackRange } from '../../../../Helpers/playerCombatHelpers';
 import { determineIfBaddieInRange } from '../../../../Helpers/playerActionPhase';
 import data from '../../../../data/mapSeed.json';
 import baddieData from '../../../../data/baddie.json';
-import { useDispatch, useSelector } from 'react-redux';
 // recoil state management
 import combatState from '../../../../state';
 import globalState from '../../../../state';
 import { useRecoilValue, useRecoilState } from 'recoil'
-import { setCombatPhase, setReflexCheck } from '../../../../actions';
 // Components:
 import Portrait from './Portrait';
 import ReflexCheck from '../../ReflexCheck';
@@ -24,7 +22,6 @@ import AttackQueue from './AttackQueue';
 // Data:
 import playerMoves from '../../../../data/playerMoves.json';
 import { baddieCoords } from '../../../../state/combatState';
-import { bindActionCreators } from 'redux';
 // Placeholder temp stuff ???
 
 const CombatUi = ({turn, setEnemyAttackRadius}) => {
@@ -44,9 +41,6 @@ const CombatUi = ({turn, setEnemyAttackRadius}) => {
   
   const level = useRecoilValue(globalState.level)
   
-  // Conditionally render reflex check based on this value (and falsilly don't render on a zero!):
-  const doReflexCheck = useSelector((state) => state.game.doReflexCheck);
-
   const [combatPhase, setCombatPhase] = useRecoilState(combatState.combatPhase);
   const [reflexCheck, setReflexCheck] = useRecoilState(combatState.reflexCheck);
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
 import combatState from '../../../../state';
 import { useRecoilState } from 'recoil';
 import { advanceCombatWithMovement } from '../../../../Helpers/generalCombatHelpers';

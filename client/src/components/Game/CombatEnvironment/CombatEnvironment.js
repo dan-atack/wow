@@ -57,7 +57,6 @@ const CombatEnvironment = () => {
 
   // Player Attack Data (damage and such) is fetched based on the ID of the 'move' fed to the Reflex Check component:
   const [reflexCheck, setReflexCheck] = useRecoilState(combatState.reflexCheck);
-  const playerAttackData = playerMoveData.find((move) => move.id === reflexCheck.reflexCheckId);  // Hacky but effective!
 
   // Baddie Related State Values:
   const [baddieHP, setBaddieHP] = useRecoilState(combatState.baddieHP);
@@ -209,7 +208,7 @@ const CombatEnvironment = () => {
   const playerAttack = (x, y) => {
     setPlayerAttackRadius([]);       // Clear player attack radius once attack is selected.
     if (baddieCoords.x === x && baddieCoords.y === y) {
-      setReflexCheck({...reflexCheck, isReflexCheck: true});  // If the player hits the baddie, begin a reflex check but don't advance combat round.
+      setReflexCheck(true);  // If the player hits the baddie, begin a reflex check but don't advance combat round.
     } else {                           // Otherwise, advance the combat round:
       setCombatPhase('specialEvent')
     }

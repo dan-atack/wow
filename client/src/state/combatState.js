@@ -69,7 +69,7 @@ export const playerStatus = atom({
 export const playerAttackSelecting = atom({
   // Answers the question 'which part of their attack is the player configuring?'
   key: 'playerAttackSelecting',
-  default: 'notSelecting' // Other EXPECTED values are: 'travelDestination', 'attackTarget', 'throwDestination' and 'selectingAttack' which represents the very start of the player action phase, as well as when the player has chosen to add an additional attack.
+  default: 'notSelecting' // Other EXPECTED values are: 'travelDestination', 'attackTarget', 'throwDestination' and 'selectingAttack' which represents the very start of the player action phase, as well as when the player has chosen to add an additional attack, and finally 'doneSelecting' for after an attack selection is finished.
 })
 
 // Baddie-Related Variables:
@@ -120,9 +120,6 @@ export const combatPhase = atom({
 })
 
 export const reflexCheck = atom ({
-  key: '',
-  default: {
-    isReflexCheck: false,
-    reflexCheckId: null,
-  },
+  key: 'reflexCheck',
+  default: false,
 })

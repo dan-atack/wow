@@ -76,7 +76,7 @@ function ReflexCheck({ combo }) {
         const attackAnimationDelay = playerMovesInQueue.length * 1000;  // TODO: consider making this depend on what the last attack in the queue was, to allow for more time for a more dramatic animation for the final move or for specific 'ultimate' moves.
         // Firing alongside the regular attackSuccess function, this function introduces a longer delay and then advances the combat phase:
         advanceCombatSequence(attackAnimationDelay, 'specialEvent', setCombatPhase);
-        setReflexCheck({...reflexCheck, isReflexCheck: false})
+        setReflexCheck(false);
     }
 
     // What happens if you are NOT on the last combo in the queue:
@@ -130,7 +130,7 @@ function ReflexCheck({ combo }) {
         if (failStatus) {
             setTimeString('00:00.00');
             setCombatPhase('specialEvent');
-            setReflexCheck({...reflexCheck, isReflexCheck: false})
+            setReflexCheck(false);
         }
         // This whole effect will only fire until you have either failed or succeeded:
         if (!failStatus && !successStatus) {
